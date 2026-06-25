@@ -1,0 +1,155 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Setup</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="setup-page">
+    <section class="setup-card">
+      <div class="setup-side">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+        <h1>Build your internship profile</h1>
+        <p>Choose your skills, field, free time, and internship preferences.</p>
+      </div>
+
+      <form class="setup-form" id="studentSetupForm">
+        <h2>Student Preference Setup</h2>
+
+        <div class="form-grid">
+          <label>
+            Full name
+            <input name="name" value="Eric #12H4E" />
+          </label>
+
+          <label>
+            University
+            <input name="university" value="Assumption University" />
+          </label>
+
+          <label>
+            Major
+            <select name="major">
+              <option>Computer Science</option>
+              <option selected>Information Technology</option>
+              <option>Software Engineering</option>
+              <option>Business Analytics</option>
+            </select>
+          </label>
+
+          <label>
+            Year of study
+            <select name="year">
+              <option>Second year</option>
+              <option>Third year</option>
+              <option selected>Final year</option>
+              <option>Pre-internship</option>
+            </select>
+          </label>
+        </div>
+
+        <h2>Interested Field</h2>
+        <div class="choice-buttons">
+          <label><input type="radio" name="field" value="Software Engineering" checked /> Software Engineering</label>
+          <label><input type="radio" name="field" value="Data Analytics" /> Data Analytics</label>
+          <label><input type="radio" name="field" value="Cybersecurity" /> Cybersecurity</label>
+          <label><input type="radio" name="field" value="UI/UX Design" /> UI/UX Design</label>
+          <label><input type="radio" name="field" value="Cloud Computing" /> Cloud Computing</label>
+          <label><input type="radio" name="field" value="AI/Machine Learning" /> AI/Machine Learning</label>
+        </div>
+
+        <h2>Technical Skills</h2>
+        <div class="choice-buttons">
+          <label><input type="checkbox" name="skills" value="Python" checked /> Python</label>
+          <label><input type="checkbox" name="skills" value="JavaScript" checked /> JavaScript</label>
+          <label><input type="checkbox" name="skills" value="SQL" checked /> SQL</label>
+          <label><input type="checkbox" name="skills" value="HTML/CSS" /> HTML/CSS</label>
+          <label><input type="checkbox" name="skills" value="Java" /> Java</label>
+          <label><input type="checkbox" name="skills" value="Git" checked /> Git</label>
+          <label><input type="checkbox" name="skills" value="React" /> React</label>
+          <label><input type="checkbox" name="skills" value="Excel" /> Excel</label>
+        </div>
+
+        <div class="form-grid">
+          <label>
+            Proficiency
+            <select name="proficiency">
+              <option>Beginner</option>
+              <option selected>Intermediate</option>
+              <option>Advanced</option>
+            </select>
+          </label>
+
+          <label>
+            Career goal
+            <input name="goal" value="Become a software developer intern" />
+          </label>
+        </div>
+
+        <h2>Internship Requirements</h2>
+        <div class="form-grid">
+          <label>
+            Preferred location
+            <select name="location">
+              <option selected>Bangkok</option>
+              <option>Samut Prakan</option>
+              <option>Remote</option>
+              <option>Other Location</option>
+            </select>
+          </label>
+
+          <label>
+            Internship type
+            <select name="internshipType">
+              <option selected>Paid</option>
+              <option>Unpaid</option>
+              <option>Either</option>
+            </select>
+          </label>
+
+          <label>
+            Work style
+            <select name="workStyle">
+              <option>On-site</option>
+              <option selected>Hybrid</option>
+              <option>Remote</option>
+            </select>
+          </label>
+
+          <label>
+            Mentorship
+            <select name="mentorship">
+              <option selected>Required</option>
+              <option>Preferred</option>
+              <option>Not needed</option>
+            </select>
+          </label>
+        </div>
+
+        <h2>Free Time / Availability</h2>
+        <div class="choice-buttons compact">
+          <label><input type="checkbox" name="availability" value="Mon" /> Mon</label>
+          <label><input type="checkbox" name="availability" value="Tue" checked /> Tue</label>
+          <label><input type="checkbox" name="availability" value="Wed" checked /> Wed</label>
+          <label><input type="checkbox" name="availability" value="Thu" /> Thu</label>
+          <label><input type="checkbox" name="availability" value="Fri" checked /> Fri</label>
+          <label><input type="checkbox" name="availability" value="Sat" /> Sat</label>
+          <label><input type="checkbox" name="availability" value="Sun" /> Sun</label>
+        </div>
+
+        <div class="setup-actions">
+          <a class="secondary-btn" href="../index.html">Back</a>
+          <button class="primary-btn" type="submit">Create Student Profile</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>

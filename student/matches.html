@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recommended Internships</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">E</div>
+        <div>
+          <strong>Eric #12H4E</strong>
+          <span>Student</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="matches.html">Recommended</a>
+        <a href="applications.html">Applications</a>
+        <a href="saved.html">Saved</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <h1>Recommended Internships</h1>
+          <p>Company internship posts matched to your profile.</p>
+        </div>
+        <a class="secondary-btn" href="profile.html">Edit Preferences</a>
+      </header>
+
+      <section class="internship-grid">
+        <article class="intern-card">
+          <button class="heart-btn" type="button" data-save-internship="google">♡</button>
+          <div class="company-image">Google</div>
+          <div class="intern-body">
+            <h3>Google (Software Developer Intern)</h3>
+            <ul class="detail-list">
+              <li><span>Location</span><strong>Bangkok</strong></li>
+              <li><span>Duration</span><strong>3 months</strong></li>
+              <li><span>Allowance</span><strong>Paid</strong></li>
+              <li><span>Mode</span><strong>On-site</strong></li>
+              <li><span>Skills</span><strong>Python, SQL, Git</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a class="primary-btn" href="google-details.html">See Details</a>
+              <span class="match-pill">85% match</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="intern-card">
+          <button class="heart-btn" type="button" data-save-internship="agoda">♡</button>
+          <div class="company-image">Agoda</div>
+          <div class="intern-body">
+            <h3>Agoda (Frontend Developer Intern)</h3>
+            <ul class="detail-list">
+              <li><span>Location</span><strong>Bangkok</strong></li>
+              <li><span>Duration</span><strong>6 months</strong></li>
+              <li><span>Allowance</span><strong>Paid</strong></li>
+              <li><span>Mode</span><strong>Remote</strong></li>
+              <li><span>Skills</span><strong>React, JavaScript</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a class="primary-btn" href="google-details.html">See Details</a>
+              <span class="match-pill">70% match</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="intern-card">
+          <button class="heart-btn" type="button" data-save-internship="microsoft">♡</button>
+          <div class="company-image">Microsoft</div>
+          <div class="intern-body">
+            <h3>Microsoft (Data Analyst Intern)</h3>
+            <ul class="detail-list">
+              <li><span>Location</span><strong>Bangkok</strong></li>
+              <li><span>Duration</span><strong>4 months</strong></li>
+              <li><span>Allowance</span><strong>Unpaid</strong></li>
+              <li><span>Mode</span><strong>Hybrid</strong></li>
+              <li><span>Skills</span><strong>Python, Excel</strong></li>
+            </ul>
+            <div class="card-actions">
+              <a class="primary-btn" href="google-details.html">See Details</a>
+              <span class="match-pill">65% match</span>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>

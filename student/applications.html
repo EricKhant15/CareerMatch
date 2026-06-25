@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applications</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">E</div>
+        <div>
+          <strong>Eric #12H4E</strong>
+          <span>Student</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="matches.html">Recommended</a>
+        <a class="active" href="applications.html">Applications</a>
+        <a href="saved.html">Saved</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <h1>Application Status Tracking</h1>
+          <p>Track each internship after applying.</p>
+        </div>
+
+        <a class="primary-btn" href="matches.html">Find More Internships</a>
+      </header>
+
+      <section class="panel table-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Internship</th>
+              <th>Applied Date</th>
+              <th>Action</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Google (Software Developer Intern)</td>
+              <td>02/05/2026</td>
+              <td>View</td>
+              <td><span class="status accepted">Accepted</span></td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>Agoda (Frontend Developer Intern)</td>
+              <td>28/05/2026</td>
+              <td>View</td>
+              <td><span class="status review">Under Review</span></td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>Microsoft (Data Analyst Intern)</td>
+              <td>12/05/2026</td>
+              <td>View</td>
+              <td><span class="status rejected">Rejected</span></td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>KBTG (Backend Developer Intern)</td>
+              <td>02/05/2026</td>
+              <td>View</td>
+              <td><span class="status review">Under Review</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

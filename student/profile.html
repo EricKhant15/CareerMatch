@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Profile</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">E</div>
+        <div>
+          <strong>Eric #12H4E</strong>
+          <span>Student</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="matches.html">Recommended</a>
+        <a href="applications.html">Applications</a>
+        <a href="saved.html">Saved</a>
+        <a class="active" href="profile.html">Profile</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <div>
+          <h1>My Profile & Preferences</h1>
+          <p>Your setup information is used for recommendations.</p>
+        </div>
+        <a class="secondary-btn" href="onboarding.html">Edit Setup</a>
+      </header>
+
+      <div class="grid-2">
+        <section class="panel">
+          <h2>Academic Information</h2>
+
+          <div class="form-grid">
+            <div class="form-card"><label>Full Name<input data-profile="name" value="Eric #12H4E" /></label></div>
+            <div class="form-card"><label>University<input data-profile="university" value="Assumption University" /></label></div>
+            <div class="form-card"><label>Major<input data-profile="major" value="Information Technology" /></label></div>
+            <div class="form-card"><label>Year of Study<input data-profile="year" value="Final year" /></label></div>
+          </div>
+
+          <br />
+
+          <h2>Preferred Field</h2>
+          <div class="option-grid">
+            <div class="option selected" data-profile-text="field">Software Engineering</div>
+            <div class="option">Data Analytics</div>
+            <div class="option">Cybersecurity</div>
+            <div class="option">UI/UX Design</div>
+            <div class="option">Cloud Computing</div>
+            <div class="option">AI/Machine Learning</div>
+          </div>
+
+          <br />
+
+          <h2>Availability</h2>
+          <div class="option-grid">
+            <div class="option">Mon</div>
+            <div class="option selected">Tue</div>
+            <div class="option selected">Wed</div>
+            <div class="option">Thu</div>
+            <div class="option selected">Fri</div>
+            <div class="option">Sat</div>
+          </div>
+        </section>
+
+        <aside class="panel">
+          <h2>Profile Completion</h2>
+          <div class="progress-ring"><span>85%</span></div>
+          <p>Complete your profile to get better matches.</p>
+
+          <br />
+
+          <h2>Availability Summary</h2>
+          <ul class="detail-list">
+            <li><span>Field</span><strong data-profile-text="field">Software Engineering</strong></li>
+            <li><span>Skills</span><strong data-profile-list="skills">Python, JavaScript, SQL, Git</strong></li>
+            <li><span>Location</span><strong data-profile-text="location">Bangkok</strong></li>
+            <li><span>Available days</span><strong data-profile-list="availability">Tue, Wed, Fri</strong></li>
+            <li><span>Work style</span><strong data-profile-text="workStyle">Hybrid</strong></li>
+            <li><span>Internship type</span><strong data-profile-text="internshipType">Paid</strong></li>
+          </ul>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="../app.js"></script>
+</body>
+</html>

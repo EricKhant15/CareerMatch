@@ -7,36 +7,66 @@
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="dashboard">
+  <div class="app">
     <aside class="sidebar">
-      <h2>CareerMatch</h2>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="#">Post Role</a>
-      <a href="#">Candidates</a>
-      <a href="#">Interviews</a>
-      <a href="../index.html">Switch User</a>
+      <div class="logo">Career<span>Match</span></div>
+
+      <div class="user">
+        <div class="avatar">G</div>
+        <div>
+          <h3>Google</h3>
+          <p>Company</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a class="active" href="dashboard.html">Dashboard</a>
+        <a href="#">Post Role</a>
+        <a href="candidates.html">Candidates</a>
+        <a href="#">Interviews</a>
+        <a href="../index.html">Sign Out</a>
+      </nav>
     </aside>
 
     <main class="main">
-      <h1>Company Dashboard</h1>
+      <div class="header">
+        <div>
+          <h1>Company Dashboard</h1>
+          <p>Manage internship posts and matched candidates.</p>
+        </div>
+        <a class="btn" href="#">Post New Role</a>
+      </div>
 
-      <div class="stats">
-        <div class="card"><strong>5</strong>Open Roles</div>
+      <section class="stats">
+        <div class="card"><strong>5</strong>Open roles</div>
         <div class="card"><strong>48</strong>Candidates</div>
+        <div class="card"><strong>14</strong>Strong matches</div>
         <div class="card"><strong>7</strong>Interviews</div>
-      </div>
+      </section>
 
-      <h2>Top Candidates</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Maya Chen</h3>
-          <p>Frontend Developer Intern - 96% match</p>
+      <section class="panel">
+        <h2>Open Internship Roles</h2>
+
+        <div class="grid">
+          <div class="card">
+            <h3>Software Developer Intern</h3>
+            <p>On-site - 3 months - Paid</p>
+            <p>18 candidates</p>
+          </div>
+
+          <div class="card">
+            <h3>Data Analyst Intern</h3>
+            <p>Hybrid - 4 months - Paid</p>
+            <p>12 candidates</p>
+          </div>
+
+          <div class="card">
+            <h3>Frontend Developer Intern</h3>
+            <p>Remote - 6 months - Paid</p>
+            <p>9 candidates</p>
+          </div>
         </div>
-        <div class="card">
-          <h3>Jordan Lee</h3>
-          <p>Data Analyst Intern - 91% match</p>
-        </div>
-      </div>
+      </section>
     </main>
   </div>
 </body>
