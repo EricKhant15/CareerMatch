@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interviews</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">G</div>
+        <div>
+          <strong>Google</strong>
+          <span>Company</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="post-role.html">Post Role</a>
+        <a href="applicants.html">Applicants</a>
+        <a class="active" href="interviews.html">Interviews</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main company-main">
+      <header class="page-header">
+        <div>
+          <h1>Interview Tracker</h1>
+          <p>Manage candidate review stages for open internships.</p>
+        </div>
+
+        <a class="primary-btn" href="applicants.html">Review Applicants</a>
+      </header>
+
+      <section class="panel table-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Candidate</th>
+              <th>Role</th>
+              <th>Match</th>
+              <th>Interview Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Eric #12H4E</td>
+              <td>Software Developer Intern</td>
+              <td>92%</td>
+              <td>30/06/2026</td>
+              <td><span class="status accepted">Scheduled</span></td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>Maya Chen</td>
+              <td>Frontend Developer Intern</td>
+              <td>88%</td>
+              <td>02/07/2026</td>
+              <td><span class="status review">Pending</span></td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>Jordan Lee</td>
+              <td>Data Analyst Intern</td>
+              <td>84%</td>
+              <td>05/07/2026</td>
+              <td><span class="status review">Pending</span></td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>Sam Rivera</td>
+              <td>UI/UX Design Intern</td>
+              <td>76%</td>
+              <td>Not set</td>
+              <td><span class="status rejected">Rejected</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

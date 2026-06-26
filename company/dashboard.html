@@ -7,66 +7,85 @@
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="app">
+  <div class="app-shell">
     <aside class="sidebar">
-      <div class="logo">Career<span>Match</span></div>
-
-      <div class="user">
-        <div class="avatar">G</div>
-        <div>
-          <h3>Google</h3>
-          <p>Company</p>
-        </div>
-      </div>
+      <div class="logo"><span class="logo-mark">CM</span><span>Career<span class="brand-purple">Match</span></span></div>
+      <div class="user-card"><div class="avatar">G</div><div><strong>Google</strong><span>Company</span></div></div>
 
       <nav class="nav">
         <a class="active" href="dashboard.html">Dashboard</a>
-        <a href="#">Post Role</a>
-        <a href="candidates.html">Candidates</a>
-        <a href="#">Interviews</a>
-        <a href="../index.html">Sign Out</a>
+        <a href="post-role.html">Post Role</a>
+        <a href="applicants.html">Applicants</a>
+        <a href="interviews.html">Interviews</a>
       </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
     </aside>
 
-    <main class="main">
-      <div class="header">
+    <main class="main company-main">
+      <header class="page-header">
         <div>
           <h1>Company Dashboard</h1>
-          <p>Manage internship posts and matched candidates.</p>
+          <p>Manage internship posts, applicant review, and hiring decisions.</p>
         </div>
-        <a class="btn" href="#">Post New Role</a>
-      </div>
+        <a class="primary-btn" href="post-role.html">Post New Role</a>
+      </header>
 
       <section class="stats">
-        <div class="card"><strong>5</strong>Open roles</div>
-        <div class="card"><strong>48</strong>Candidates</div>
-        <div class="card"><strong>14</strong>Strong matches</div>
-        <div class="card"><strong>7</strong>Interviews</div>
+        <div class="stat-card"><strong>5</strong><span>Open roles</span></div>
+        <div class="stat-card"><strong>48</strong><span>Total applicants</span></div>
+        <div class="stat-card"><strong>14</strong><span>Strong matches</span></div>
+        <div class="stat-card"><strong>7</strong><span>Interviews</span></div>
       </section>
 
-      <section class="panel">
-        <h2>Open Internship Roles</h2>
+      <div class="grid-2">
+        <section class="panel">
+          <h2>Open Internship Roles</h2>
 
-        <div class="grid">
-          <div class="card">
-            <h3>Software Developer Intern</h3>
-            <p>On-site - 3 months - Paid</p>
-            <p>18 candidates</p>
-          </div>
+          <div class="internship-grid">
+            <article class="intern-card">
+              <div class="company-image">DEV</div>
+              <div class="intern-body">
+                <h3>Software Developer Intern</h3>
+                <ul class="detail-list">
+                  <li><span>Mode</span><strong>On-site</strong></li>
+                  <li><span>Duration</span><strong>3 months</strong></li>
+                  <li><span>Applicants</span><strong>18</strong></li>
+                </ul>
+                <a class="secondary-btn" href="applicants.html">View Applicants</a>
+              </div>
+            </article>
 
-          <div class="card">
-            <h3>Data Analyst Intern</h3>
-            <p>Hybrid - 4 months - Paid</p>
-            <p>12 candidates</p>
+            <article class="intern-card">
+              <div class="company-image">DATA</div>
+              <div class="intern-body">
+                <h3>Data Analyst Intern</h3>
+                <ul class="detail-list">
+                  <li><span>Mode</span><strong>Hybrid</strong></li>
+                  <li><span>Duration</span><strong>4 months</strong></li>
+                  <li><span>Applicants</span><strong>12</strong></li>
+                </ul>
+                <a class="secondary-btn" href="applicants.html">View Applicants</a>
+              </div>
+            </article>
           </div>
+        </section>
 
-          <div class="card">
-            <h3>Frontend Developer Intern</h3>
-            <p>Remote - 6 months - Paid</p>
-            <p>9 candidates</p>
-          </div>
-        </div>
-      </section>
+        <aside class="panel">
+          <h2>Hiring Pipeline</h2>
+          <ul class="detail-list">
+            <li><span>New</span><strong>48</strong></li>
+            <li><span>Reviewed</span><strong>21</strong></li>
+            <li><span>Interviewing</span><strong>7</strong></li>
+            <li><span>Accepted</span><strong>2</strong></li>
+          </ul>
+          <br />
+          <a class="primary-btn" href="interviews.html">Manage Interviews</a>
+        </aside>
+      </div>
     </main>
   </div>
 </body>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Applicants</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar">G</div>
+        <div>
+          <strong>Google</strong>
+          <span>Company</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="post-role.html">Post Role</a>
+        <a class="active" href="applicants.html">Applicants</a>
+        <a href="interviews.html">Interviews</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main company-main">
+      <header class="page-header">
+        <div>
+          <h1>Applicant Review</h1>
+          <p>Review CV details, skill fit, availability, and hiring decisions.</p>
+        </div>
+
+        <a class="primary-btn" href="post-role.html">Post Another Role</a>
+      </header>
+
+      <section class="stats">
+        <div class="stat-card">
+          <strong>18</strong>
+          <span>Software developer applicants</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>6</strong>
+          <span>High-fit applicants</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>4</strong>
+          <span>Ready for interview</span>
+        </div>
+
+        <div class="stat-card">
+          <strong>2</strong>
+          <span>Pending decisions</span>
+        </div>
+      </section>
+
+      <div class="applicant-layout">
+        <section class="panel">
+          <div class="section-title-row">
+            <div>
+              <h2>Applicants</h2>
+              <p>Software Developer Intern</p>
+            </div>
+            <span class="match-pill">Sorted by match</span>
+          </div>
+
+          <div class="applicant-list">
+            <article class="applicant-item active">
+              <div class="avatar small">E</div>
+              <div>
+                <h3>Eric #12H4E</h3>
+                <p>Computer Science - Final year</p>
+                <span class="tag good">92% match</span>
+              </div>
+            </article>
+
+            <article class="applicant-item">
+              <div class="avatar small">M</div>
+              <div>
+                <h3>Maya Chen</h3>
+                <p>Information Technology</p>
+                <span class="tag good">88% match</span>
+              </div>
+            </article>
+
+            <article class="applicant-item">
+              <div class="avatar small">J</div>
+              <div>
+                <h3>Jordan Lee</h3>
+                <p>Business Analytics</p>
+                <span class="tag">84% match</span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel applicant-profile">
+          <div class="applicant-header">
+            <div class="user-card">
+              <div class="avatar">E</div>
+              <div>
+                <h2>Eric #12H4E</h2>
+                <p>Computer Science student - Assumption University</p>
+              </div>
+            </div>
+
+            <div class="decision-actions">
+              <button class="danger-btn" type="button">Reject</button>
+              <button class="primary-btn" type="button">Accept</button>
+            </div>
+          </div>
+
+          <div class="review-grid">
+            <article class="review-card">
+              <h3>CV Summary</h3>
+              <p>
+                Final-year CS student focused on backend development, data structures,
+                SQL, and Python. Built class projects using Git and JavaScript.
+              </p>
+              <a class="secondary-btn" href="#">View CV Form</a>
+            </article>
+
+            <article class="review-card">
+              <h3>Match Score</h3>
+              <div class="progress-ring small-ring"><span>92%</span></div>
+              <p>Strong technical and schedule alignment for this internship.</p>
+            </article>
+
+            <article class="review-card">
+              <h3>Skill Set</h3>
+              <p>
+                <span class="tag good">Python</span>
+                <span class="tag good">SQL</span>
+                <span class="tag good">Git</span>
+                <span class="tag good">Data Structures</span>
+                <span class="tag">JavaScript</span>
+              </p>
+            </article>
+
+            <article class="review-card">
+              <h3>Missing / Growth Skills</h3>
+              <p>
+                <span class="tag missing">React</span>
+                <span class="tag missing">Cloud Computing</span>
+                <span class="tag missing">System Design</span>
+              </p>
+            </article>
+          </div>
+
+          <section class="panel nested-panel">
+            <h3>Applicant Details</h3>
+
+            <ul class="detail-list">
+              <li><span>Email</span><strong>eric12h4e@student.au.edu</strong></li>
+              <li><span>Preferred role</span><strong>Software Developer Intern</strong></li>
+              <li><span>Available days</span><strong>Tue, Wed, Fri</strong></li>
+              <li><span>Preferred location</span><strong>Bangkok</strong></li>
+              <li><span>Work style</span><strong>On-site / Hybrid</strong></li>
+              <li><span>Internship type</span><strong>Paid</strong></li>
+            </ul>
+          </section>
+
+          <section class="panel nested-panel">
+            <h3>Company Review Notes</h3>
+
+            <textarea placeholder="Write internal notes about this applicant...">Strong match for backend tasks. Good availability and preferred location. Ask about React experience during interview.</textarea>
+
+            <div class="decision-actions left">
+              <button class="secondary-btn" type="button">Save Notes</button>
+              <a class="primary-btn" href="interviews.html">Move to Interview</a>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
