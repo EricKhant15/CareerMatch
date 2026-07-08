@@ -1,22 +1,6 @@
 const profileKey = "careermatchStudentProfile";
 const savedInternshipsKey = "careermatchSavedInternships";
 
-const defaultProfile = {
-  name: "Eric #12H4E",
-  university: "Assumption University",
-  major: "Information Technology",
-  year: "Final year",
-  field: "Software Engineering",
-  skills: ["Python", "JavaScript", "SQL", "Git"],
-  proficiency: "Intermediate",
-  goal: "Become a software developer intern",
-  location: "Bangkok",
-  internshipType: "Paid",
-  workStyle: "Hybrid",
-  mentorship: "Required",
-  availability: ["Tue", "Wed", "Fri"],
-};
-
 const internships = {
   google: {
     company: "Google",
@@ -53,6 +37,28 @@ const internships = {
   },
 };
 
+const defaultProfile = {
+  name: "Eric #12H4E",
+  university: "Assumption University",
+  major: "Information Technology",
+  year: "Final year",
+  field: "Software Engineering",
+  skills: ["Python", "JavaScript", "SQL", "Git"],
+  proficiency: "Intermediate",
+  skillLevels: {
+    Python: "Advanced",
+    JavaScript: "Intermediate",
+    SQL: "Intermediate",
+    Git: "Intermediate",
+  },
+  goal: "Become a software developer intern",
+  location: "Bangkok",
+  internshipType: "Paid",
+  workStyle: "Hybrid",
+  mentorship: "Required",
+  availability: ["Tue", "Wed", "Fri"],
+};
+
 function getSavedProfile() {
   const savedProfile = localStorage.getItem(profileKey);
   return savedProfile ? JSON.parse(savedProfile) : defaultProfile;
@@ -72,18 +78,68 @@ function setSavedInternships(savedInternships) {
 }
 
 function collectCheckedValues(form, name) {
-  return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
+  return [...form.querySelectorAll(`input[name="${name}"]:checked`)].map((input) => input.value);
+}
+
+function collectSkillLevels(formData) {
+  return {
+    Python: formData.get("skillLevelPython"),
+    JavaScript: formData.get("skillLevelJavaScript"),
+    SQL: formData.get("skillLevelSQL"),
+    Git: formData.get("skillLevelGit"),
+    "HTML/CSS": formData.get("skillLevelHtmlCss"),
+    Java: formData.get("skillLevelJava"),
+    React: formData.get("skillLevelReact"),
+    Excel: formData.get("skillLevelExcel"),
+  };
+}
+
+function getLevelNumber(level) {
+  if (level === "Advanced") {
+    return "3";
+  }
+
+  if (level === "Intermediate") {
+    return "2";
+  }
+
+  return "1";
+}
+
+function getLevelClass(level) {
+  return level ? level.toLowerCase() : "beginner";
+}
+
+function renderProfileSkillLevels(profile) {
+  document.querySelectorAll("[data-skill-level-list]").forEach((container) => {
+    const skillLevels = profile.skillLevels || {};
+    const skills = Array.isArray(profile.skills) ? profile.skills : [];
+
+    container.innerHTML = skills
+      .map((skill) => {
+        const level = skillLevels[skill] || "Beginner";
+        return `
+          <div class="skill-level-row ${getLevelClass(level)}">
+            <span>${skill}</span>
+            <strong>${level} · Level ${getLevelNumber(level)}</strong>
+          </div>
+        `;
+      })
+      .join("");
+  });
 }
 
 function setupOnboardingForm() {
   const form = document.querySelector("#studentSetupForm");
-  if (!form) return;
 
-  form.addEventListener("submit", event => {
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const formData = new FormData(form);
-
     const profile = {
       name: formData.get("name"),
       university: formData.get("university"),
@@ -91,7 +147,7 @@ function setupOnboardingForm() {
       year: formData.get("year"),
       field: formData.get("field"),
       skills: collectCheckedValues(form, "skills"),
-      proficiency: formData.get("proficiency"),
+      skillLevels: collectSkillLevels(formData),
       goal: formData.get("goal"),
       location: formData.get("location"),
       internshipType: formData.get("internshipType"),
@@ -108,40 +164,42 @@ function setupOnboardingForm() {
 function fillProfilePage() {
   const profile = getSavedProfile();
 
-  document.querySelectorAll("[data-profile]").forEach(input => {
-    input.value = profile[input.dataset.profile] || "";
+  document.querySelectorAll("[data-profile]").forEach((input) => {
+    const key = input.dataset.profile;
+    input.value = profile[key] || "";
   });
 
-  document.querySelectorAll("[data-profile-text]").forEach(element => {
-    element.textContent = profile[element.dataset.profileText] || "";
+  document.querySelectorAll("[data-profile-text]").forEach((element) => {
+    const key = element.dataset.profileText;
+    element.textContent = profile[key] || "";
   });
 
-  document.querySelectorAll("[data-profile-list]").forEach(element => {
-    const value = profile[element.dataset.profileList];
-    element.textContent = Array.isArray(value) ? value.join(", ") : "";
+  document.querySelectorAll("[data-profile-list]").forEach((element) => {
+    const key = element.dataset.profileList;
+    element.textContent = Array.isArray(profile[key]) ? profile[key].join(", ") : "";
   });
+
+  renderProfileSkillLevels(profile);
 }
 
 function refreshHeartButtons() {
   const savedInternships = getSavedInternships();
 
-  document.querySelectorAll("[data-save-internship]").forEach(button => {
+  document.querySelectorAll("[data-save-internship]").forEach((button) => {
     const internshipId = button.dataset.saveInternship;
     const isSaved = savedInternships.includes(internshipId);
-
     button.classList.toggle("saved", isSaved);
     button.textContent = isSaved ? "♥" : "♡";
   });
 }
 
 function setupSaveButtons() {
-  document.querySelectorAll("[data-save-internship]").forEach(button => {
+  document.querySelectorAll("[data-save-internship]").forEach((button) => {
     button.addEventListener("click", () => {
       const internshipId = button.dataset.saveInternship;
       const savedInternships = getSavedInternships();
-
       const nextSavedInternships = savedInternships.includes(internshipId)
-        ? savedInternships.filter(id => id !== internshipId)
+        ? savedInternships.filter((id) => id !== internshipId)
         : [...savedInternships, internshipId];
 
       setSavedInternships(nextSavedInternships);
@@ -153,11 +211,14 @@ function setupSaveButtons() {
 
 function createSavedInternshipCard(internshipId) {
   const internship = internships[internshipId];
-  if (!internship) return "";
+
+  if (!internship) {
+    return "";
+  }
 
   return `
     <article class="intern-card">
-      <button class="heart-btn saved" type="button" data-save-internship="${internshipId}">♥</button>
+      <button class="heart-btn saved" type="button" data-save-internship="${internshipId}" aria-label="Unsave ${internship.company} internship">♥</button>
       <div class="company-image">${internship.company}</div>
       <div class="intern-body">
         <h3>${internship.company} (${internship.title})</h3>
@@ -179,13 +240,15 @@ function createSavedInternshipCard(internshipId) {
 
 function renderSavedInternships() {
   const savedContainer = document.querySelector("#savedInternships");
-  if (!savedContainer) return;
+
+  if (!savedContainer) {
+    return;
+  }
 
   const savedInternships = getSavedInternships();
-
   savedContainer.innerHTML = savedInternships.length
     ? savedInternships.map(createSavedInternshipCard).join("")
-    : `<article class="panel empty-saved"><h2>No saved internships yet</h2><p>Go to Recommended and click the heart.</p></article>`;
+    : `<article class="panel empty-saved"><h2>No saved internships yet</h2><p>Go to Recommended and click the heart on internships you want to keep.</p></article>`;
 
   setupSaveButtons();
   refreshHeartButtons();

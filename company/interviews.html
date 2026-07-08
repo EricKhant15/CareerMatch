@@ -1,103 +1,243 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interviews</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="logo">
-        <span class="logo-mark">CM</span>
-        <span>Career<span class="brand-purple">Match</span></span>
-      </div>
-
-      <div class="user-card">
-        <div class="avatar">G</div>
-        <div>
-          <strong>Google</strong>
-          <span>Company</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interviews - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
         </div>
-      </div>
-
-      <nav class="nav">
-        <a href="dashboard.html">Dashboard</a>
-        <a href="post-role.html">Post Role</a>
-        <a href="applicants.html">Applicants</a>
-        <a class="active" href="interviews.html">Interviews</a>
-      </nav>
-
-      <div class="sidebar-bottom">
-        <a href="#">Settings</a>
-        <a href="../index.html">Sign Out</a>
-      </div>
-    </aside>
-
-    <main class="main company-main">
-      <header class="page-header">
-        <div>
-          <h1>Interview Tracker</h1>
-          <p>Manage candidate review stages for open internships.</p>
+        <div class="user-card">
+          <div class="avatar">G</div>
+          <div>
+            <strong>Google</strong>
+            <span>Company</span>
+          </div>
         </div>
+        <nav class="nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="post-role.html">Create Listing</a>
+          <a href="job-posts.html">Manage Listings</a>
+          <a href="approved.html">Approved</a>
+          <a class="active" href="interviews.html">Interviews</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="#">Settings</a>
+          <a href="../index.html">Sign Out</a>
+        </div>
+      </aside>
 
-        <a class="primary-btn" href="applicants.html">Review Applicants</a>
-      </header>
+      <main class="main company-main">
+        <header class="page-header">
+          <div>
+            <h1>Interview Tracker</h1>
+            <p>Schedule interviews, send details to applicants, and update final decisions.</p>
+          </div>
+          <a class="primary-btn" href="#schedule-panel">Schedule Interview</a>
+        </header>
 
-      <section class="panel table-panel">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Candidate</th>
-              <th>Role</th>
-              <th>Match</th>
-              <th>Interview Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
+        <section class="stats">
+          <div class="stat-card"><strong>7</strong><span>Interviews scheduled</span></div>
+          <div class="stat-card"><strong>3</strong><span>Waiting confirmation</span></div>
+          <div class="stat-card"><strong>2</strong><span>Technical round</span></div>
+          <div class="stat-card"><strong>1</strong><span>Offer sent</span></div>
+        </section>
 
-          <tbody>
-            <tr>
-              <td>1</td>
-              <td>Eric #12H4E</td>
-              <td>Software Developer Intern</td>
-              <td>92%</td>
-              <td>30/06/2026</td>
-              <td><span class="status accepted">Scheduled</span></td>
-            </tr>
+        <section class="panel schedule-panel" id="schedule-panel">
+          <div class="section-title-row">
+            <div>
+              <h2>Schedule Interview</h2>
+              <p>Create the interview invite that will be sent to the applicant.</p>
+            </div>
+            <span class="status review">Draft invite</span>
+          </div>
 
-            <tr>
-              <td>2</td>
-              <td>Maya Chen</td>
-              <td>Frontend Developer Intern</td>
-              <td>88%</td>
-              <td>02/07/2026</td>
-              <td><span class="status review">Pending</span></td>
-            </tr>
+          <div class="schedule-layout">
+            <div>
+              <div class="form-grid">
+                <div class="form-card">
+                  <label>
+                    Applicant
+                    <select>
+                      <option>Eric #12H4E - Software Developer Intern</option>
+                      <option>Maya Chen - Frontend Developer Intern</option>
+                      <option>Jordan Lee - Data Analyst Intern</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Interview round
+                    <select>
+                      <option>First Interview</option>
+                      <option>Technical Interview</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Date
+                    <input type="date" value="2026-07-15" />
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Time
+                    <input type="time" value="14:00" />
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Type
+                    <select>
+                      <option>Online</option>
+                      <option>On-site</option>
+                      <option>Hybrid</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Interviewer
+                    <input value="Engineering Lead" />
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Meeting link
+                    <input value="https://meet.google.com/careermatch-demo" />
+                  </label>
+                </div>
+                <div class="form-card">
+                  <label>
+                    Location
+                    <input value="Google Bangkok Office / Online" />
+                  </label>
+                </div>
+              </div>
 
-            <tr>
-              <td>3</td>
-              <td>Jordan Lee</td>
-              <td>Data Analyst Intern</td>
-              <td>84%</td>
-              <td>05/07/2026</td>
-              <td><span class="status review">Pending</span></td>
-            </tr>
+              <div class="form-card full-field">
+                <label>
+                  Message to applicant
+                  <textarea>Please prepare to explain one Python or database project. Bring your CV and be ready for a short technical discussion.</textarea>
+                </label>
+              </div>
 
-            <tr>
-              <td>4</td>
-              <td>Sam Rivera</td>
-              <td>UI/UX Design Intern</td>
-              <td>76%</td>
-              <td>Not set</td>
-              <td><span class="status rejected">Rejected</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    </main>
-  </div>
-</body>
+              <div class="decision-actions left">
+                <button class="primary-btn" type="button">Send Interview Details</button>
+                <button class="secondary-btn" type="button">Save Draft</button>
+                <button class="danger-btn" type="button">Cancel Interview</button>
+              </div>
+            </div>
+
+            <aside class="invite-preview">
+              <h3>Applicant Preview</h3>
+              <p>This is what the student would see in their application progress.</p>
+              <ul class="detail-list">
+                <li><span>Status</span><strong>Interview Scheduled</strong></li>
+                <li><span>Date</span><strong>15/07/2026</strong></li>
+                <li><span>Time</span><strong>2:00 PM</strong></li>
+                <li><span>Type</span><strong>Online</strong></li>
+                <li><span>Link</span><strong>Google Meet</strong></li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <div class="company-dashboard-grid">
+          <section class="panel table-panel">
+            <div class="section-title-row">
+              <div>
+                <h2>Sent Interview Details</h2>
+                <p>These are the interview invitations students would see in their application progress.</p>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Candidate</th>
+                  <th>Role</th>
+                  <th>Date & Time</th>
+                  <th>Type</th>
+                  <th>Link / Location</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Eric #12H4E</td>
+                  <td>Software Developer Intern</td>
+                  <td>15/07/2026 - 2:00 PM</td>
+                  <td>Online</td>
+                  <td>meet.google.com/careermatch-demo</td>
+                  <td><span class="status accepted">Sent</span></td>
+                </tr>
+                <tr>
+                  <td>Maya Chen</td>
+                  <td>Frontend Developer Intern</td>
+                  <td>16/07/2026 - 10:30 AM</td>
+                  <td>Online</td>
+                  <td>meet.google.com/frontend-review</td>
+                  <td><span class="status review">Waiting reply</span></td>
+                </tr>
+                <tr>
+                  <td>Jordan Lee</td>
+                  <td>Data Analyst Intern</td>
+                  <td>18/07/2026 - 1:00 PM</td>
+                  <td>On-site</td>
+                  <td>Google Bangkok Office</td>
+                  <td><span class="status review">Draft</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <aside class="panel">
+            <h2>After Interview</h2>
+            <div class="interview-decision-card">
+              <div class="avatar small">E</div>
+              <div>
+                <h3>Eric #12H4E</h3>
+                <p>Interview scheduled. Final decision not yet made.</p>
+              </div>
+            </div>
+            <div class="decision-actions left">
+              <button class="primary-btn" type="button">Accept</button>
+              <button class="secondary-btn" type="button">Second Interview</button>
+              <button class="danger-btn" type="button">Reject</button>
+            </div>
+            <div class="activity-list compact">
+              <article class="activity-item">
+                <span class="activity-dot green"></span>
+                <div>
+                  <h3>Student receives interview link</h3>
+                  <p>Status changes to Interview Scheduled.</p>
+                </div>
+              </article>
+              <article class="activity-item">
+                <span class="activity-dot purple"></span>
+                <div>
+                  <h3>Company completes interview</h3>
+                  <p>Then chooses Accept, Reject, or Second Interview.</p>
+                </div>
+              </article>
+              <article class="activity-item">
+                <span class="activity-dot yellow"></span>
+                <div>
+                  <h3>Final status goes to student</h3>
+                  <p>Accepted or Rejected appears in student applications.</p>
+                </div>
+              </article>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </body>
 </html>

@@ -6,6 +6,7 @@
     --ink: #17141f;
     --muted: #6f6a7b;
     --line: #e8e4ee;
+    --panel: #ffffff;
     --bg: #f7f4fb;
     --green: #2ca24d;
     --red: #d92d3a;
@@ -18,7 +19,7 @@
   
   body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial, sans-serif;
     background: var(--bg);
     color: var(--ink);
   }
@@ -34,18 +35,18 @@
     font: inherit;
   }
   
-  .login-page,
-  .setup-page {
+  .login-page {
     min-height: 100vh;
     display: grid;
     place-items: center;
     padding: 30px;
-    background: linear-gradient(135deg, #160032, #422566);
+    background:
+      linear-gradient(135deg, #160032, #422566),
+      var(--purple-dark);
   }
   
-  .login-box,
-  .setup-card {
-    width: min(1100px, 100%);
+  .login-box {
+    width: min(1040px, 100%);
     display: grid;
     grid-template-columns: 0.95fr 1.05fr;
     overflow: hidden;
@@ -54,16 +55,10 @@
     box-shadow: 0 24px 80px rgba(0, 0, 0, 0.26);
   }
   
-  .login-brand,
-  .setup-side {
+  .login-brand {
     padding: 52px;
     background: var(--purple-dark);
     color: white;
-  }
-  
-  .login-form,
-  .setup-form {
-    padding: 52px;
   }
   
   .logo {
@@ -90,18 +85,26 @@
     color: var(--purple);
   }
   
-  .login-brand h1,
-  .setup-side h1 {
-    margin: 90px 0 18px;
+  .login-brand h1 {
+    max-width: 420px;
+    margin: 96px 0 18px;
     font-size: clamp(40px, 6vw, 68px);
-    line-height: 1;
+    line-height: 0.98;
   }
   
   .login-brand p,
-  .login-form p,
-  .setup-side p {
+  .login-form p {
     color: #d6c9eb;
     line-height: 1.6;
+  }
+  
+  .login-form {
+    padding: 52px;
+  }
+  
+  .login-form h2 {
+    margin: 0 0 8px;
+    font-size: 32px;
   }
   
   .choice-grid {
@@ -142,10 +145,14 @@
   }
   
   .sidebar {
+    position: sticky;
+    top: 0;
     display: flex;
     flex-direction: column;
     gap: 28px;
+    height: 100vh;
     min-height: 100vh;
+    overflow-y: auto;
     padding: 32px 28px;
     background: white;
     border-right: 1px solid var(--line);
@@ -240,6 +247,13 @@
     color: var(--muted);
   }
   
+  .back-link {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-weight: 800;
+  }
+  
   .primary-btn,
   .secondary-btn {
     display: inline-flex;
@@ -286,7 +300,7 @@
     display: grid;
     align-content: start;
     gap: 8px;
-    padding: 24px;
+    padding: 20px;
   }
   
   .stat-card strong {
@@ -297,7 +311,6 @@
   }
   
   .stat-card span {
-    display: block;
     color: var(--muted);
     line-height: 1.35;
   }
@@ -323,6 +336,10 @@
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
+  }
+  
+  .company-post-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   
   .intern-card,
@@ -355,6 +372,10 @@
     color: white;
   }
   
+  .empty-saved {
+    grid-column: 1 / -1;
+  }
+  
   .company-image {
     height: 132px;
     background:
@@ -370,6 +391,34 @@
   .intern-body,
   .candidate-body {
     padding: 18px;
+  }
+  
+  .role-card {
+    display: grid;
+    grid-template-rows: 116px 1fr;
+  }
+  
+  .role-card .company-image {
+    height: 116px;
+  }
+  
+  .role-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  
+  .role-card-head h3 {
+    margin: 0 0 12px;
+  }
+  
+  .role-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    margin-top: 16px;
   }
   
   .intern-body h3,
@@ -496,6 +545,23 @@
     list-style: none;
   }
   
+  .clean-steps {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+    padding-left: 24px;
+  }
+  
+  .clean-steps li {
+    padding-left: 8px;
+    line-height: 1.5;
+  }
+  
+  .clean-steps li::marker {
+    color: var(--purple);
+    font-weight: 900;
+  }
+  
   .reason-list li {
     display: grid;
     grid-template-columns: 28px 1fr;
@@ -512,23 +578,6 @@
     background: #dcf7e4;
     color: var(--green);
     font-size: 14px;
-    font-weight: 900;
-  }
-  
-  .clean-steps {
-    display: grid;
-    gap: 18px;
-    margin: 0;
-    padding-left: 24px;
-  }
-  
-  .clean-steps li {
-    padding-left: 10px;
-    line-height: 1.5;
-  }
-  
-  .clean-steps li::marker {
-    color: var(--purple);
     font-weight: 900;
   }
   
@@ -554,22 +603,189 @@
     font-size: 14px;
   }
   
-  .status.accepted,
-  .accepted {
+  .status.accepted {
     background: #daf5df;
     color: var(--green);
   }
   
-  .status.review,
-  .review {
+  .status.review {
     background: #eef0f4;
     color: #667085;
   }
   
-  .status.rejected,
-  .rejected {
+  .status.rejected {
     background: #ffe1e7;
     color: var(--red);
+  }
+  
+  .status.interview {
+    background: var(--purple-soft);
+    color: var(--purple);
+  }
+  
+  .application-board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  
+  .main:has(.application-detail:target) .application-board {
+    display: none;
+  }
+  
+  .application-card {
+    display: grid;
+    gap: 16px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    background: white;
+    box-shadow: 0 12px 34px rgba(50, 26, 83, 0.06);
+  }
+  
+  .application-card .primary-btn,
+  .application-card .secondary-btn {
+    width: 100%;
+  }
+  
+  .application-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  
+  .application-top h2,
+  .application-top p {
+    margin: 0;
+  }
+  
+  .application-top p {
+    margin-top: 5px;
+    color: var(--muted);
+  }
+  
+  .application-steps {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .application-steps li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-weight: 800;
+  }
+  
+  .application-steps li.done {
+    color: var(--green);
+  }
+  
+  .application-steps li.active {
+    color: var(--purple);
+  }
+  
+  .application-steps li.rejected-step {
+    color: var(--red);
+  }
+  
+  .application-steps li::before {
+    content: "";
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    border-radius: 50%;
+    background: #ded8e8;
+  }
+  
+  .application-steps li.done::before {
+    background: var(--green);
+  }
+  
+  .application-steps li.active::before {
+    background: var(--purple);
+  }
+  
+  .application-steps li.rejected-step::before {
+    background: var(--red);
+  }
+  
+  .application-detail {
+    margin-bottom: 18px;
+  }
+  
+  .application-detail-wrap {
+    display: grid;
+    gap: 18px;
+  }
+  
+  .main:has(.application-detail:target) .application-detail-wrap {
+    margin-top: 0;
+  }
+  
+  .application-empty {
+    display: grid;
+    gap: 8px;
+  }
+  
+  .application-empty h2,
+  .application-empty p {
+    margin: 0;
+  }
+  
+  .application-empty p {
+    color: var(--muted);
+  }
+  
+  .application-detail {
+    display: none;
+  }
+  
+  .application-detail:target {
+    display: block;
+  }
+  
+  .application-detail-wrap:has(.application-detail:target) .application-empty {
+    display: none;
+  }
+  
+  .detail-steps {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-bottom: 18px;
+  }
+  
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+  }
+  
+  .detail-box {
+    display: grid;
+    gap: 6px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    background: #fbfaff;
+  }
+  
+  .detail-box.wide {
+    grid-column: span 2;
+  }
+  
+  .detail-box span {
+    color: var(--muted);
+    font-weight: 800;
+  }
+  
+  .detail-box strong {
+    line-height: 1.45;
   }
   
   .form-grid {
@@ -581,7 +797,7 @@
   .form-card {
     padding: 20px;
   }
-  
+
   .form-card label {
     display: grid;
     gap: 8px;
@@ -604,12 +820,40 @@
     resize: vertical;
   }
   
+  .setup-page {
+    min-height: 100vh;
+    padding: 30px;
+    background:
+      linear-gradient(135deg, #160032, #422566),
+      var(--purple-dark);
+  }
+  
   .setup-card {
+    width: min(1180px, 100%);
+    margin: 0 auto;
+    display: grid;
     grid-template-columns: 340px minmax(0, 1fr);
+    overflow: hidden;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+  }
+  
+  .setup-side {
+    padding: 42px;
+    background: var(--purple-dark);
+    color: white;
   }
   
   .setup-side h1 {
+    margin: 90px 0 18px;
     font-size: clamp(34px, 5vw, 52px);
+    line-height: 1;
+  }
+  
+  .setup-side p {
+    color: #d6c9eb;
+    line-height: 1.6;
   }
   
   .setup-form {
@@ -618,13 +862,23 @@
     padding: 38px;
   }
   
+  .step-label {
+    display: inline-flex;
+    width: fit-content;
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: var(--purple-soft);
+    color: var(--purple);
+    font-weight: 800;
+  }
+  
   .form-section {
     display: grid;
     gap: 14px;
     border: 1px solid var(--line);
     border-radius: 18px;
     padding: 18px;
-    background: white;
+    background: #fff;
   }
   
   .form-section h2 {
@@ -693,8 +947,120 @@
     color: var(--purple);
   }
   
-  .empty-saved {
-    grid-column: 1 / -1;
+  .role-summary-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 22px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 12px 34px rgba(50, 26, 83, 0.06);
+  }
+  
+  .role-summary-card h2,
+  .role-summary-card p {
+    margin: 0;
+  }
+  
+  .role-summary-card p {
+    margin-top: 6px;
+    color: var(--muted);
+  }
+  
+  .role-summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  .role-summary-stats span {
+    display: grid;
+    gap: 2px;
+    min-width: 120px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: #fbfaff;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  
+  .role-summary-stats strong {
+    color: var(--purple);
+    font-size: 24px;
+    line-height: 1;
+  }
+  
+  .workflow-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 22px;
+  }
+  
+  .workflow-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px;
+    background: white;
+    box-shadow: 0 12px 34px rgba(50, 26, 83, 0.05);
+  }
+  
+  .workflow-step > span {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f2edf8;
+    color: var(--muted);
+    font-weight: 900;
+  }
+  
+  .workflow-step strong,
+  .action-panel h3,
+  .interview-decision-card h3 {
+    display: block;
+    margin: 0;
+  }
+  
+  .workflow-step p,
+  .action-panel p,
+  .muted-text,
+  .interview-decision-card p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  
+  .workflow-step.done > span,
+  .workflow-step.active > span {
+    background: var(--purple);
+    color: white;
+  }
+  
+  .workflow-step.active {
+    border-color: var(--purple-line);
+    background: var(--purple-soft);
+  }
+  
+  .action-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border: 1px solid var(--purple-line);
+    border-radius: 16px;
+    padding: 16px;
+    background: #fbfaff;
   }
   
   .company-main .stat-card strong,
@@ -703,50 +1069,6 @@
     color: var(--purple);
   }
   
-  @media (max-width: 1180px) {
-    .app-shell,
-    .grid-2 {
-      grid-template-columns: 1fr;
-    }
-  
-    .sidebar {
-      min-height: auto;
-    }
-  
-    .internship-grid,
-    .candidate-grid,
-    .stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  
-  @media (max-width: 760px) {
-    .login-box,
-    .setup-card,
-    .internship-grid,
-    .candidate-grid,
-    .stats,
-    .form-grid,
-    .option-grid,
-    .choice-buttons,
-    .choice-buttons.compact {
-      grid-template-columns: 1fr;
-    }
-  
-    .login-brand,
-    .login-form,
-    .setup-side,
-    .setup-form,
-    .main {
-      padding: 24px;
-    }
-  
-    .page-header {
-      align-items: stretch;
-      flex-direction: column;
-    }
-  }
-
   .applicant-layout {
     display: grid;
     grid-template-columns: 360px minmax(0, 1fr);
@@ -862,20 +1184,380 @@
     background: conic-gradient(var(--purple) 92%, var(--purple-soft) 0);
   }
   
+  .data-ring {
+    background: conic-gradient(var(--purple) 89%, var(--purple-soft) 0);
+  }
+  
+  .frontend-ring {
+    background: conic-gradient(var(--purple) 88%, var(--purple-soft) 0);
+  }
+  
+  .ux-ring {
+    background: conic-gradient(var(--purple) 76%, var(--purple-soft) 0);
+  }
+  
   .small-ring span {
     width: 76px;
     height: 76px;
     font-size: 24px;
   }
   
+  .company-dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+  
+  .activity-list {
+    display: grid;
+    gap: 12px;
+  }
+  
+  .activity-list.compact {
+    gap: 14px;
+  }
+  
+  .activity-item {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 14px;
+    background: #fbfaff;
+  }
+  
+  .activity-list.compact .activity-item {
+    grid-template-columns: 16px minmax(0, 1fr);
+  }
+  
+  .activity-item h3,
+  .job-mini-card h3,
+  .job-post-card h2,
+  .post-preview h3 {
+    margin: 0;
+  }
+  
+  .activity-item p,
+  .job-mini-card p,
+  .job-post-card p,
+  .post-preview p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  
+  .activity-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  
+  .activity-dot.green {
+    background: var(--green);
+  }
+  
+  .activity-dot.purple {
+    background: var(--purple);
+  }
+  
+  .activity-dot.yellow {
+    background: var(--yellow);
+  }
+  
+  .stack-actions {
+    display: grid;
+    gap: 10px;
+  }
+  
+  .job-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+  
+  .job-mini-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    background: #fbfaff;
+  }
+  
+  .job-board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  
+  .job-post-card {
+    display: grid;
+    gap: 16px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    background: white;
+    box-shadow: 0 12px 34px rgba(50, 26, 83, 0.06);
+  }
+  
+  .job-post-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  
+  .job-icon {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--purple-soft);
+    color: var(--purple);
+    font-weight: 900;
+  }
+  
+  .skill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  
+  .skill-level-panel {
+    display: grid;
+    gap: 14px;
+    border: 1px solid var(--purple-line);
+    border-radius: 18px;
+    padding: 18px;
+    margin-top: 16px;
+    background: #fbfaff;
+  }
+  
+  .skill-level-panel h3,
+  .skill-level-panel p {
+    margin: 0;
+  }
+  
+  .skill-level-panel p,
+  .skill-level-help {
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  
+  .skill-level-list {
+    display: grid;
+    gap: 10px;
+  }
+  
+  .skill-level-list.input-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .skill-level-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: white;
+  }
+  
+  .skill-level-row span {
+    font-weight: 900;
+  }
+  
+  .skill-level-row strong {
+    border-radius: 999px;
+    padding: 7px 10px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  .skill-level-row select {
+    min-width: 170px;
+  }
+  
+  .skill-level-row.beginner strong {
+    background: #ffe1e5;
+    color: var(--red);
+  }
+  
+  .skill-level-row.intermediate strong {
+    background: #fff3c4;
+    color: #9a7400;
+  }
+  
+  .skill-level-row.advanced strong {
+    background: #dcf7e4;
+    color: var(--green);
+  }
+  
+  .post-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 18px;
+    align-items: start;
+    margin-bottom: 22px;
+  }
+  
+  .post-preview {
+    display: grid;
+    gap: 14px;
+  }
+  
+  .full-field {
+    margin-top: 16px;
+  }
+  
+  .schedule-panel {
+    margin-bottom: 22px;
+  }
+  
+  .schedule-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 18px;
+    align-items: start;
+  }
+  
+  .invite-preview {
+    display: grid;
+    gap: 12px;
+    border: 1px solid var(--purple-line);
+    border-radius: 16px;
+    padding: 18px;
+    background: #fbfaff;
+  }
+  
+  .invite-preview h3,
+  .invite-preview p {
+    margin: 0;
+  }
+  
+  .invite-preview p {
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  
+  .interview-decision-card {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 12px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 14px;
+    background: #fbfaff;
+  }
+  
   @media (max-width: 1180px) {
-    .applicant-layout {
+    .app-shell,
+    .grid-2,
+    .applicant-layout,
+    .company-dashboard-grid,
+    .post-layout,
+    .schedule-layout {
       grid-template-columns: 1fr;
+    }
+  
+    .sidebar {
+      position: static;
+      height: auto;
+      min-height: auto;
+      overflow-y: visible;
+    }
+  
+    .internship-grid,
+    .candidate-grid,
+    .company-post-grid,
+    .application-board,
+    .job-board,
+    .workflow-strip,
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  
+    .role-summary-card {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .role-summary-stats {
+      justify-content: flex-start;
     }
   }
   
   @media (max-width: 760px) {
-    .review-grid {
+    .login-box,
+    .setup-card,
+    .internship-grid,
+    .candidate-grid,
+    .application-board,
+    .detail-grid,
+    .job-mini-grid,
+    .job-board,
+    .skill-level-list.input-list,
+    .workflow-strip,
+    .stats,
+    .form-grid,
+    .review-grid,
+    .option-grid,
+    .choice-buttons,
+    .choice-buttons.compact {
       grid-template-columns: 1fr;
+    }
+  
+    .login-brand,
+    .login-form,
+    .setup-side,
+    .setup-form,
+    .main {
+      padding: 24px;
+    }
+  
+    .page-header {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .application-top {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .detail-box.wide {
+      grid-column: span 1;
+    }
+  
+    .action-panel {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .role-actions {
+      grid-template-columns: 1fr;
+    }
+  
+    .skill-level-row {
+      grid-template-columns: 1fr;
+    }
+  
+    .skill-level-row strong {
+      justify-self: start;
+    }
+  
+    .skill-level-row select {
+      min-width: 0;
+      width: 100%;
     }
   }

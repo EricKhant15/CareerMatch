@@ -1,100 +1,207 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Post Internship Role</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="logo"><span class="logo-mark">CM</span><span>Career<span class="brand-purple">Match</span></span></div>
-      <div class="user-card"><div class="avatar">G</div><div><strong>Google</strong><span>Company</span></div></div>
-
-      <nav class="nav">
-        <a href="dashboard.html">Dashboard</a>
-        <a class="active" href="post-role.html">Post Role</a>
-        <a href="applicants.html">Applicants</a>
-        <a href="interviews.html">Interviews</a>
-      </nav>
-
-      <div class="sidebar-bottom">
-        <a href="#">Settings</a>
-        <a href="../index.html">Sign Out</a>
-      </div>
-    </aside>
-
-    <main class="main company-main">
-      <header class="page-header">
-        <div>
-          <h1>Post Internship Role</h1>
-          <p>Add role requirements so CareerMatch can recommend suitable students.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Job - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
         </div>
-        <a class="primary-btn" href="applicants.html">Publish Draft</a>
-      </header>
 
-      <section class="panel">
-        <div class="form-grid">
-          <div class="form-card"><label>Role Title<input value="Software Developer Intern" /></label></div>
-          <div class="form-card"><label>Location<input value="Bangkok" /></label></div>
-
-          <div class="form-card">
-            <label>Duration
-              <select>
-                <option>3 months</option>
-                <option>4 months</option>
-                <option>6 months</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="form-card">
-            <label>Allowance
-              <select>
-                <option>Paid</option>
-                <option>Unpaid</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="form-card">
-            <label>Work Mode
-              <select>
-                <option>On-site</option>
-                <option>Hybrid</option>
-                <option>Remote</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="form-card">
-            <label>Mentorship
-              <select>
-                <option>Provided</option>
-                <option>Not provided</option>
-              </select>
-            </label>
+        <div class="user-card">
+          <div class="avatar">G</div>
+          <div>
+            <strong>Google</strong>
+            <span>Company</span>
           </div>
         </div>
 
-        <br />
+        <nav class="nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a class="active" href="post-role.html">Create Listing</a>
+          <a href="job-posts.html">Manage Listing</a>
+          <a href="approved.html">Approved</a>
+          <a href="interviews.html">Interviews</a>
+        </nav>
 
-        <div class="form-card">
-          <label>Required Skills
-            <input value="Python, SQL, Git, Data Structures" />
-          </label>
+        <div class="sidebar-bottom">
+          <a href="#">Settings</a>
+          <a href="../index.html">Sign Out</a>
+        </div>
+      </aside>
+
+      <main class="main company-main">
+        <header class="page-header">
+          <div>
+            <h1>Post Internship Job</h1>
+            <p>Create a clear internship post so students can be recommended correctly.</p>
+          </div>
+          <a class="primary-btn" href="job-posts.html">Publish Post</a>
+        </header>
+
+        <div class="post-layout">
+          <section class="panel">
+            <div class="section-title-row">
+              <div>
+                <h2>Job Information</h2>
+                <p>Basic role details shown to student applicants.</p>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-card">
+                <label>
+                  Job title
+                  <input value="Software Developer Intern" />
+                </label>
+              </div>
+
+              <div class="form-card">
+                <label>
+                  Department
+                  <input value="Engineering" />
+                </label>
+              </div>
+
+              <div class="form-card">
+                <label>
+                  Location
+                  <input value="Bangkok" />
+                </label>
+              </div>
+
+              <div class="form-card">
+                <label>
+                  Work mode
+                  <select>
+                    <option>On-site</option>
+                    <option>Hybrid</option>
+                    <option>Remote</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-card">
+                <label>
+                  Duration
+                  <select>
+                    <option>3 months</option>
+                    <option>4 months</option>
+                    <option>6 months</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="form-card">
+                <label>
+                  Allowance
+                  <select>
+                    <option>Paid</option>
+                    <option>Unpaid</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-card full-field">
+              <label>
+                Job description
+                <textarea>Interns will work with engineering teams to develop internal tools, improve software features, learn code review workflows, and support database-related tasks.</textarea>
+              </label>
+            </div>
+          </section>
+
+          <aside class="panel post-preview">
+            <h2>Post Preview</h2>
+            <div class="job-icon">SDE</div>
+            <h3>Software Developer Intern</h3>
+            <p>Bangkok - On-site - 3 months - Paid</p>
+
+            <div class="skill-row">
+              <span class="tag">Python</span>
+              <span class="tag">SQL</span>
+              <span class="tag">Git</span>
+            </div>
+
+            <ul class="detail-list">
+              <li><span>Recommended for</span><strong>CS / IT students</strong></li>
+              <li><span>Mentorship</span><strong>Provided</strong></li>
+              <li><span>Status</span><strong>Draft</strong></li>
+            </ul>
+          </aside>
         </div>
 
-        <br />
+        <section class="panel">
+          <div class="section-title-row">
+            <div>
+              <h2>Matching Requirements</h2>
+              <p>CareerMatch will use these fields for applicant recommendations.</p>
+            </div>
+          </div>
 
-        <div class="form-card">
-          <label>Job Description
-            <textarea>Interns will work with engineering teams to develop and improve scalable software solutions while learning real-world development workflows.</textarea>
-          </label>
-        </div>
-      </section>
-    </main>
-  </div>
-</body>
+          <div class="form-grid">
+            <div class="form-card">
+              <label>
+                Required skills
+                <input value="Python, SQL, Git, Data Structures" />
+              </label>
+            </div>
+
+            <div class="form-card">
+              <label>
+                Nice-to-have skills
+                <input value="JavaScript, APIs, Cloud basics" />
+              </label>
+            </div>
+
+            <div class="form-card">
+              <label>
+                Preferred major
+                <input value="Computer Science, IT, Software Engineering" />
+              </label>
+            </div>
+
+            <div class="form-card">
+              <label>
+                Minimum availability
+                <select>
+                  <option>3 days per week</option>
+                  <option>4 days per week</option>
+                  <option>Full time</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-card">
+              <label>
+                Preferred year
+                <select>
+                  <option>Final year</option>
+                  <option>Third year</option>
+                  <option>Any year</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="form-card">
+              <label>
+                Mentorship
+                <select>
+                  <option>Provided</option>
+                  <option>Limited</option>
+                  <option>Not provided</option>
+                </select>
+              </label>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
 </html>

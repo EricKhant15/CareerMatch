@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Approved Applicants - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+        <div class="user-card">
+          <div class="avatar">G</div>
+          <div>
+            <strong>Google</strong>
+            <span>Company</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="post-role.html">Create Listing</a>
+          <a href="job-posts.html">Manage Listings</a>
+          <a class="active" href="approved.html">Approved</a>
+          <a href="interviews.html">Interviews</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="#">Settings</a>
+          <a href="../index.html">Sign Out</a>
+        </div>
+      </aside>
+
+      <main class="main company-main">
+        <header class="page-header">
+          <div>
+            <h1>Approved Applicants</h1>
+            <p>Students approved or shortlisted after company review.</p>
+          </div>
+          <a class="primary-btn" href="interviews.html">Schedule Interviews</a>
+        </header>
+
+        <section class="stats">
+          <div class="stat-card"><strong>6</strong><span>Approved</span></div>
+          <div class="stat-card"><strong>4</strong><span>Waiting for interview</span></div>
+          <div class="stat-card"><strong>2</strong><span>Offer-ready</span></div>
+          <div class="stat-card"><strong>1</strong><span>Needs follow-up</span></div>
+        </section>
+
+        <section class="panel table-panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>Approved for</th>
+                <th>Match</th>
+                <th>Key skills</th>
+                <th>Next step</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Eric #12H4E</td>
+                <td>Software Developer Intern</td>
+                <td>92%</td>
+                <td>Python, SQL, Git</td>
+                <td>Technical interview</td>
+                <td><span class="status accepted">Approved</span></td>
+              </tr>
+              <tr>
+                <td>Maya Chen</td>
+                <td>Frontend Developer Intern</td>
+                <td>88%</td>
+                <td>HTML, CSS, React</td>
+                <td>Portfolio review</td>
+                <td><span class="status accepted">Approved</span></td>
+              </tr>
+              <tr>
+                <td>Jordan Lee</td>
+                <td>Data Analyst Intern</td>
+                <td>89%</td>
+                <td>SQL, Excel, Tableau</td>
+                <td>Manager interview</td>
+                <td><span class="status review">Shortlisted</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

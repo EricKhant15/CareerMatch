@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Software Applicants - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+        <div class="user-card">
+          <div class="avatar">G</div>
+          <div>
+            <strong>Google</strong>
+            <span>Company</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="post-role.html">Create Listing</a>
+          <a class="active" href="job-posts.html">Manage Listings</a>
+          <a href="approved.html">Approved</a>
+          <a href="interviews.html">Interviews</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="#">Settings</a>
+          <a href="../index.html">Sign Out</a>
+        </div>
+      </aside>
+
+      <main class="main company-main">
+        <header class="page-header">
+          <div>
+            <a class="back-link" href="job-posts.html">Back to Manage Listings</a>
+            <h1>Software Developer Applicants</h1>
+            <p>Open an application, review the student, then shortlist, reject, or send interview details.</p>
+          </div>
+          <a class="primary-btn" href="#schedule-interview">Schedule Interview</a>
+        </header>
+
+        <section class="role-summary-card">
+          <div>
+            <h2>Software Developer Intern</h2>
+            <p>Bangkok - On-site - 3 months - Paid - Python, SQL, Git</p>
+          </div>
+          <div class="role-summary-stats">
+            <span><strong>18</strong> applicants</span>
+            <span><strong>6</strong> strong matches</span>
+            <span><strong>4</strong> interview ready</span>
+          </div>
+        </section>
+
+        <section class="workflow-strip">
+          <article class="workflow-step done">
+            <span>1</span>
+            <div>
+              <strong>Submitted</strong>
+              <p>Student sent application form.</p>
+            </div>
+          </article>
+          <article class="workflow-step active">
+            <span>2</span>
+            <div>
+              <strong>Review</strong>
+              <p>Company checks CV and fit.</p>
+            </div>
+          </article>
+          <article class="workflow-step">
+            <span>3</span>
+            <div>
+              <strong>Interview</strong>
+              <p>Send date, time, and link.</p>
+            </div>
+          </article>
+          <article class="workflow-step">
+            <span>4</span>
+            <div>
+              <strong>Decision</strong>
+              <p>Accept, reject, or hold.</p>
+            </div>
+          </article>
+        </section>
+
+        <div class="applicant-layout">
+          <section class="panel">
+            <div class="section-title-row">
+              <div>
+                <h2>Applications</h2>
+                <p>Click an applicant to review their form.</p>
+              </div>
+              <span class="match-pill">Sorted by match</span>
+            </div>
+
+            <div class="applicant-list">
+              <article class="applicant-item active">
+                <div class="avatar small">E</div>
+                <div>
+                  <h3>Eric #12H4E</h3>
+                  <p>New application - CS final year</p>
+                  <span class="tag good">92% match</span>
+                  <span class="tag">Under review</span>
+                </div>
+              </article>
+              <article class="applicant-item">
+                <div class="avatar small">M</div>
+                <div>
+                  <h3>Maya Chen</h3>
+                  <p>Shortlisted - IT student</p>
+                  <span class="tag good">88% match</span>
+                  <span class="tag good">Shortlisted</span>
+                </div>
+              </article>
+              <article class="applicant-item">
+                <div class="avatar small">J</div>
+                <div>
+                  <h3>Jordan Lee</h3>
+                  <p>Reviewed - Software Engineering</p>
+                  <span class="tag">84% match</span>
+                  <span class="tag">Reviewed</span>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="panel applicant-profile">
+            <div class="applicant-header">
+              <div class="user-card">
+                <div class="avatar">E</div>
+                <div>
+                  <h2>Eric #12H4E</h2>
+                  <p>Computer Science student - Assumption University</p>
+                </div>
+              </div>
+              <span class="status review">Under Review</span>
+            </div>
+
+            <div class="action-panel">
+              <div>
+                <h3>Company Actions</h3>
+                <p>Choose what happens next. In a real system this updates the student's application status.</p>
+              </div>
+              <div class="decision-actions">
+                <button class="secondary-btn" type="button">Shortlist</button>
+                <a class="primary-btn" href="#schedule-interview">Schedule Interview</a>
+                <button class="danger-btn" type="button">Reject</button>
+              </div>
+            </div>
+
+            <div class="review-grid">
+              <article class="review-card">
+                <h3>Application Form</h3>
+                <p><strong>Why Google?</strong></p>
+                <p>I want to learn professional software workflows and contribute to internal tools using Python and SQL.</p>
+                <a class="secondary-btn" href="#cv-form">View Full Form</a>
+              </article>
+
+              <article class="review-card">
+                <h3>Match Score</h3>
+                <div class="progress-ring small-ring"><span>92%</span></div>
+                <p>Strong technical, location, and availability match.</p>
+              </article>
+
+              <article class="review-card">
+                <h3>Skill Set</h3>
+                <p class="skill-level-help">Applicant self-rated skill levels from their student profile.</p>
+                <div class="skill-level-list">
+                  <div class="skill-level-row advanced">
+                    <span>Python</span>
+                    <strong>Advanced · Level 3</strong>
+                  </div>
+                  <div class="skill-level-row intermediate">
+                    <span>SQL</span>
+                    <strong>Intermediate · Level 2</strong>
+                  </div>
+                  <div class="skill-level-row intermediate">
+                    <span>Git</span>
+                    <strong>Intermediate · Level 2</strong>
+                  </div>
+                  <div class="skill-level-row advanced">
+                    <span>Data Structures</span>
+                    <strong>Advanced · Level 3</strong>
+                  </div>
+                  <div class="skill-level-row beginner">
+                    <span>JavaScript</span>
+                    <strong>Beginner · Level 1</strong>
+                  </div>
+                </div>
+              </article>
+
+              <article class="review-card">
+                <h3>Company Notes</h3>
+                <textarea placeholder="Write notes for HR or the hiring manager...">Strong backend fit. Ask about database project and teamwork experience during interview.</textarea>
+                <button class="secondary-btn" type="button">Save Notes</button>
+              </article>
+            </div>
+
+            <section class="panel nested-panel" id="cv-form">
+              <h3>CV Form & Applicant Details</h3>
+              <ul class="detail-list">
+                <li><span>Email</span><strong>eric12h4e@student.au.edu</strong></li>
+                <li><span>Phone</span><strong>+66 88 123 4567</strong></li>
+                <li><span>Applied role</span><strong>Software Developer Intern</strong></li>
+                <li><span>Available days</span><strong>Tue, Wed, Fri</strong></li>
+                <li><span>Preferred location</span><strong>Bangkok</strong></li>
+                <li><span>Work style</span><strong>On-site / Hybrid</strong></li>
+                <li><span>Portfolio</span><strong>github.com/eric-career</strong></li>
+                <li><span>Resume</span><strong>Eric_CV.pdf</strong></li>
+              </ul>
+            </section>
+
+            <section class="panel nested-panel" id="schedule-interview">
+              <div class="section-title-row">
+                <div>
+                  <h3>Send Interview Details</h3>
+                  <p>This is what the student would receive on their application status page.</p>
+                </div>
+                <span class="status accepted">Ready to send</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-card">
+                  <label>Interview date<input type="date" value="2026-07-15" /></label>
+                </div>
+                <div class="form-card">
+                  <label>Interview time<input type="time" value="14:00" /></label>
+                </div>
+                <div class="form-card">
+                  <label>Interview type<select><option>Online</option><option>On-site</option></select></label>
+                </div>
+                <div class="form-card">
+                  <label>Interviewer<input value="Engineering Lead" /></label>
+                </div>
+                <div class="form-card">
+                  <label>Meeting link<input value="https://meet.google.com/careermatch-demo" /></label>
+                </div>
+                <div class="form-card">
+                  <label>Location<input value="Google Bangkok Office / Online" /></label>
+                </div>
+              </div>
+
+              <div class="form-card full-field">
+                <label>Instructions<textarea>Please prepare to explain one Python or database project. Bring your CV and be ready for a short technical discussion.</textarea></label>
+              </div>
+
+              <div class="decision-actions left">
+                <button class="primary-btn" type="button">Send to Student</button>
+                <a class="secondary-btn" href="interviews.html">View Interview Tracker</a>
+              </div>
+            </section>
+
+            <section class="panel nested-panel">
+              <h3>Final Decision After Interview</h3>
+              <p class="muted-text">After the interview, the company can update the final application result.</p>
+              <div class="decision-actions left">
+                <button class="primary-btn" type="button">Accept Student</button>
+                <button class="secondary-btn" type="button">Hold for Second Interview</button>
+                <button class="danger-btn" type="button">Reject After Interview</button>
+              </div>
+            </section>
+          </section>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
