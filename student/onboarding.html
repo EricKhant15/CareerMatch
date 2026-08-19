@@ -1,3 +1,6 @@
+Paste this as your full `student/onboarding.html`:
+
+```html
 <!doctype html>
 <html>
   <head>
@@ -6,6 +9,7 @@
     <title>Student Setup - CareerMatch</title>
     <link rel="stylesheet" href="../styles.css" />
   </head>
+
   <body>
     <div class="setup-page">
       <section class="setup-card">
@@ -14,10 +18,11 @@
             <span class="logo-mark">CM</span>
             <span>Career<span class="brand-purple">Match</span></span>
           </div>
+
           <h1>Build your internship profile</h1>
           <p>
-            CareerMatch needs your skills, interests, and free time before it can recommend
-            internships that actually fit you.
+            CareerMatch needs your skills, interests, and free time before it can
+            recommend internships that actually fit you.
           </p>
         </div>
 
@@ -26,15 +31,18 @@
 
           <section class="form-section">
             <h2>Academic Information</h2>
+
             <div class="form-grid">
               <label>
                 Full name
-                <input name="name" value="Eric #12H4E" />
+                <input name="name" value="Eric" />
               </label>
+
               <label>
                 University
                 <input name="university" value="Assumption University" />
               </label>
+
               <label>
                 Major
                 <select name="major">
@@ -44,6 +52,7 @@
                   <option>Software Engineering</option>
                 </select>
               </label>
+
               <label>
                 Year of study
                 <select name="year">
@@ -57,108 +66,83 @@
           </section>
 
           <section class="form-section">
-            <h2>Which field are you interested in?</h2>
+            <h2>Target Internship Field</h2>
+            <p class="muted-text">
+              Choose the main internship area you want. Technical skills below
+              will be used for detailed matching.
+            </p>
+
             <div class="choice-buttons">
-              <label><input type="radio" name="field" value="Software Engineering" checked /> Software Engineering</label>
-              <label><input type="radio" name="field" value="Data Analytics" /> Data Analytics</label>
-              <label><input type="radio" name="field" value="Cybersecurity" /> Cybersecurity</label>
-              <label><input type="radio" name="field" value="UI/UX Design" /> UI/UX Design</label>
-              <label><input type="radio" name="field" value="Cloud Computing" /> Cloud Computing</label>
-              <label><input type="radio" name="field" value="AI/Machine Learning" /> AI/Machine Learning</label>
+              <label>
+                <input type="radio" name="field" value="Software Engineering" checked />
+                Software Engineering
+              </label>
+
+              <label>
+                <input type="radio" name="field" value="Data Analytics" />
+                Data Analytics
+              </label>
+
+              <label>
+                <input type="radio" name="field" value="Cybersecurity" />
+                Cybersecurity
+              </label>
+
+              <label>
+                <input type="radio" name="field" value="UI/UX Design" />
+                UI/UX Design
+              </label>
+
+              <label>
+                <input type="radio" name="field" value="Cloud Computing" />
+                Cloud Computing
+              </label>
+
+              <label>
+                <input type="radio" name="field" value="AI/Machine Learning" />
+                AI/Machine Learning
+              </label>
             </div>
           </section>
 
           <section class="form-section">
             <h2>Technical Skills</h2>
-            <div class="choice-buttons">
-              <label><input type="checkbox" name="skills" value="Python" checked /> Python</label>
-              <label><input type="checkbox" name="skills" value="JavaScript" checked /> JavaScript</label>
-              <label><input type="checkbox" name="skills" value="SQL" checked /> SQL</label>
-              <label><input type="checkbox" name="skills" value="HTML/CSS" /> HTML/CSS</label>
-              <label><input type="checkbox" name="skills" value="Java" /> Java</label>
-              <label><input type="checkbox" name="skills" value="Git" checked /> Git</label>
-              <label><input type="checkbox" name="skills" value="React" /> React</label>
-              <label><input type="checkbox" name="skills" value="Excel" /> Excel</label>
-            </div>
+            <p class="muted-text">
+              Add the languages, tools, and technologies you can use. These skills
+              are compared with company requirements.
+            </p>
 
-            <div class="skill-level-panel">
-              <div>
-                <h3>Skill Level</h3>
-                <p>Choose the level that best matches each skill you want companies to see.</p>
+            <div class="skill-level-panel" data-skill-builder>
+              <div class="skill-entry-row">
+                <label>
+                  Skill name
+                  <input
+                    id="skillNameInput"
+                    type="text"
+                    placeholder="Python, Java, SQL, React"
+                  />
+                </label>
+
+                <label>
+                  Skill level
+                  <select id="skillLevelInput">
+                    <option>Beginner</option>
+                    <option selected>Intermediate</option>
+                    <option>Advanced</option>
+                  </select>
+                </label>
+
+                <button id="addSkillButton" class="secondary-btn" type="button">
+                  Add Skill
+                </button>
               </div>
-              <div class="skill-level-list input-list">
-                <label class="skill-level-row input-level">
-                  <span>Python</span>
-                  <select name="skillLevelPython">
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option selected>Advanced</option>
-                  </select>
-                </label>
 
-                <label class="skill-level-row input-level">
-                  <span>JavaScript</span>
-                  <select name="skillLevelJavaScript">
-                    <option>Beginner</option>
-                    <option selected>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
+              <div class="skill-level-list input-list" id="setupSkillList"></div>
 
-                <label class="skill-level-row input-level">
-                  <span>SQL</span>
-                  <select name="skillLevelSQL">
-                    <option>Beginner</option>
-                    <option selected>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-
-                <label class="skill-level-row input-level">
-                  <span>Git</span>
-                  <select name="skillLevelGit">
-                    <option>Beginner</option>
-                    <option selected>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-
-                <label class="skill-level-row input-level">
-                  <span>HTML/CSS</span>
-                  <select name="skillLevelHtmlCss">
-                    <option selected>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-
-                <label class="skill-level-row input-level">
-                  <span>Java</span>
-                  <select name="skillLevelJava">
-                    <option selected>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-
-                <label class="skill-level-row input-level">
-                  <span>React</span>
-                  <select name="skillLevelReact">
-                    <option selected>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-
-                <label class="skill-level-row input-level">
-                  <span>Excel</span>
-                  <select name="skillLevelExcel">
-                    <option selected>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                </label>
-              </div>
+              <p class="skill-level-help">
+                Matching ignores capitalization, so Python and python are treated
+                as the same skill.
+              </p>
             </div>
 
             <div class="form-grid">
@@ -171,6 +155,7 @@
 
           <section class="form-section">
             <h2>Internship Requirements</h2>
+
             <div class="form-grid">
               <label>
                 Preferred location
@@ -181,6 +166,7 @@
                   <option>Other Location</option>
                 </select>
               </label>
+
               <label>
                 Internship type
                 <select name="internshipType">
@@ -189,6 +175,7 @@
                   <option>Either</option>
                 </select>
               </label>
+
               <label>
                 Work style
                 <select name="workStyle">
@@ -197,6 +184,7 @@
                   <option>Remote</option>
                 </select>
               </label>
+
               <label>
                 Mentorship
                 <select name="mentorship">
@@ -210,6 +198,7 @@
 
           <section class="form-section">
             <h2>Free Time / Availability</h2>
+
             <div class="choice-buttons compact">
               <label><input type="checkbox" name="availability" value="Mon" /> Mon</label>
               <label><input type="checkbox" name="availability" value="Tue" checked /> Tue</label>
@@ -229,6 +218,13 @@
       </section>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
     <script src="../app.js"></script>
+    <script>
+      protectPage("student");
+    </script>
   </body>
 </html>
+```

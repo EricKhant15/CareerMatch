@@ -6,6 +6,7 @@
     <title>Student Profile - CareerMatch</title>
     <link rel="stylesheet" href="../styles.css" />
   </head>
+
   <body>
     <div class="app-shell">
       <aside class="sidebar">
@@ -13,13 +14,15 @@
           <span class="logo-mark">CM</span>
           <span>Career<span class="brand-purple">Match</span></span>
         </div>
+
         <div class="user-card">
-          <div class="avatar">E</div>
+          <div class="avatar">S</div>
           <div>
-            <strong>Eric #12H4E</strong>
+            <strong>Student</strong>
             <span>Student</span>
           </div>
         </div>
+
         <nav class="nav">
           <a href="dashboard.html">Dashboard</a>
           <a href="matches.html">Recommended</a>
@@ -27,6 +30,7 @@
           <a href="saved.html">Saved</a>
           <a class="active" href="profile.html">Profile</a>
         </nav>
+
         <div class="sidebar-bottom">
           <a href="#">Settings</a>
           <a href="../index.html">Sign Out</a>
@@ -37,86 +41,235 @@
         <header class="page-header">
           <div>
             <h1>My Profile & Preferences</h1>
-            <p>Set your academic details, skills, interests, and internship availability.</p>
+            <p>Edit your academic details, skills, interests, and internship availability.</p>
           </div>
-          <a class="secondary-btn" href="onboarding.html">Edit Setup</a>
         </header>
 
-        <div class="grid-2">
-          <section class="panel">
-            <h2>Academic Information</h2>
-            <div class="form-grid">
-              <div class="form-card"><label>Full Name<input data-profile="name" value="Eric #12H4E" /></label></div>
-              <div class="form-card"><label>University<input data-profile="university" value="Assumption University" /></label></div>
-              <div class="form-card"><label>Major<input data-profile="major" value="Information Technology" /></label></div>
-              <div class="form-card"><label>Year of Study<input data-profile="year" value="Final year" /></label></div>
-            </div>
+        <form id="studentProfileForm">
+          <div class="grid-2">
+            <section class="panel">
+              <h2>Academic Information</h2>
 
-            <br />
-            <h2>Technical Skills</h2>
-            <div>
-              <p class="skill-level-help">These levels are saved from your setup form and shown to companies during review.</p>
-              <div class="skill-level-list profile-levels" data-skill-level-list>
-                <div class="skill-level-row advanced">
-                  <span>Python</span>
-                  <strong>Advanced · Level 3</strong>
+              <div class="form-grid">
+                <div class="form-card">
+                  <label>
+                    Full Name
+                    <input name="name" data-profile="name" />
+                  </label>
                 </div>
-                <div class="skill-level-row intermediate">
-                  <span>JavaScript</span>
-                  <strong>Intermediate · Level 2</strong>
+
+                <div class="form-card">
+                  <label>
+                    University
+                    <input name="university" data-profile="university" />
+                  </label>
                 </div>
-                <div class="skill-level-row intermediate">
-                  <span>SQL</span>
-                  <strong>Intermediate · Level 2</strong>
+
+                <div class="form-card">
+                  <label>
+                    Major
+                    <select name="major" data-profile="major">
+                      <option>Computer Science</option>
+                      <option>Information Technology</option>
+                      <option>Business Analytics</option>
+                      <option>Software Engineering</option>
+                    </select>
+                  </label>
                 </div>
-                <div class="skill-level-row intermediate">
-                  <span>Git</span>
-                  <strong>Intermediate · Level 2</strong>
+
+                <div class="form-card">
+                  <label>
+                    Year of Study
+                    <select name="year" data-profile="year">
+                      <option>Second year</option>
+                      <option>Third year</option>
+                      <option>Final year</option>
+                      <option>Pre-internship</option>
+                    </select>
+                  </label>
                 </div>
               </div>
-            </div>
 
-            <br />
-            <h2>Preferred Field</h2>
-            <div class="option-grid">
-              <div class="option selected" data-profile-text="field">Software Engineering</div>
-              <div class="option">Data Analytics</div>
-              <div class="option">Cybersecurity</div>
-              <div class="option">UI/UX Design</div>
-              <div class="option">Cloud Computing</div>
-              <div class="option">AI/Machine Learning</div>
-            </div>
+              <br />
 
-            <br />
-            <h2>Availability</h2>
-            <div class="option-grid">
-              <div class="option">Mon</div>
-              <div class="option selected">Tue</div>
-              <div class="option selected">Wed</div>
-              <div class="option">Thu</div>
-              <div class="option selected">Fri</div>
-              <div class="option">Sat</div>
-            </div>
-          </section>
+              <h2>Target Internship Field</h2>
+              <p class="muted-text">
+                Choose the main internship area you want. Technical skills will be used for detailed matching.
+              </p>
 
-          <aside class="panel">
-            <h2>Profile Completion</h2>
-            <div class="progress-ring"><span>85%</span></div>
-            <p>Complete your profile to get better matches.</p>
-            <br />
-            <h2>Availability Summary</h2>
-            <ul class="detail-list">
-              <li><span>Field</span><strong data-profile-text="field">Software Engineering</strong></li>
-              <li><span>Skills</span><strong data-profile-list="skills">Python, JavaScript, SQL, Git</strong></li>
-              <li><span>Location</span><strong data-profile-text="location">Bangkok</strong></li>
-              <li><span>Available days</span><strong data-profile-list="availability">Tue, Wed, Fri</strong></li>
-              <li><span>Work style</span><strong data-profile-text="workStyle">Hybrid</strong></li>
-              <li><span>Internship type</span><strong data-profile-text="internshipType">Paid</strong></li>
-            </ul>
-          </aside>
-        </div>
+              <div class="choice-buttons">
+                <label>
+                  <input type="radio" name="field" value="Software Engineering" />
+                  Software Engineering
+                </label>
+
+                <label>
+                  <input type="radio" name="field" value="Data Analytics" />
+                  Data Analytics
+                </label>
+
+                <label>
+                  <input type="radio" name="field" value="Cybersecurity" />
+                  Cybersecurity
+                </label>
+
+                <label>
+                  <input type="radio" name="field" value="UI/UX Design" />
+                  UI/UX Design
+                </label>
+
+                <label>
+                  <input type="radio" name="field" value="Cloud Computing" />
+                  Cloud Computing
+                </label>
+
+                <label>
+                  <input type="radio" name="field" value="AI/Machine Learning" />
+                  AI/Machine Learning
+                </label>
+              </div>
+
+              <br />
+
+              <h2>Technical Skills</h2>
+              <p class="muted-text">
+                Add or update your technical skills. Companies will see your skill levels during review.
+              </p>
+
+              <div class="skill-level-panel" data-skill-builder>
+                <div class="skill-entry-row">
+                  <label>
+                    Skill name
+                    <input id="profileSkillNameInput" type="text" placeholder="Python, Java, SQL, React" />
+                  </label>
+
+                  <label>
+                    Skill level
+                    <select id="profileSkillLevelInput">
+                      <option>Beginner</option>
+                      <option selected>Intermediate</option>
+                      <option>Advanced</option>
+                    </select>
+                  </label>
+
+                  <button id="profileAddSkillButton" class="secondary-btn" type="button">
+                    Add Skill
+                  </button>
+                </div>
+
+                <div class="skill-level-list input-list" id="profileSkillList"></div>
+
+                <p class="skill-level-help">
+                  Beginner = Level 1, Intermediate = Level 2, Advanced = Level 3.
+                </p>
+              </div>
+
+              <br />
+
+              <h2>Internship Requirements</h2>
+
+              <div class="form-grid">
+                <div class="form-card">
+                  <label>
+                    Career goal
+                    <input name="goal" data-profile="goal" />
+                  </label>
+                </div>
+
+                <div class="form-card">
+                  <label>
+                    Preferred location
+                    <select name="location" data-profile="location">
+                      <option>Bangkok</option>
+                      <option>Samut Prakan</option>
+                      <option>Remote</option>
+                      <option>Other Location</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-card">
+                  <label>
+                    Internship type
+                    <select name="internshipType" data-profile="internshipType">
+                      <option>Paid</option>
+                      <option>Unpaid</option>
+                      <option>Either</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-card">
+                  <label>
+                    Work style
+                    <select name="workStyle" data-profile="workStyle">
+                      <option>On-site</option>
+                      <option>Hybrid</option>
+                      <option>Remote</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-card">
+                  <label>
+                    Mentorship
+                    <select name="mentorship" data-profile="mentorship">
+                      <option>Required</option>
+                      <option>Preferred</option>
+                      <option>Not needed</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <br />
+
+              <h2>Availability</h2>
+
+              <div class="choice-buttons compact">
+                <label><input type="checkbox" name="availability" value="Mon" /> Mon</label>
+                <label><input type="checkbox" name="availability" value="Tue" /> Tue</label>
+                <label><input type="checkbox" name="availability" value="Wed" /> Wed</label>
+                <label><input type="checkbox" name="availability" value="Thu" /> Thu</label>
+                <label><input type="checkbox" name="availability" value="Fri" /> Fri</label>
+                <label><input type="checkbox" name="availability" value="Sat" /> Sat</label>
+                <label><input type="checkbox" name="availability" value="Sun" /> Sun</label>
+              </div>
+
+              <div class="setup-actions">
+                <a class="secondary-btn" href="dashboard.html">Cancel</a>
+                <button class="primary-btn" type="submit">Save Changes</button>
+              </div>
+            </section>
+
+            <aside class="panel">
+              <h2>Profile Completion</h2>
+              <div class="progress-ring"><span>85%</span></div>
+              <p>Complete your profile to get better matches.</p>
+
+              <br />
+
+              <h2>Profile Summary</h2>
+              <ul class="detail-list">
+                <li><span>Field</span><strong data-profile-text="field">-</strong></li>
+                <li><span>Skills</span><strong data-profile-list="skills">-</strong></li>
+                <li><span>Location</span><strong data-profile-text="location">-</strong></li>
+                <li><span>Available days</span><strong data-profile-list="availability">-</strong></li>
+                <li><span>Work style</span><strong data-profile-text="workStyle">-</strong></li>
+                <li><span>Internship type</span><strong data-profile-text="internshipType">-</strong></li>
+              </ul>
+            </aside>
+          </div>
+        </form>
       </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
     <script src="../app.js"></script>
+    <script>
+      protectPage("student");
+    </script>
   </body>
 </html>

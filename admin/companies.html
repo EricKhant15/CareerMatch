@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Company Approvals - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+
+        <div class="user-card">
+          <div class="avatar">A</div>
+          <div>
+            <strong>Admin</strong>
+            <span>CareerMatch</span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <a class="active" href="companies.html">Company Approvals</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <a href="../index.html">Sign Out</a>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="page-header">
+          <div>
+            <h1>Company Approvals</h1>
+            <p>Review company accounts before they can post internships.</p>
+          </div>
+        </header>
+
+        <section class="stats">
+          <div class="stat-card">
+            <strong id="pendingCount">0</strong>
+            <span>Pending companies</span>
+          </div>
+
+          <div class="stat-card">
+            <strong id="approvedCount">0</strong>
+            <span>Approved companies</span>
+          </div>
+
+          <div class="stat-card">
+            <strong id="rejectedCount">0</strong>
+            <span>Rejected companies</span>
+          </div>
+
+          <div class="stat-card">
+            <strong id="totalCount">0</strong>
+            <span>Total company accounts</span>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="section-title-row">
+            <div>
+              <h2>Pending Review</h2>
+              <p>
+                Approve verified companies or reject accounts that should not access
+                the company side.
+              </p>
+            </div>
+          </div>
+
+          <div id="companyList" class="job-board"></div>
+
+          <p id="adminMessage" class="auth-message"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<script src="../guard.js"></script>
+<script>
+  protectPage("admin").then((profile) => {
+    if (!profile) return;
+
+    const script = document.createElement("script");
+    script.src = "companies.js";
+    document.body.appendChild(script);
+  });
+</script>
+  </body>
+</html>

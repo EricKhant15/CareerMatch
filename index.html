@@ -1,38 +1,78 @@
 <!doctype html>
 <html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CareerMatch</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body class="login-page">
-  <div class="login-box">
-    <section class="login-brand">
-      <div class="logo">
-        <span class="logo-mark">CM</span>
-        <span>Career<span class="brand-purple">Match</span></span>
-      </div>
-      <h1>Match Your Potential</h1>
-      <p>AI-powered internship recommendation designed for CS and IT students.</p>
-    </section>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerMatch</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-    <section class="login-form">
-      <h2>Welcome Back</h2>
-      <p>Choose which side you want to preview.</p>
+  <body class="login-page">
+    <div class="login-box">
+      <section class="login-brand">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
 
-      <div class="choice-grid">
-        <a href="student/onboarding.html" class="choice-card">
-          <h3>Student</h3>
-          <p>Set preferences, view recommendations, save internships, and track applications.</p>
-        </a>
+        <h1>Match Your Potential</h1>
+        <p>Internship matching for students and companies.</p>
+      </section>
 
-        <a href="company/dashboard.html" class="choice-card">
-          <h3>Company</h3>
-          <p>Post internships, review matched students, and manage interviews.</p>
-        </a>
-      </div>
-    </section>
-  </div>
-</body>
+      <section class="login-form">
+        <span class="auth-eyebrow">CareerMatch Access</span>
+
+        <h2 id="authTitle">Sign in</h2>
+        <p id="authSubtitle">Continue to your CareerMatch account.</p>
+
+        <div class="auth-switch">
+          <button class="auth-switch-btn active" type="button" data-auth-mode="login">
+            Sign in
+          </button>
+          <button class="auth-switch-btn" type="button" data-auth-mode="signup">
+            Create account
+          </button>
+        </div>
+
+        <form id="authForm" class="auth-form">
+          <input type="hidden" id="authMode" name="mode" value="login" />
+
+          <label>
+            Account type
+            <select name="role">
+              <option value="student">Student</option>
+              <option value="company">Company</option>
+            </select>
+          </label>
+
+          <label id="nameField" class="signup-only is-hidden">
+            Full Name / Company Name
+            <input name="fullName" placeholder="Enter your full name or company name" />
+          </label>
+
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+
+          <label>
+            Password
+            <input type="password" name="password" placeholder="Minimum 6 characters" required />
+          </label>
+
+          <button id="authSubmit" class="primary-btn" type="submit">Sign in</button>
+
+          <p id="authHelper" class="auth-helper">
+            New to CareerMatch? Choose Create account above.
+          </p>
+
+          <p id="authMessage" class="auth-message"></p>
+        </form>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+  </body>
 </html>
