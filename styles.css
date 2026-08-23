@@ -1862,3 +1862,634 @@ textarea {
       width: fit-content;
     }
   }
+  /* Company signup and verification form */
+
+.is-hidden {
+    display: none !important;
+  }
+  
+  .login-box:has(.company-signup-fields:not(.is-hidden)) {
+    width: min(1280px, 100%);
+    max-height: calc(100vh - 48px);
+    grid-template-columns: 0.72fr 1.28fr;
+  }
+  
+  .login-box:has(.company-signup-fields:not(.is-hidden))
+    .login-form {
+    justify-content: flex-start;
+    overflow-y: auto;
+    padding: 40px 48px;
+  }
+  
+  .login-box:has(.company-signup-fields:not(.is-hidden))
+    .login-brand {
+    position: sticky;
+    top: 0;
+    min-height: 100%;
+  }
+  
+  .company-signup-fields {
+    display: grid;
+    gap: 18px;
+    padding: 20px;
+    border: 1px solid var(--purple-line);
+    border-radius: 8px;
+    background: #fbfaff;
+  }
+  
+  .company-signup-heading {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .company-signup-heading h3 {
+    margin: 0 0 6px;
+    font-size: 21px;
+  }
+  
+  .company-signup-heading p {
+    font-size: 14px;
+  }
+  
+  .auth-field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  
+  .auth-form textarea {
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px;
+    background: white;
+    color: var(--ink);
+  }
+  
+  .auth-form textarea:focus {
+    outline: 3px solid rgba(111, 34, 216, 0.18);
+    border-color: var(--purple);
+  }
+  
+  .auth-form input[type="file"] {
+    min-height: auto;
+    padding: 12px;
+    border: 1px dashed var(--purple-line);
+    background: white;
+    cursor: pointer;
+  }
+  
+  .auth-form input[type="file"]::file-selector-button {
+    margin-right: 12px;
+    border: 0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    background: var(--purple-soft);
+    color: var(--purple);
+    font-weight: 800;
+    cursor: pointer;
+  }
+  
+  .auth-form small {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  
+  .auth-checkbox,
+  .show-password-control {
+    display: flex !important;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+  }
+  
+  .auth-checkbox input,
+  .show-password-control input {
+    flex: 0 0 auto;
+    width: 18px;
+    min-height: 18px;
+    margin: 1px 0 0;
+    accent-color: var(--purple);
+  }
+  
+  .auth-checkbox span,
+  .show-password-control span {
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  
+  .show-password-control {
+    width: fit-content;
+    margin-top: -6px;
+  }
+  
+  .auth-form .primary-btn:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+  
+  @media (max-width: 900px) {
+    .login-box:has(.company-signup-fields:not(.is-hidden)) {
+      max-height: none;
+      grid-template-columns: 1fr;
+    }
+  
+    .login-box:has(.company-signup-fields:not(.is-hidden))
+      .login-brand {
+      position: static;
+      min-height: 280px;
+    }
+  
+    .login-box:has(.company-signup-fields:not(.is-hidden))
+      .login-brand h1 {
+      margin-top: 56px;
+    }
+  
+    .login-box:has(.company-signup-fields:not(.is-hidden))
+      .login-form {
+      overflow: visible;
+      padding: 32px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .login-page {
+      padding: 0;
+    }
+  
+    .login-box,
+    .login-box:has(.company-signup-fields:not(.is-hidden)) {
+      min-height: 100vh;
+      border-radius: 0;
+    }
+  
+    .auth-field-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .company-signup-fields {
+      padding: 16px;
+    }
+  }
+  /* Keep the authentication branding aligned while long forms scroll */
+.auth-grid {
+  align-items: stretch;
+}
+
+.login-brand {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100%;
+  padding: 64px 56px;
+  overflow: hidden;
+}
+
+.login-brand .logo {
+  position: sticky;
+  top: 64px;
+}
+
+.auth-brand-copy {
+  position: sticky;
+  top: 300px;
+  margin-top: 230px;
+}
+
+.auth-brand-copy h1 {
+  margin: 0 0 20px;
+  font-size: 56px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.auth-brand-copy p {
+  max-width: 360px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .auth-brand {
+    min-height: auto;
+    padding: 32px 24px;
+  }
+
+  .auth-brand .logo,
+  .auth-brand-copy {
+    position: static;
+  }
+
+  .auth-brand-copy {
+    margin-top: 48px;
+  }
+
+  .auth-brand-copy h1 {
+    font-size: 40px;
+  }
+}
+/* Keep the authentication branding aligned while long forms scroll */
+.auth-grid {
+    align-items: stretch;
+  }
+  
+  .auth-brand {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 100%;
+    padding: 64px 56px;
+    overflow: hidden;
+  }
+  
+  .auth-brand .logo {
+    position: sticky;
+    top: 64px;
+  }
+  
+  .auth-brand-copy {
+    position: sticky;
+    top: 300px;
+    margin-top: 230px;
+  }
+  
+  .auth-brand-copy h1 {
+    margin: 0 0 20px;
+    font-size: 56px;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+  
+  .auth-brand-copy p {
+    max-width: 360px;
+    margin: 0;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 900px) {
+    .auth-brand {
+      min-height: auto;
+      padding: 32px 24px;
+    }
+  
+    .auth-brand .logo,
+    .auth-brand-copy {
+      position: static;
+    }
+  
+    .auth-brand-copy {
+      margin-top: 48px;
+    }
+  
+    .auth-brand-copy h1 {
+      font-size: 40px;
+    }
+  }
+
+  /* Allow long signup forms to scroll */
+html {
+    height: auto;
+    min-height: 100%;
+    overflow-y: auto;
+  }
+  
+  body.login-page {
+    display: block;
+    height: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 36px;
+  }
+  
+  body.login-page .login-box {
+    height: auto;
+    min-height: 640px;
+    margin: 0 auto;
+    align-items: stretch;
+  }
+  
+  body.login-page .login-form {
+    justify-content: flex-start;
+  }
+  
+  body.login-page .login-brand {
+    justify-content: flex-start;
+  }
+  
+  body.login-page .auth-brand-copy {
+    margin-top: 220px;
+  }
+  
+  @media (max-width: 760px) {
+    body.login-page {
+      padding: 16px;
+    }
+  
+    body.login-page .auth-brand-copy {
+      margin-top: 48px;
+    }
+  }
+
+  /* Final fix for long company registration form */
+html,
+body {
+  height: auto !important;
+  min-height: 100%;
+}
+
+body.login-page {
+  display: block;
+  height: auto !important;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto !important;
+  padding: 36px 36px 72px;
+}
+
+body.login-page .login-box {
+  height: max-content !important;
+  min-height: 640px;
+  max-height: none !important;
+  margin: 0 auto;
+  align-items: stretch;
+  overflow: visible !important;
+}
+
+body.login-page .login-brand {
+  justify-content: flex-start;
+  min-height: 100%;
+  border-radius: 24px 0 0 24px;
+}
+
+body.login-page .login-form {
+  justify-content: flex-start;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  background: #ffffff;
+  border-radius: 0 24px 24px 0;
+}
+
+body.login-page .auth-form,
+body.login-page .company-signup-fields {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+body.login-page .auth-brand-copy {
+  margin-top: 220px;
+}
+
+@media (max-width: 760px) {
+  body.login-page {
+    padding: 16px 16px 48px;
+  }
+
+  body.login-page .login-box {
+    grid-template-columns: 1fr;
+  }
+
+  body.login-page .login-brand {
+    border-radius: 24px 24px 0 0;
+  }
+
+  body.login-page .login-form {
+    border-radius: 0 0 24px 24px;
+  }
+
+  body.login-page .auth-brand-copy {
+    margin-top: 48px;
+  }
+}
+/* Admin company approval layout */
+#companyList.job-board {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .company-review-card {
+    width: 100%;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(38, 24, 54, 0.06);
+  }
+  
+  .company-review-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .company-review-identity {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+  }
+  
+  .company-review-identity .job-icon {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+  }
+  
+  .company-review-identity h2 {
+    margin: 6px 0 4px;
+    font-size: 24px;
+    line-height: 1.2;
+  }
+  
+  .company-review-identity p {
+    margin: 0;
+    color: var(--muted);
+  }
+  
+  .submitted-date {
+    flex: 0 0 auto;
+    text-align: right;
+  }
+  
+  .submitted-date span {
+    display: block;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  
+  .submitted-date strong {
+    display: block;
+    margin-top: 4px;
+  }
+  
+  .company-review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 22px;
+  }
+  
+  .company-review-grid > section {
+    min-width: 0;
+    padding-right: 28px;
+  }
+  
+  .company-review-grid > section + section {
+    padding-right: 0;
+    padding-left: 28px;
+    border-left: 1px solid var(--line);
+  }
+  
+  .company-review-grid h3,
+  .company-description-review h3 {
+    margin: 0 0 14px;
+    font-size: 18px;
+  }
+  
+  .verification-details {
+    margin: 0;
+  }
+  
+  .verification-details > div {
+    display: grid;
+    grid-template-columns: minmax(135px, 0.85fr) minmax(0, 1.15fr);
+    gap: 18px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0edf4;
+  }
+  
+  .verification-details > div:last-child {
+    border-bottom: 0;
+  }
+  
+  .verification-details dt {
+    color: var(--muted);
+    font-weight: 700;
+  }
+  
+  .verification-details dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 800;
+    text-align: right;
+    overflow-wrap: anywhere;
+  }
+  
+  .verification-details a {
+    color: var(--purple);
+    text-decoration: none;
+  }
+  
+  .verification-details a:hover {
+    text-decoration: underline;
+  }
+  
+  .company-description-review {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  
+  .company-description-review p {
+    margin: 0;
+    color: #504a59;
+    line-height: 1.6;
+  }
+  
+  .company-review-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+  
+  .company-review-actions .card-actions {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+  }
+  
+  .company-review-actions button {
+    min-height: 44px;
+    white-space: nowrap;
+  }
+  
+  .missing-document {
+    color: var(--muted);
+    font-weight: 700;
+  }
+  
+  @media (max-width: 900px) {
+    .company-review-header {
+      flex-direction: column;
+    }
+  
+    .submitted-date {
+      text-align: left;
+    }
+  
+    .company-review-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .company-review-grid > section {
+      padding: 0;
+    }
+  
+    .company-review-grid > section + section {
+      margin-top: 22px;
+      padding: 22px 0 0;
+      border-top: 1px solid var(--line);
+      border-left: 0;
+    }
+  
+    .company-review-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  
+    .company-review-actions .card-actions {
+      margin-left: 0;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .company-review-card {
+      padding: 18px;
+    }
+  
+    .verification-details > div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  
+    .verification-details dd {
+      text-align: left;
+    }
+  
+    .company-review-actions .card-actions {
+      flex-direction: column;
+    }
+  
+    .company-review-actions button {
+      width: 100%;
+    }
+  }

@@ -115,13 +115,18 @@ Paste this as your full `student/onboarding.html`:
             <div class="skill-level-panel" data-skill-builder>
               <div class="skill-entry-row">
                 <label>
-                  Skill name
-                  <input
-                    id="skillNameInput"
-                    type="text"
-                    placeholder="Python, Java, SQL, React"
-                  />
-                </label>
+                    Skill name
+                  
+                    <input
+                      id="skillNameInput"
+                      type="text"
+                      list="setupSkillOptions"
+                      placeholder="Search skills, for example Python"
+                      autocomplete="off"
+                    />
+                  
+                    <datalist id="setupSkillOptions"></datalist>
+                  </label>
 
                 <label>
                   Skill level
@@ -139,10 +144,7 @@ Paste this as your full `student/onboarding.html`:
 
               <div class="skill-level-list input-list" id="setupSkillList"></div>
 
-              <p class="skill-level-help">
-                Matching ignores capitalization, so Python and python are treated
-                as the same skill.
-              </p>
+            
             </div>
 
             <div class="form-grid">

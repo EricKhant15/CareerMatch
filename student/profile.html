@@ -138,10 +138,19 @@
 
               <div class="skill-level-panel" data-skill-builder>
                 <div class="skill-entry-row">
-                  <label>
-                    Skill name
-                    <input id="profileSkillNameInput" type="text" placeholder="Python, Java, SQL, React" />
-                  </label>
+                    <label>
+                        Skill name
+                      
+                        <input
+                          id="profileSkillNameInput"
+                          type="text"
+                          list="profileSkillOptions"
+                          placeholder="Search skills, for example Python"
+                          autocomplete="off"
+                        />
+                      
+                        <datalist id="profileSkillOptions"></datalist>
+                      </label>
 
                   <label>
                     Skill level

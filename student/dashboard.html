@@ -1,106 +1,121 @@
 <!doctype html>
-<html>
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Dashboard</title>
-  <link rel="stylesheet" href="../styles.css" />
-</head>
-<body>
-  <div class="app-shell">
-    <aside class="sidebar">
-      <div class="logo">
-        <span class="logo-mark">CM</span>
-        <span>Career<span class="brand-purple">Match</span></span>
-      </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-      <div class="user-card">
-        <div class="avatar">E</div>
-        <div>
-          <strong>Eric #12H4E</strong>
-          <span>Student</span>
-        </div>
-      </div>
+    <title>Student Dashboard - CareerMatch</title>
 
-      <nav class="nav">
-        <a class="active" href="dashboard.html">Dashboard</a>
-        <a href="matches.html">Recommended</a>
-        <a href="applications.html">Applications</a>
-        <a href="saved.html">Saved</a>
-        <a href="profile.html">Profile</a>
-      </nav>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
 
-      <div class="sidebar-bottom">
-        <a href="#">Settings</a>
-        <a href="../index.html">Sign Out</a>
-      </div>
-    </aside>
-
-    <main class="main">
-      <header class="page-header">
-        <div>
-          <h1>Student Dashboard</h1>
-          <p>Your internship matching overview and next steps.</p>
+  <body data-student-dashboard>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>
+            Career<span class="brand-purple">Match</span>
+          </span>
         </div>
 
-        <a class="primary-btn" href="matches.html">View Recommendations</a>
-      </header>
+        <div class="user-card">
+          <div class="avatar">S</div>
 
-      <section class="stats">
-        <div class="stat-card">
-          <strong>85%</strong>
-          <span>Profile completion</span>
+          <div>
+            <strong>Student</strong>
+            <span>Student</span>
+          </div>
         </div>
 
-        <div class="stat-card">
-          <strong>12</strong>
-          <span>Recommended internships</span>
+        <nav class="nav">
+          <a class="active" href="dashboard.html">Dashboard</a>
+          <a href="matches.html">Recommended</a>
+          <a href="applications.html">Applications</a>
+          <a href="saved.html">Saved</a>
+          <a href="profile.html">Profile</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <a href="#">Settings</a>
+          <a href="../index.html">Sign Out</a>
         </div>
+      </aside>
 
-        <div class="stat-card">
-          <strong>6</strong>
-          <span>Matched skills</span>
-        </div>
-
-        <div class="stat-card">
-          <strong>3</strong>
-          <span>Missing skills</span>
-        </div>
-      </section>
-
-      <div class="grid-2">
-        <section class="panel">
-          <h2>Next Steps</h2>
-
-          <ol class="clean-steps">
-            <li>Review internships in the Recommended tab.</li>
-            <li>Save internships you want to compare later.</li>
-            <li>Open the detail page to see match score and missing skills.</li>
-            <li>Apply when the internship fits your skills and schedule.</li>
-          </ol>
-        </section>
-
-        <aside class="panel">
-          <h2>Profile Progress</h2>
-
-          <div class="progress-ring">
-            <span>85%</span>
+      <main class="main">
+        <header class="page-header">
+          <div>
+            <h1>Student Dashboard</h1>
+            <p>Your internship matching overview and next steps.</p>
           </div>
 
-          <p>Almost there. Add one more portfolio project and update your availability.</p>
+          <a class="primary-btn" href="matches.html">
+            View Recommendations
+          </a>
+        </header>
 
-          <br />
+        <section class="stats">
+          <div class="stat-card">
+            <strong data-dashboard-stat="completion">0%</strong>
+            <span>Profile completion</span>
+          </div>
 
-          <a class="secondary-btn" href="profile.html">Edit Preferences</a>
-        </aside>
-      </div>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("student");
-</script>
-</body>
+          <div class="stat-card">
+            <strong data-dashboard-stat="skills">0</strong>
+            <span>Technical skills</span>
+          </div>
+
+          <div class="stat-card">
+            <strong data-dashboard-stat="availableDays">0</strong>
+            <span>Available days</span>
+          </div>
+
+          <div class="stat-card">
+            <strong data-dashboard-stat="field">-</strong>
+            <span>Target field</span>
+          </div>
+        </section>
+
+        <div class="grid-2">
+          <section class="panel">
+            <h2>Next Steps</h2>
+
+            <ol class="clean-steps">
+              <li>Keep your profile information and technical skills updated.</li>
+              <li>Review internships in the Recommended tab.</li>
+              <li>Save internships you want to compare later.</li>
+              <li>Apply when an internship matches your skills and availability.</li>
+            </ol>
+          </section>
+
+          <aside class="panel">
+            <h2>Profile Progress</h2>
+
+            <div class="progress-ring">
+              <span data-dashboard-stat="completion">0%</span>
+            </div>
+
+            <p data-dashboard-message>
+              Loading your profile progress...
+            </p>
+
+            <br />
+
+            <a class="secondary-btn" href="profile.html">
+              Edit Profile
+            </a>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
+    <script src="../app.js"></script>
+
+    <script>
+      protectPage("student");
+    </script>
+  </body>
 </html>
