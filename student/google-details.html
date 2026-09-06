@@ -1,9 +1,9 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Google Internship Details</title>
+  <title>Internship Details - CareerMatch</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -15,9 +15,9 @@
       </div>
 
       <div class="user-card">
-        <div class="avatar">E</div>
+        <div class="avatar" id="studentAvatar">S</div>
         <div>
-          <strong>Eric #12H4E</strong>
+          <strong id="studentName">Student</strong>
           <span>Student</span>
         </div>
       </div>
@@ -40,31 +40,29 @@
       <header class="page-header">
         <div>
           <p><a href="matches.html">Back to Recommendations</a></p>
-          <h1>Internship Recommendation Details</h1>
+          <h1 id="detailPageTitle">Internship Recommendation Details</h1>
           <p>View detailed match analysis and internship information.</p>
         </div>
 
         <div>
-          <a class="primary-btn" href="applications.html">Apply Now</a>
-          <button class="secondary-btn" type="button" data-save-internship="google">Save Internship</button>
+          <button class="primary-btn" id="applyNowButton" type="button" disabled>Checking application...</button>
+          <a class="primary-btn" id="viewApplicationLink" href="applications.html" hidden>View Application</a>
+          <button class="secondary-btn" id="saveInternshipButton" type="button">Save Internship</button>
+          <p id="applicationActionMessage" class="auth-message" aria-live="polite"></p>
         </div>
       </header>
 
       <section class="panel">
         <div class="user-card">
-          <div class="avatar small">G</div>
+          <div class="avatar small" id="detailCompanyAvatar">C</div>
           <div>
-            <h2>Software Developer Intern</h2>
-            <p>Google</p>
+            <h2 id="detailListingTitle">Loading internship...</h2>
+            <p id="detailCompanyName">Company</p>
           </div>
         </div>
 
-        <p>
-          <span class="tag">Bangkok</span>
-          <span class="tag">3 months</span>
-          <span class="tag">Paid</span>
-          <span class="tag">On-site</span>
-          <span class="tag">Mentor Support</span>
+        <p id="detailListingTags">
+          <span class="tag">Loading details...</span>
         </p>
       </section>
 
@@ -77,29 +75,56 @@
 
             <div class="grid-2">
               <div>
-                <div class="progress-ring"><span>85%</span></div>
-                <p><strong>Great Match!</strong></p>
+                <div class="progress-ring" id="overallMatchRing"><span id="overallMatchScore">—</span></div>
+                <p><strong id="overallMatchLabel">Calculating...</strong></p>
               </div>
 
               <div class="bar-list">
+                <h3>Qualification <span id="qualificationScoreValue">—</span></h3>
                 <div>
-                  <div class="bar-label"><span>Skill Match</span><span>90%</span></div>
-                  <div class="bar"><span style="width: 90%"></span></div>
+                  <div class="bar-label"><span>Required Skills</span><span id="requiredSkillsMatchValue">—</span></div>
+                  <div class="bar"><span id="requiredSkillsMatchBar" style="width: 0"></span></div>
                 </div>
 
                 <div>
-                  <div class="bar-label"><span>Schedule Match</span><span>80%</span></div>
-                  <div class="bar"><span style="width: 80%"></span></div>
+                  <div class="bar-label"><span>Nice-to-Have Skills</span><span id="niceSkillsMatchValue">—</span></div>
+                  <div class="bar"><span id="niceSkillsMatchBar" style="width: 0"></span></div>
                 </div>
 
                 <div>
-                  <div class="bar-label"><span>Location Match</span><span>100%</span></div>
-                  <div class="bar"><span style="width: 100%"></span></div>
+                  <div class="bar-label"><span>Field and Major</span><span id="fieldMajorMatchValue">—</span></div>
+                  <div class="bar"><span id="fieldMajorMatchBar" style="width: 0"></span></div>
                 </div>
 
                 <div>
-                  <div class="bar-label"><span>Preference Match</span><span>70%</span></div>
-                  <div class="bar"><span style="width: 70%; background: var(--yellow)"></span></div>
+                  <div class="bar-label"><span>Year of Study</span><span id="yearMatchValue">—</span></div>
+                  <div class="bar"><span id="yearMatchBar" style="width: 0"></span></div>
+                </div>
+
+                <h3>Compatibility <span id="compatibilityScoreValue">—</span></h3>
+                <div>
+                  <div class="bar-label"><span>Availability</span><span id="availabilityMatchValue">—</span></div>
+                  <div class="bar"><span id="availabilityMatchBar" style="width: 0"></span></div>
+                </div>
+
+                <div>
+                  <div class="bar-label"><span>Location</span><span id="locationMatchValue">—</span></div>
+                  <div class="bar"><span id="locationMatchBar" style="width: 0"></span></div>
+                </div>
+
+                <div>
+                  <div class="bar-label"><span>Work Mode</span><span id="workModeMatchValue">—</span></div>
+                  <div class="bar"><span id="workModeMatchBar" style="width: 0"></span></div>
+                </div>
+
+                <div>
+                  <div class="bar-label"><span>Paid/Unpaid Preference</span><span id="allowanceMatchValue">—</span></div>
+                  <div class="bar"><span id="allowanceMatchBar" style="width: 0"></span></div>
+                </div>
+
+                <div>
+                  <div class="bar-label"><span>Mentorship</span><span id="mentorshipMatchValue">—</span></div>
+                  <div class="bar"><span id="mentorshipMatchBar" style="width: 0"></span></div>
                 </div>
               </div>
             </div>
@@ -111,62 +136,43 @@
             <h2>Skill Gap Analysis</h2>
 
             <h3>Matched Skills</h3>
-            <p>
-              <span class="tag good">Python</span>
-              <span class="tag good">JavaScript</span>
-              <span class="tag good">SQL</span>
-              <span class="tag good">Data Structures</span>
-              <span class="tag good">Git</span>
-              <span class="tag good">OOP</span>
-            </p>
+            <p id="matchedSkills"><span class="tag">Calculating...</span></p>
 
             <h3>Missing Skills</h3>
-            <p>
-              <span class="tag missing">React</span>
-              <span class="tag missing">Cloud Computing</span>
-              <span class="tag missing">System Design</span>
-            </p>
+            <p id="missingSkills"><span class="tag">Calculating...</span></p>
           </section>
 
           <br />
 
           <section class="panel">
             <h2>Job Description</h2>
-            <p>
-              As a Software Engineering Intern at Google, you will work with engineering teams
-              to develop and improve scalable software solutions.
-            </p>
-
-            <h3>What you will do</h3>
-            <ul>
-              <li>Assist in developing and maintaining web applications.</li>
-              <li>Collaborate with software engineers and project teams.</li>
-              <li>Write clean and efficient code.</li>
-              <li>Participate in debugging and testing processes.</li>
-            </ul>
+            <p id="detailDescription">Loading the company-provided internship description...</p>
           </section>
         </div>
 
         <aside class="panel">
           <h2>Why this is recommended for you</h2>
 
-          <ul class="reason-list">
-            <li><span class="check">✓</span><span>Your Python and problem-solving skills strongly align with the internship requirements.</span></li>
-            <li><span class="check">✓</span><span>Your available work days are compatible with the company's internship schedule.</span></li>
-            <li><span class="check">✓</span><span>This internship matches your preferred location in Bangkok.</span></li>
-            <li><span class="check">✓</span><span>The internship provides mentorship support and training opportunities.</span></li>
+          <ul class="reason-list" id="recommendationReasons">
+            <li><span class="check">…</span><span>Calculating the reasons for this recommendation.</span></li>
           </ul>
+
+          <br />
+
+          <h2>Listing Information</h2>
+          <ul class="detail-list" id="detailOverview"></ul>
         </aside>
       </section>
+
+      <p id="detailPageMessage" class="auth-message" aria-live="polite"></p>
     </main>
   </div>
 
-  <script src="../app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("student");
-</script>
+  <script src="../supabase-config.js"></script>
+  <script src="../guard.js"></script>
+  <script src="../app.js"></script>
+  <script src="matches.js"></script>
+  <script src="internship-details.js"></script>
 </body>
 </html>

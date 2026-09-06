@@ -15,9 +15,9 @@
         </div>
 
         <div class="user-card">
-          <div class="avatar">G</div>
+          <div class="avatar" id="companyAvatar">C</div>
           <div>
-            <strong>Google</strong>
+            <strong id="companyName">Company</strong>
             <span>Company</span>
           </div>
         </div>
@@ -32,7 +32,7 @@
 
         <div class="sidebar-bottom">
           <a href="#">Settings</a>
-          <a href="../index.html">Sign Out</a>
+          <a href="../index.html" id="signOutLink">Sign Out</a>
         </div>
       </aside>
 
@@ -45,21 +45,23 @@
           <a class="primary-btn" href="post-role.html">Post New Job</a>
         </header>
 
+        <p id="dashboardMessage" class="auth-message" aria-live="polite"></p>
+
         <section class="stats">
           <div class="stat-card">
-            <strong>4</strong>
-            <span>Active Manage Listings</span>
+            <strong id="activeListingsCount">—</strong>
+            <span>Active listings</span>
           </div>
           <div class="stat-card">
-            <strong>48</strong>
+            <strong id="dashboardApplicantsCount">—</strong>
             <span>Total applicants</span>
           </div>
           <div class="stat-card">
-            <strong>14</strong>
+            <strong id="dashboardHighFitCount">—</strong>
             <span>High-fit applicants</span>
           </div>
           <div class="stat-card">
-            <strong>7</strong>
+            <strong id="interviewCandidatesCount">—</strong>
             <span>Interview candidates</span>
           </div>
         </section>
@@ -74,44 +76,19 @@
               <a class="secondary-btn" href="job-posts.html">View Manage Listings</a>
             </div>
 
-            <div class="activity-list">
-              <article class="activity-item">
-                <span class="activity-dot green"></span>
-                <div>
-                  <h3>Eric #12H4E moved to interview</h3>
-                  <p>Software Developer Intern - 92% match</p>
-                </div>
-                <span class="status accepted">Interview</span>
-              </article>
-
-              <article class="activity-item">
-                <span class="activity-dot purple"></span>
-                <div>
-                  <h3>3 new applicants received</h3>
-                  <p>Frontend Developer Intern - remote role</p>
-                </div>
-                <span class="status review">New</span>
-              </article>
-
-              <article class="activity-item">
-                <span class="activity-dot yellow"></span>
-                <div>
-                  <h3>Data Analyst shortlist updated</h3>
-                  <p>2 applicants are ready for final review</p>
-                </div>
-                <span class="status review">Review</span>
-              </article>
+            <div class="activity-list" id="dashboardActivityList">
+              <article class="activity-item"><div><h3>Loading activity...</h3></div></article>
             </div>
           </section>
 
           <aside class="panel">
             <h2>Pipeline Summary</h2>
             <ul class="detail-list">
-              <li><span>New applications</span><strong>17</strong></li>
-              <li><span>Under review</span><strong>21</strong></li>
-              <li><span>Approved</span><strong>6</strong></li>
-              <li><span>Rejected</span><strong>4</strong></li>
-              <li><span>Interviews scheduled</span><strong>7</strong></li>
+              <li><span>New (last 7 days)</span><strong id="newApplicationsCount">—</strong></li>
+              <li><span>Under review</span><strong id="underReviewCount">—</strong></li>
+              <li><span>Approved</span><strong id="dashboardApprovedCount">—</strong></li>
+              <li><span>Rejected</span><strong id="dashboardRejectedCount">—</strong></li>
+              <li><span>Interviews scheduled</span><strong id="scheduledInterviewsCount">—</strong></li>
             </ul>
 
             <div class="stack-actions">
@@ -129,30 +106,8 @@
             </div>
           </div>
 
-          <div class="job-mini-grid">
-            <article class="job-mini-card">
-              <div>
-                <h3>Software Developer Intern</h3>
-                <p>18 applicants - 6 high-fit</p>
-              </div>
-              <a class="secondary-btn" href="applicants-software.html">Open</a>
-            </article>
-
-            <article class="job-mini-card">
-              <div>
-                <h3>Data Analyst Intern</h3>
-                <p>12 applicants - 4 high-fit</p>
-              </div>
-              <a class="secondary-btn" href="applicants-data.html">Open</a>
-            </article>
-
-            <article class="job-mini-card">
-              <div>
-                <h3>Frontend Developer Intern</h3>
-                <p>10 applicants - 3 high-fit</p>
-              </div>
-              <a class="secondary-btn" href="applicants-frontend.html">Open</a>
-            </article>
+          <div class="job-mini-grid" id="priorityListings">
+            <article class="job-mini-card"><div><h3>Loading listings...</h3></div></article>
           </div>
         </section>
       </main>
@@ -160,8 +115,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-config.js"></script>
 <script src="../guard.js"></script>
-<script>
-  protectPage("company");
-</script>
+<script src="dashboard.js"></script>
   </body>
 </html>

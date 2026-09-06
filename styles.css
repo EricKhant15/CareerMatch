@@ -484,6 +484,34 @@ textarea {
   grid-column: 1 / -1;
 }
 
+.recommendation-state-card {
+  grid-column: 1 / -1;
+  min-height: 180px;
+  align-content: center;
+}
+
+.recommendation-skill-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 18px;
+}
+
+.recommendation-score-summary {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.bar-list h3 {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 0;
+  color: var(--purple);
+}
+
 .company-image {
   height: 132px;
   background:
@@ -677,6 +705,18 @@ textarea {
   line-height: 1.45;
 }
 
+.reason-warning {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff1d6;
+  color: #a96b00;
+  font-size: 14px;
+  font-weight: 900;
+}
+
 .check {
   display: grid;
   place-items: center;
@@ -750,6 +790,13 @@ th {
   padding: 22px;
   background: white;
   box-shadow: 0 12px 34px rgba(50, 26, 83, 0.06);
+}
+
+.application-state-card {
+  grid-column: 1 / -1;
+  min-height: 180px;
+  align-content: center;
+  justify-items: start;
 }
 
 .application-card .primary-btn,
@@ -1217,6 +1264,14 @@ textarea {
   background: #fbfaff;
 }
 
+button.applicant-item {
+  width: 100%;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
 .applicant-item.active,
 .applicant-item:hover {
   border-color: var(--purple-line);
@@ -1266,6 +1321,55 @@ textarea {
   color: var(--red);
   font-weight: 800;
   cursor: pointer;
+}
+
+.job-post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.job-post-actions .primary-btn,
+.job-post-actions .danger-btn {
+  flex: 1 1 180px;
+  justify-content: center;
+}
+
+.listing-meta-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.listing-applicant-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid var(--purple-line);
+  border-radius: 999px;
+  background: var(--purple-soft);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.listing-applicant-count svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.listing-applicant-count strong {
+  font-size: 15px;
 }
 
 .review-grid {
@@ -1412,6 +1516,13 @@ textarea {
   padding: 22px;
   background: white;
   box-shadow: 0 12px 34px rgba(50, 26, 83, 0.06);
+}
+
+.listing-state-card {
+  grid-column: 1 / -1;
+  justify-items: start;
+  min-height: 180px;
+  align-content: center;
 }
 
 .job-post-top {

@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,9 +15,9 @@
         </div>
 
         <div class="user-card">
-          <div class="avatar">G</div>
+          <div class="avatar" id="companyAvatar">C</div>
           <div>
-            <strong>Google</strong>
+            <strong id="companyName">Company</strong>
             <span>Company</span>
           </div>
         </div>
@@ -32,14 +32,14 @@
 
         <div class="sidebar-bottom">
           <a href="#">Settings</a>
-          <a href="../index.html">Sign Out</a>
+          <a href="../index.html" id="signOutLink">Sign Out</a>
         </div>
       </aside>
 
       <main class="main company-main">
         <header class="page-header">
           <div>
-            <h1>Manage Listing</h1>
+            <h1>Manage Listings</h1>
             <p>Track every internship post and review applicants by position.</p>
           </div>
           <a class="primary-btn" href="post-role.html">Create Job Post</a>
@@ -47,131 +47,36 @@
 
         <section class="stats">
           <div class="stat-card">
-            <strong>4</strong>
+            <strong id="listedRolesCount">—</strong>
             <span>Listed roles</span>
           </div>
           <div class="stat-card">
-            <strong>48</strong>
+            <strong id="totalApplicantsCount">—</strong>
             <span>Total applicants</span>
           </div>
           <div class="stat-card">
-            <strong>14</strong>
+            <strong id="highFitApplicantsCount">—</strong>
             <span>High-fit applicants</span>
           </div>
           <div class="stat-card">
-            <strong>6</strong>
+            <strong id="approvedApplicantsCount">—</strong>
             <span>Approved applicants</span>
           </div>
         </section>
 
-        <section class="job-board">
-          <article class="job-post-card">
-            <div class="job-post-top">
-              <div class="job-icon">SDE</div>
-              <span class="status accepted">Open</span>
-            </div>
-            <h2>Software Developer Intern</h2>
-            <p>Backend-focused intern supporting APIs, database tasks, and internal tools.</p>
+        <p id="listingPageMessage" class="auth-message" aria-live="polite"></p>
 
-            <ul class="detail-list">
-              <li><span>Location</span><strong>Bangkok</strong></li>
-              <li><span>Mode</span><strong>On-site</strong></li>
-              <li><span>Duration</span><strong>3 months</strong></li>
-              <li><span>Applicants</span><strong>18</strong></li>
-              <li><span>High-fit</span><strong>6</strong></li>
-            </ul>
-
-            <div class="skill-row">
-              <span class="tag">Python</span>
-              <span class="tag">SQL</span>
-              <span class="tag">Git</span>
-            </div>
-
-            <a class="primary-btn" href="applicants-software.html">See Details</a>
-          </article>
-
-          <article class="job-post-card">
-            <div class="job-post-top">
-              <div class="job-icon">DATA</div>
-              <span class="status accepted">Open</span>
-            </div>
-            <h2>Data Analyst Intern</h2>
-            <p>Analytics intern helping with dashboards, reports, insights, and data cleanup.</p>
-
-            <ul class="detail-list">
-              <li><span>Location</span><strong>Bangkok</strong></li>
-              <li><span>Mode</span><strong>Hybrid</strong></li>
-              <li><span>Duration</span><strong>4 months</strong></li>
-              <li><span>Applicants</span><strong>12</strong></li>
-              <li><span>High-fit</span><strong>4</strong></li>
-            </ul>
-
-            <div class="skill-row">
-              <span class="tag">Excel</span>
-              <span class="tag">SQL</span>
-              <span class="tag">Python</span>
-            </div>
-
-            <a class="primary-btn" href="applicants-data.html">See Details</a>
-          </article>
-
-          <article class="job-post-card">
-            <div class="job-post-top">
-              <div class="job-icon">WEB</div>
-              <span class="status review">Reviewing</span>
-            </div>
-            <h2>Frontend Developer Intern</h2>
-            <p>Frontend intern building responsive interfaces and improving web usability.</p>
-
-            <ul class="detail-list">
-              <li><span>Location</span><strong>Remote</strong></li>
-              <li><span>Mode</span><strong>Remote</strong></li>
-              <li><span>Duration</span><strong>6 months</strong></li>
-              <li><span>Applicants</span><strong>10</strong></li>
-              <li><span>High-fit</span><strong>3</strong></li>
-            </ul>
-
-            <div class="skill-row">
-              <span class="tag">HTML</span>
-              <span class="tag">CSS</span>
-              <span class="tag">React</span>
-            </div>
-
-            <a class="primary-btn" href="applicants-frontend.html">See Details</a>
-          </article>
-
-          <article class="job-post-card">
-            <div class="job-post-top">
-              <div class="job-icon">UX</div>
-              <span class="status review">Draft</span>
-            </div>
-            <h2>UI/UX Design Intern</h2>
-            <p>Design intern supporting wireframes, user research, prototypes, and usability checks.</p>
-
-            <ul class="detail-list">
-              <li><span>Location</span><strong>Bangkok</strong></li>
-              <li><span>Mode</span><strong>Hybrid</strong></li>
-              <li><span>Duration</span><strong>3 months</strong></li>
-              <li><span>Applicants</span><strong>8</strong></li>
-              <li><span>High-fit</span><strong>1</strong></li>
-            </ul>
-
-            <div class="skill-row">
-              <span class="tag">Figma</span>
-              <span class="tag">Research</span>
-              <span class="tag">Wireframes</span>
-            </div>
-
-            <a class="primary-btn" href="applicants-ux.html">See Details</a>
+        <section class="job-board" id="jobBoard" aria-busy="true">
+          <article class="job-post-card listing-state-card">
+            <h2>Loading listings...</h2>
+            <p>Your latest internship posts are being retrieved.</p>
           </article>
         </section>
       </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("company");
-</script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
+    <script src="job-posts.js"></script>
   </body>
 </html>

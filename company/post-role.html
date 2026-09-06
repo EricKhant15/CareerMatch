@@ -1,214 +1,399 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Post Job - CareerMatch</title>
-    <link rel="stylesheet" href="../styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div class="logo">
-          <span class="logo-mark">CM</span>
-          <span>Career<span class="brand-purple">Match</span></span>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Internship Listing - CareerMatch</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="logo">
+        <span class="logo-mark">CM</span>
+        <span>Career<span class="brand-purple">Match</span></span>
+      </div>
+
+      <div class="user-card">
+        <div class="avatar" id="companyAvatar">C</div>
+        <div>
+          <strong id="companyName">Company</strong>
+          <span>Company</span>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a class="active" href="post-role.html">Create Listing</a>
+        <a href="job-posts.html">Manage Listings</a>
+        <a href="approved.html">Approved</a>
+        <a href="interviews.html">Interviews</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <a href="#">Settings</a>
+        <a href="../index.html" id="signOutLink">Sign Out</a>
+      </div>
+    </aside>
+
+    <main class="main company-main">
+      <header class="page-header">
+        <div>
+          <h1>Create Internship Listing</h1>
+          <p>
+            Publish a structured internship opportunity for student matching.
+          </p>
         </div>
 
-        <div class="user-card">
-          <div class="avatar">G</div>
-          <div>
-            <strong>Google</strong>
-            <span>Company</span>
-          </div>
-        </div>
+        <button
+          class="primary-btn"
+          id="publishListingButton"
+          type="submit"
+          form="internshipPostForm"
+        >
+          Publish Listing
+        </button>
+      </header>
 
-        <nav class="nav">
-          <a href="dashboard.html">Dashboard</a>
-          <a class="active" href="post-role.html">Create Listing</a>
-          <a href="job-posts.html">Manage Listing</a>
-          <a href="approved.html">Approved</a>
-          <a href="interviews.html">Interviews</a>
-        </nav>
-
-        <div class="sidebar-bottom">
-          <a href="#">Settings</a>
-          <a href="../index.html">Sign Out</a>
-        </div>
-      </aside>
-
-      <main class="main company-main">
-        <header class="page-header">
-          <div>
-            <h1>Post Internship Job</h1>
-            <p>Create a clear internship post so students can be recommended correctly.</p>
-          </div>
-          <a class="primary-btn" href="job-posts.html">Publish Post</a>
-        </header>
-
+      <form id="internshipPostForm">
         <div class="post-layout">
-          <section class="panel">
-            <div class="section-title-row">
-              <div>
-                <h2>Job Information</h2>
-                <p>Basic role details shown to student applicants.</p>
-              </div>
-            </div>
+          <div>
+            <section class="panel">
+              <h2>Internship Information</h2>
+              <p class="section-description">
+                Enter the main information students will see.
+              </p>
 
-            <div class="form-grid">
-              <div class="form-card">
-                <label>
-                  Job title
-                  <input value="Software Developer Intern" />
-                </label>
-              </div>
+              <div class="form-grid">
+                <div class="form-card">
+                  <label for="listingTitle">Position title</label>
+                  <input
+                    id="listingTitle"
+                    name="title"
+                    type="text"
+                    placeholder="Software Developer Intern"
+                    required
+                  />
+                </div>
 
-              <div class="form-card">
-                <label>
-                  Department
-                  <input value="Engineering" />
-                </label>
-              </div>
+                <div class="form-card">
+                  <label for="listingDepartment">Department</label>
+                  <input
+                    id="listingDepartment"
+                    name="department"
+                    type="text"
+                    placeholder="Engineering"
+                    required
+                  />
+                </div>
 
-              <div class="form-card">
-                <label>
-                  Location
-                  <input value="Bangkok" />
-                </label>
-              </div>
+                <div class="form-card">
+                  <label for="listingLocation">Location</label>
+                  <input
+                    id="listingLocation"
+                    name="location"
+                    type="text"
+                    placeholder="Bangkok"
+                    required
+                  />
+                </div>
 
-              <div class="form-card">
-                <label>
-                  Work mode
-                  <select>
-                    <option>On-site</option>
-                    <option>Hybrid</option>
-                    <option>Remote</option>
+                <div class="form-card">
+                  <label for="listingWorkMode">Work mode</label>
+                  <select id="listingWorkMode" name="work_mode" required>
+                    <option value="">Select work mode</option>
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Remote">Remote</option>
                   </select>
-                </label>
-              </div>
+                </div>
 
-              <div class="form-card">
-                <label>
-                  Duration
-                  <select>
-                    <option>3 months</option>
-                    <option>4 months</option>
-                    <option>6 months</option>
+                <div class="form-card">
+                  <label for="listingDuration">Duration</label>
+                  <select id="listingDuration" name="duration" required>
+                    <option value="">Select duration</option>
+                    <option value="2 months">2 months</option>
+                    <option value="3 months">3 months</option>
+                    <option value="4 months">4 months</option>
+                    <option value="6 months">6 months</option>
+                    <option value="12 months">12 months</option>
                   </select>
-                </label>
-              </div>
+                </div>
 
-              <div class="form-card">
-                <label>
-                  Allowance
-                  <select>
-                    <option>Paid</option>
-                    <option>Unpaid</option>
+                <div class="form-card">
+                  <label for="listingAllowance">Allowance</label>
+                  <select id="listingAllowance" name="allowance" required>
+                    <option value="">Select allowance</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Unpaid">Unpaid</option>
                   </select>
-                </label>
-              </div>
-            </div>
+                </div>
 
-            <div class="form-card full-field">
-              <label>
-                Job description
-                <textarea>Interns will work with engineering teams to develop internal tools, improve software features, learn code review workflows, and support database-related tasks.</textarea>
-              </label>
-            </div>
-          </section>
+                <div class="form-card">
+                  <label for="targetField">Target internship field</label>
+                  <select id="targetField" name="target_field" required>
+                    <option value="">Select target field</option>
+                    <option value="Software Engineering">
+                      Software Engineering
+                    </option>
+                    <option value="Data Analytics">Data Analytics</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="UI/UX Design">UI/UX Design</option>
+                    <option value="Cloud Computing">Cloud Computing</option>
+                    <option value="AI/Machine Learning">
+                      AI/Machine Learning
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-card">
+                  <label for="listingOpenings">Available positions</label>
+                  <input
+                    id="listingOpenings"
+                    name="openings"
+                    type="number"
+                    min="1"
+                    max="100"
+                    value="1"
+                    required
+                  />
+                </div>
+
+                <div class="form-card">
+                  <label for="applicationDeadline">
+                    Application deadline
+                  </label>
+                  <input
+                    id="applicationDeadline"
+                    name="application_deadline"
+                    type="date"
+                    required
+                  />
+                </div>
+
+                <div class="form-card">
+                  <label for="listingMentorship">Mentorship</label>
+                  <select id="listingMentorship" name="mentorship" required>
+                    <option value="">Select mentorship option</option>
+                    <option value="Provided">Provided</option>
+                    <option value="Limited">Limited</option>
+                    <option value="Not provided">Not provided</option>
+                  </select>
+                </div>
+
+                <div class="form-card full-field">
+                  <label for="listingDescription">Internship description</label>
+                  <textarea
+                    id="listingDescription"
+                    name="description"
+                    rows="6"
+                    minlength="40"
+                    placeholder="Describe the responsibilities, projects, learning opportunities, and expected outcomes."
+                    required
+                  ></textarea>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2>Required Skills</h2>
+              <p class="section-description">
+                Add skills applicants must have and select the minimum level.
+              </p>
+
+              <div class="skill-level-panel">
+                <div class="skill-entry-row">
+                  <label>
+                    Skill
+                    <input
+                      id="requiredSkillInput"
+                      list="requiredSkillOptions"
+                      type="text"
+                      autocomplete="off"
+                      placeholder="Start typing a skill"
+                    />
+                    <datalist id="requiredSkillOptions"></datalist>
+                  </label>
+
+                  <label>
+                    Minimum level
+                    <select id="requiredSkillLevel">
+                      <option value="1">Beginner - Level 1</option>
+                      <option value="2" selected>
+                        Intermediate - Level 2
+                      </option>
+                      <option value="3">Advanced - Level 3</option>
+                    </select>
+                  </label>
+
+                  <button
+                    id="addRequiredSkillButton"
+                    class="secondary-btn"
+                    type="button"
+                  >
+                    Add Skill
+                  </button>
+                </div>
+
+                <div
+                  id="requiredSkillList"
+                  class="skill-level-list input-list"
+                ></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2>Nice-to-Have Skills</h2>
+              <p class="section-description">
+                Add optional skills that improve an applicant's match score.
+              </p>
+
+              <div class="skill-level-panel">
+                <div class="skill-entry-row">
+                  <label>
+                    Skill
+                    <input
+                      id="niceSkillInput"
+                      list="niceSkillOptions"
+                      type="text"
+                      autocomplete="off"
+                      placeholder="Start typing a skill"
+                    />
+                    <datalist id="niceSkillOptions"></datalist>
+                  </label>
+
+                  <label>
+                    Preferred level
+                    <select id="niceSkillLevel">
+                      <option value="1" selected>
+                        Beginner - Level 1
+                      </option>
+                      <option value="2">Intermediate - Level 2</option>
+                      <option value="3">Advanced - Level 3</option>
+                    </select>
+                  </label>
+
+                  <button
+                    id="addNiceSkillButton"
+                    class="secondary-btn"
+                    type="button"
+                  >
+                    Add Skill
+                  </button>
+                </div>
+
+                <div
+                  id="niceSkillList"
+                  class="skill-level-list input-list"
+                ></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <h2>Applicant Preferences</h2>
+              <p class="section-description">
+                These values support the recommendation and matching score.
+              </p>
+
+              <div class="form-grid">
+                <div class="form-card">
+                  <label for="preferredMajor">Preferred major</label>
+                  <select id="preferredMajor" name="preferred_major">
+                    <option value="">Any relevant major</option>
+                    <option value="Computer Science">Computer Science</option>
+                    <option value="Information Technology">
+                      Information Technology
+                    </option>
+                    <option value="Software Engineering">
+                      Software Engineering
+                    </option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="Design">Design</option>
+                  </select>
+                </div>
+
+                <div class="form-card">
+                  <label for="preferredYear">Preferred year of study</label>
+                  <select id="preferredYear" name="preferred_year">
+                    <option value="">Any year</option>
+                    <option value="First year">First year</option>
+                    <option value="Second year">Second year</option>
+                    <option value="Third year">Third year</option>
+                    <option value="Final year">Final year</option>
+                  </select>
+                </div>
+
+                <div class="form-card">
+                  <label for="minimumAvailability">
+                    Minimum availability
+                  </label>
+                  <select
+                    id="minimumAvailability"
+                    name="minimum_availability"
+                  >
+                    <option value="">No minimum</option>
+                    <option value="2 days per week">2 days per week</option>
+                    <option value="3 days per week">3 days per week</option>
+                    <option value="4 days per week">4 days per week</option>
+                    <option value="5 days per week">5 days per week</option>
+                    <option value="Full-time">Full-time</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <p id="listingMessage" class="auth-message" aria-live="polite"></p>
+          </div>
 
           <aside class="panel post-preview">
-            <h2>Post Preview</h2>
-            <div class="job-icon">SDE</div>
-            <h3>Software Developer Intern</h3>
-            <p>Bangkok - On-site - 3 months - Paid</p>
+            <h2>Listing Preview</h2>
 
-            <div class="skill-row">
-              <span class="tag">Python</span>
-              <span class="tag">SQL</span>
-              <span class="tag">Git</span>
+            <div class="preview-icon" id="previewIcon">IN</div>
+
+            <h3 id="previewTitle">Internship position</h3>
+            <p id="previewMeta">Location - Work mode - Duration</p>
+
+            <div class="tag-row" id="previewSkills">
+              <span class="tag">Required skills</span>
             </div>
 
-            <ul class="detail-list">
-              <li><span>Recommended for</span><strong>CS / IT students</strong></li>
-              <li><span>Mentorship</span><strong>Provided</strong></li>
-              <li><span>Status</span><strong>Draft</strong></li>
-            </ul>
+            <div class="detail-list">
+              <div>
+                <span>Target field</span>
+                <strong id="previewField">Not selected</strong>
+              </div>
+
+              <div>
+                <span>Mentorship</span>
+                <strong id="previewMentorship">Not selected</strong>
+              </div>
+
+              <div>
+                <span>Openings</span>
+                <strong id="previewOpenings">1</strong>
+              </div>
+
+              <div>
+                <span>Deadline</span>
+                <strong id="previewDeadline">Not set</strong>
+              </div>
+
+              <div>
+                <span>Status</span>
+                <strong>Draft</strong>
+              </div>
+            </div>
           </aside>
         </div>
+      </form>
+    </main>
+  </div>
 
-        <section class="panel">
-          <div class="section-title-row">
-            <div>
-              <h2>Matching Requirements</h2>
-              <p>CareerMatch will use these fields for applicant recommendations.</p>
-            </div>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-card">
-              <label>
-                Required skills
-                <input value="Python, SQL, Git, Data Structures" />
-              </label>
-            </div>
-
-            <div class="form-card">
-              <label>
-                Nice-to-have skills
-                <input value="JavaScript, APIs, Cloud basics" />
-              </label>
-            </div>
-
-            <div class="form-card">
-              <label>
-                Preferred major
-                <input value="Computer Science, IT, Software Engineering" />
-              </label>
-            </div>
-
-            <div class="form-card">
-              <label>
-                Minimum availability
-                <select>
-                  <option>3 days per week</option>
-                  <option>4 days per week</option>
-                  <option>Full time</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="form-card">
-              <label>
-                Preferred year
-                <select>
-                  <option>Final year</option>
-                  <option>Third year</option>
-                  <option>Any year</option>
-                </select>
-              </label>
-            </div>
-
-            <div class="form-card">
-              <label>
-                Mentorship
-                <select>
-                  <option>Provided</option>
-                  <option>Limited</option>
-                  <option>Not provided</option>
-                </select>
-              </label>
-            </div>
-          </div>
-        </section>
-      </main>
-    </div>
-    
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("company");
-</script>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../supabase-config.js"></script>
+  <script src="../guard.js"></script>
+  <script src="post-role.js"></script>
+</body>
 </html>

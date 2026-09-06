@@ -1315,8 +1315,14 @@ function refreshHeartButtons() {
         isSaved
       );
 
-      button.textContent =
-        isSaved ? "♥" : "♡";
+      if (button.id === "saveInternshipButton") {
+        button.textContent = isSaved
+          ? "♥ Saved"
+          : "♡ Save Internship";
+      } else {
+        button.textContent =
+          isSaved ? "♥" : "♡";
+      }
     });
 }
 

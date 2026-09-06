@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,9 +14,9 @@
           <span>Career<span class="brand-purple">Match</span></span>
         </div>
         <div class="user-card">
-          <div class="avatar">E</div>
+          <div class="avatar" id="studentAvatar">S</div>
           <div>
-            <strong>Eric #12H4E</strong>
+            <strong id="studentName">Student</strong>
             <span>Student</span>
           </div>
         </div>
@@ -43,175 +43,26 @@
         </header>
 
         <section class="stats">
-          <div class="stat-card"><strong>4</strong><span>Total applications</span></div>
-          <div class="stat-card"><strong>1</strong><span>Under review</span></div>
-          <div class="stat-card"><strong>1</strong><span>Interview scheduled</span></div>
-          <div class="stat-card"><strong>1</strong><span>Accepted offer</span></div>
+          <div class="stat-card"><strong id="totalApplicationsCount">—</strong><span>Total applications</span></div>
+          <div class="stat-card"><strong id="underReviewCount">—</strong><span>Under review</span></div>
+          <div class="stat-card"><strong id="interviewCount">—</strong><span>Interview scheduled</span></div>
+          <div class="stat-card"><strong id="acceptedCount">—</strong><span>Accepted offer</span></div>
         </section>
 
-        <section class="application-board">
-          <article class="application-card">
-            <div class="application-top">
-              <div>
-                <h2>Google</h2>
-                <p>Software Developer Intern</p>
-              </div>
-              <span class="status interview">Interview Scheduled</span>
-            </div>
-            <ul class="detail-list">
-              <li><span>Applied date</span><strong>02/05/2026</strong></li>
-              <li><span>Last update</span><strong>Interview invite received</strong></li>
-            </ul>
-            <a class="primary-btn" href="#google-interview">View Interview Schedule</a>
+        <p id="applicationsMessage" class="auth-message" aria-live="polite"></p>
+
+        <section class="application-board" id="applicationsBoard" aria-busy="true">
+          <article class="application-card application-state-card">
+            <h2>Loading applications...</h2>
+            <p>Your application history is being retrieved.</p>
           </article>
-
-          <article class="application-card">
-            <div class="application-top">
-              <div>
-                <h2>Agoda</h2>
-                <p>Frontend Developer Intern</p>
-              </div>
-              <span class="status review">Under Review</span>
-            </div>
-            <ul class="detail-list">
-              <li><span>Applied date</span><strong>28/05/2026</strong></li>
-              <li><span>Last update</span><strong>Company is reviewing your profile</strong></li>
-            </ul>
-            <a class="secondary-btn" href="#agoda-review">View Status</a>
-          </article>
-
-          <article class="application-card">
-            <div class="application-top">
-              <div>
-                <h2>KBTG</h2>
-                <p>Backend Developer Intern</p>
-              </div>
-              <span class="status accepted">Accepted</span>
-            </div>
-            <ul class="detail-list">
-              <li><span>Applied date</span><strong>02/05/2026</strong></li>
-              <li><span>Start date</span><strong>01/08/2026</strong></li>
-            </ul>
-            <a class="secondary-btn" href="#kbtg-accepted">View Offer</a>
-          </article>
-
-          <article class="application-card">
-            <div class="application-top">
-              <div>
-                <h2>Microsoft</h2>
-                <p>Data Analyst Intern</p>
-              </div>
-              <span class="status rejected">Rejected</span>
-            </div>
-            <ul class="detail-list">
-              <li><span>Applied date</span><strong>12/05/2026</strong></li>
-              <li><span>Reason</span><strong>Position filled</strong></li>
-            </ul>
-            <a class="secondary-btn" href="#microsoft-rejected">View Feedback</a>
-          </article>
-        </section>
-
-        <section class="application-detail-wrap">
-          <section class="panel application-empty">
-            <h2>Application Details</h2>
-            <p>Select a card above to view the full application progress, interview schedule, offer, or feedback.</p>
-          </section>
-
-          <section class="panel application-detail" id="google-interview">
-            <a class="back-link" href="applications.html">Back to applications</a>
-            <div class="section-title-row">
-              <div>
-                <h2>Interview Schedule</h2>
-                <p>Google sent these interview details for your Software Developer Intern application.</p>
-              </div>
-              <span class="status interview">Action needed</span>
-            </div>
-            <ol class="application-steps detail-steps">
-              <li class="done">Application sent</li>
-              <li class="done">Under review</li>
-              <li class="active">Interview scheduled</li>
-              <li>Final decision</li>
-            </ol>
-            <div class="detail-grid">
-              <div class="detail-box"><span>Date</span><strong>15/07/2026</strong></div>
-              <div class="detail-box"><span>Time</span><strong>2:00 PM</strong></div>
-              <div class="detail-box"><span>Type</span><strong>Online</strong></div>
-              <div class="detail-box"><span>Interviewer</span><strong>Engineering Lead</strong></div>
-              <div class="detail-box wide"><span>Meeting link</span><strong>https://meet.google.com/careermatch-demo</strong></div>
-              <div class="detail-box wide"><span>Instructions</span><strong>Prepare to explain one Python or database project. Bring your CV and be ready for a short technical discussion.</strong></div>
-            </div>
-            <div class="decision-actions left">
-              <button class="primary-btn" type="button">Confirm Interview</button>
-              <button class="secondary-btn" type="button">Request Reschedule</button>
-            </div>
-          </section>
-
-          <section class="panel application-detail" id="agoda-review">
-            <a class="back-link" href="applications.html">Back to applications</a>
-            <div class="section-title-row">
-              <div>
-                <h2>Under Review</h2>
-                <p>Agoda has received your application and is checking your profile.</p>
-              </div>
-              <span class="status review">Waiting</span>
-            </div>
-            <ol class="application-steps detail-steps">
-              <li class="done">Application sent</li>
-              <li class="active">Under review</li>
-              <li>Interview</li>
-              <li>Final decision</li>
-            </ol>
-            <p class="muted-text">No action is needed from you yet. If you are shortlisted, the interview schedule will appear here.</p>
-          </section>
-
-          <section class="panel application-detail" id="kbtg-accepted">
-            <a class="back-link" href="applications.html">Back to applications</a>
-            <div class="section-title-row">
-              <div>
-                <h2>Accepted Offer</h2>
-                <p>KBTG accepted your Backend Developer Intern application.</p>
-              </div>
-              <span class="status accepted">Accepted</span>
-            </div>
-            <ol class="application-steps detail-steps">
-              <li class="done">Application sent</li>
-              <li class="done">Under review</li>
-              <li class="done">Interview</li>
-              <li class="done">Accepted</li>
-            </ol>
-            <div class="detail-grid">
-              <div class="detail-box"><span>Start date</span><strong>01/08/2026</strong></div>
-              <div class="detail-box"><span>Duration</span><strong>3 months</strong></div>
-              <div class="detail-box"><span>Allowance</span><strong>Paid</strong></div>
-              <div class="detail-box"><span>Work mode</span><strong>Hybrid</strong></div>
-              <div class="detail-box wide"><span>Next step</span><strong>HR will contact you for documents and onboarding confirmation.</strong></div>
-            </div>
-          </section>
-
-          <section class="panel application-detail" id="microsoft-rejected">
-            <a class="back-link" href="applications.html">Back to applications</a>
-            <div class="section-title-row">
-              <div>
-                <h2>Application Result</h2>
-                <p>Microsoft has closed this application.</p>
-              </div>
-              <span class="status rejected">Rejected</span>
-            </div>
-            <ol class="application-steps detail-steps">
-              <li class="done">Application sent</li>
-              <li class="done">Under review</li>
-              <li class="rejected-step">Rejected</li>
-            </ol>
-            <p class="muted-text">Reason: the position was filled before your application reached the final review. Your profile and skills are still saved for future recommendations.</p>
-          </section>
         </section>
       </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("student");
-</script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
+    <script src="../app.js"></script>
+    <script src="applications.js"></script>
   </body>
 </html>
