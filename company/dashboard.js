@@ -85,24 +85,13 @@ function calculateDashboardQualification(listing, student, skills) {
     getDashboardRequirements(listing, "nice_to_have"),
     skills
   );
-  const fieldMajor = [];
-
-  if (listing.target_field) {
-    fieldMajor.push(
-      normalizeDashboardText(student.preferred_field) ===
+  const targetFieldRatio = listing.target_field
+    ? normalizeDashboardText(student.preferred_field) ===
       normalizeDashboardText(listing.target_field) ? 1 : 0
-    );
-  }
-
-  if (listing.preferred_major) {
-    fieldMajor.push(
-      normalizeDashboardText(student.major) ===
+    : 1;
+  const majorRatio = listing.preferred_major
+    ? normalizeDashboardText(student.major) ===
       normalizeDashboardText(listing.preferred_major) ? 1 : 0
-    );
-  }
-
-  const fieldMajorRatio = fieldMajor.length
-    ? fieldMajor.reduce((total, ratio) => total + ratio, 0) / fieldMajor.length
     : 1;
   const yearRatio = listing.preferred_year
     ? normalizeDashboardText(student.year_of_study) ===
@@ -110,7 +99,7 @@ function calculateDashboardQualification(listing, student, skills) {
     : 1;
 
   return Math.round(
-    requiredRatio * 60 + niceRatio * 15 + fieldMajorRatio * 15 + yearRatio * 10
+    requiredRatio * 60 + niceRatio * 15 + targetFieldRatio * 15 + majorRatio * 5 + yearRatio * 5
   );
 }
 

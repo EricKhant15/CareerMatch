@@ -157,25 +157,13 @@ function calculateManageQualification(listing, student, skills) {
     getManageListingRequirements(listing, "nice_to_have"),
     skills
   );
-  const profileRatios = [];
-
-  if (listing.target_field) {
-    profileRatios.push(
-      normalizeQualificationText(student.preferred_field) ===
+  const targetFieldRatio = listing.target_field
+    ? normalizeQualificationText(student.preferred_field) ===
       normalizeQualificationText(listing.target_field) ? 1 : 0
-    );
-  }
-
-  if (listing.preferred_major) {
-    profileRatios.push(
-      normalizeQualificationText(student.major) ===
+    : 1;
+  const majorRatio = listing.preferred_major
+    ? normalizeQualificationText(student.major) ===
       normalizeQualificationText(listing.preferred_major) ? 1 : 0
-    );
-  }
-
-  const fieldMajorRatio = profileRatios.length
-    ? profileRatios.reduce((total, ratio) => total + ratio, 0) /
-      profileRatios.length
     : 1;
   const yearRatio = listing.preferred_year
     ? normalizeQualificationText(student.year_of_study) ===
@@ -185,8 +173,9 @@ function calculateManageQualification(listing, student, skills) {
   return Math.round(
     requiredRatio * 60 +
     niceRatio * 15 +
-    fieldMajorRatio * 15 +
-    yearRatio * 10
+    targetFieldRatio * 15 +
+    majorRatio * 5 +
+    yearRatio * 5
   );
 }
 

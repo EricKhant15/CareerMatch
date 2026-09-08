@@ -131,7 +131,7 @@
                 </div>
 
                 <div class="form-card">
-                  <label for="targetField">Target internship field</label>
+                  <label for="targetField">Target internship field (15% qualification)</label>
                   <select id="targetField" name="target_field" required>
                     <option value="">Select target field</option>
                     <option value="Software Engineering">
@@ -197,7 +197,7 @@
             </section>
 
             <section class="panel">
-              <h2>Required Skills</h2>
+              <h2>Required Skills (60% of Qualification)</h2>
               <p class="section-description">
                 Add skills applicants must have and select the minimum level.
               </p>
@@ -244,7 +244,7 @@
             </section>
 
             <section class="panel">
-              <h2>Nice-to-Have Skills</h2>
+              <h2>Nice-to-Have Skills (15% of Qualification)</h2>
               <p class="section-description">
                 Add optional skills that improve an applicant's match score.
               </p>
@@ -291,14 +291,16 @@
             </section>
 
             <section class="panel">
-              <h2>Applicant Preferences</h2>
+              <h2>Recommendation and Applicant Preferences</h2>
               <p class="section-description">
-                These values support the recommendation and matching score.
+                Preferred major and year contribute to qualification ranking.
+                Minimum availability contributes to the student's compatibility
+                score and remains visible to the company during review.
               </p>
 
               <div class="form-grid">
                 <div class="form-card">
-                  <label for="preferredMajor">Preferred major</label>
+                  <label for="preferredMajor">Preferred major (5% qualification)</label>
                   <select id="preferredMajor" name="preferred_major">
                     <option value="">Any relevant major</option>
                     <option value="Computer Science">Computer Science</option>
@@ -315,7 +317,7 @@
                 </div>
 
                 <div class="form-card">
-                  <label for="preferredYear">Preferred year of study</label>
+                  <label for="preferredYear">Preferred year (5% qualification)</label>
                   <select id="preferredYear" name="preferred_year">
                     <option value="">Any year</option>
                     <option value="First year">First year</option>
@@ -327,7 +329,7 @@
 
                 <div class="form-card">
                   <label for="minimumAvailability">
-                    Minimum availability
+                    Minimum availability (student compatibility)
                   </label>
                   <select
                     id="minimumAvailability"

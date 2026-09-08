@@ -65,21 +65,13 @@ function calculateApplicantQualification(student, skills) {
   const requiredRatio = calculateApplicantSkillRatio(required, skills);
   const niceRatio = calculateApplicantSkillRatio(nice, skills);
 
-  const profileRatios = [];
-  if (applicantReviewState.listing.target_field) {
-    profileRatios.push(
-      normalizeApplicantText(student.preferred_field) ===
+  const targetFieldRatio = applicantReviewState.listing.target_field
+    ? normalizeApplicantText(student.preferred_field) ===
       normalizeApplicantText(applicantReviewState.listing.target_field) ? 1 : 0
-    );
-  }
-  if (applicantReviewState.listing.preferred_major) {
-    profileRatios.push(
-      normalizeApplicantText(student.major) ===
+    : 1;
+  const majorRatio = applicantReviewState.listing.preferred_major
+    ? normalizeApplicantText(student.major) ===
       normalizeApplicantText(applicantReviewState.listing.preferred_major) ? 1 : 0
-    );
-  }
-  const fieldMajorRatio = profileRatios.length
-    ? profileRatios.reduce((sum, value) => sum + value, 0) / profileRatios.length
     : 1;
   const yearRatio = applicantReviewState.listing.preferred_year
     ? normalizeApplicantText(student.year_of_study) ===
@@ -87,7 +79,7 @@ function calculateApplicantQualification(student, skills) {
     : 1;
 
   return Math.round(
-    requiredRatio * 60 + niceRatio * 15 + fieldMajorRatio * 15 + yearRatio * 10
+    requiredRatio * 60 + niceRatio * 15 + targetFieldRatio * 15 + majorRatio * 5 + yearRatio * 5
   );
 }
 

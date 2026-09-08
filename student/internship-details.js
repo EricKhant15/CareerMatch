@@ -134,7 +134,8 @@ function renderInternshipDetails(recommendation, profile) {
 
   setMatchBar("requiredSkills", recommendation.breakdown.requiredSkills);
   setMatchBar("niceSkills", recommendation.breakdown.niceSkills);
-  setMatchBar("fieldMajor", recommendation.breakdown.fieldMajor);
+  setMatchBar("targetField", recommendation.breakdown.targetField);
+  setMatchBar("major", recommendation.breakdown.major);
   setMatchBar("year", recommendation.breakdown.year);
   setMatchBar("availability", recommendation.breakdown.availability);
   setMatchBar("location", recommendation.breakdown.location);
@@ -167,8 +168,8 @@ function renderInternshipDetails(recommendation, profile) {
   );
   addRecommendationReason(
     reasons,
-    recommendation.breakdown.fieldMajor === 100,
-    recommendation.breakdown.fieldMajor === 100
+    recommendation.breakdown.targetField === 100,
+    recommendation.breakdown.targetField === 100
       ? `The internship matches your preferred field: ${profile.field}.`
       : `The internship field differs from your preference: ${profile.field || "not set"}.`
   );

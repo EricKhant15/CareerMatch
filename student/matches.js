@@ -8,8 +8,9 @@ const recommendationState = {
 const QUALIFICATION_WEIGHTS = {
   requiredSkills: 60,
   niceSkills: 15,
-  fieldMajor: 15,
-  year: 10,
+  targetField: 15,
+  major: 5,
+  year: 5,
 };
 
 const COMPATIBILITY_WEIGHTS = {
@@ -210,27 +211,14 @@ function calculateRecommendation(listing, profile) {
     studentSkillMap
   );
 
-  const fieldMajorRatios = [];
-
-  if (listing.target_field) {
-    fieldMajorRatios.push(
-      normalizeMatchText(profile.field) ===
-        normalizeMatchText(listing.target_field)
-        ? 1
-        : 0
-    );
-  }
-
-  if (listing.preferred_major) {
-    fieldMajorRatios.push(
-      normalizeMatchText(profile.major) ===
-        normalizeMatchText(listing.preferred_major)
-        ? 1
-        : 0
-    );
-  }
-
-  const fieldMajorRatio = averageRatios(fieldMajorRatios);
+  const targetFieldRatio = listing.target_field
+    ? normalizeMatchText(profile.field) ===
+      normalizeMatchText(listing.target_field) ? 1 : 0
+    : 1;
+  const majorRatio = listing.preferred_major
+    ? normalizeMatchText(profile.major) ===
+      normalizeMatchText(listing.preferred_major) ? 1 : 0
+    : 1;
   const yearRatio = listing.preferred_year
     ? normalizeMatchText(profile.year) ===
       normalizeMatchText(listing.preferred_year)
@@ -241,7 +229,8 @@ function calculateRecommendation(listing, profile) {
   const qualificationScore = Math.round(
     requiredSkillResult.ratio * QUALIFICATION_WEIGHTS.requiredSkills +
       niceSkillResult.ratio * QUALIFICATION_WEIGHTS.niceSkills +
-      fieldMajorRatio * QUALIFICATION_WEIGHTS.fieldMajor +
+      targetFieldRatio * QUALIFICATION_WEIGHTS.targetField +
+      majorRatio * QUALIFICATION_WEIGHTS.major +
       yearRatio * QUALIFICATION_WEIGHTS.year
   );
 
@@ -302,7 +291,8 @@ function calculateRecommendation(listing, profile) {
   const breakdown = {
     requiredSkills: Math.round(requiredSkillResult.ratio * 100),
     niceSkills: Math.round(niceSkillResult.ratio * 100),
-    fieldMajor: Math.round(fieldMajorRatio * 100),
+    targetField: Math.round(targetFieldRatio * 100),
+    major: Math.round(majorRatio * 100),
     year: Math.round(yearRatio * 100),
     availability:
       availabilityRatio === null ? null : Math.round(availabilityRatio * 100),
