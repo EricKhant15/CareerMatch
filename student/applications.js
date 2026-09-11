@@ -2,10 +2,18 @@ const studentApplicationsState = {
   applications: [],
   listings: new Map(),
   companies: new Map(),
+  notifications: [],
+  profileId: null,
 };
 
 function getApplicationsElement(id) {
   return document.getElementById(id);
+}
+
+function isValidApplicationUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    String(value || "")
+  );
 }
 
 function showApplicationsMessage(message, type = "info") {
@@ -78,8 +86,20 @@ function createApplicationCard(application) {
   details.append(
     createApplicationDetail("Applied date", formatApplicationDate(application.applied_at)),
     createApplicationDetail("Location", listing?.location),
-    createApplicationDetail("Work mode", listing?.work_mode)
+    createApplicationDetail("Work mode", listing?.work_mode),
+    createApplicationDetail("CV submitted", application.cv_filename || "No CV attached")
   );
+
+  if (listing?.status && listing.status !== "Open") {
+    const listingMessage = document.createElement("p");
+    listingMessage.className = "application-listing-notice";
+    listingMessage.textContent = listing.status === "Filled"
+      ? "All positions for this internship have been filled. Your application remains in your history."
+      : `This internship is currently ${listing.status.toLowerCase()} and is not accepting new applications.`;
+    card.append(top, details, listingMessage);
+  } else {
+    card.append(top, details);
+  }
 
   const link = document.createElement("a");
   link.className = "secondary-btn";
@@ -88,8 +108,86 @@ function createApplicationCard(application) {
     : "matches.html";
   link.textContent = "View Internship";
 
-  card.append(top, details, link);
+  card.append(link);
   return card;
+}
+
+function formatNotificationDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : new Intl.DateTimeFormat("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
+function renderStudentNotifications() {
+  const panel = getApplicationsElement("studentNotificationsPanel");
+  const list = getApplicationsElement("studentNotificationList");
+  list.replaceChildren();
+
+  if (!studentApplicationsState.notifications.length) {
+    panel.hidden = true;
+    return;
+  }
+
+  panel.hidden = false;
+  studentApplicationsState.notifications.forEach((notification) => {
+    const item = document.createElement("article");
+    item.className = `notification-item${notification.is_read ? "" : " unread"}`;
+    const content = document.createElement("div");
+    const title = document.createElement("h3");
+    title.textContent = notification.title;
+    const message = document.createElement("p");
+    message.textContent = notification.message;
+    const date = document.createElement("small");
+    date.textContent = formatNotificationDate(notification.created_at);
+    content.append(title, message, date);
+    item.appendChild(content);
+
+    if (notification.listing_id) {
+      const link = document.createElement("a");
+      link.className = "secondary-btn";
+      link.href = `google-details.html?listing_id=${encodeURIComponent(notification.listing_id)}`;
+      link.textContent = "View Update";
+      item.appendChild(link);
+    }
+    list.appendChild(item);
+  });
+}
+
+async function loadStudentNotifications() {
+  const { data, error } = await supabaseClient
+    .from("notifications")
+    .select("id, listing_id, title, message, is_read, created_at")
+    .eq("recipient_profile_id", studentApplicationsState.profileId)
+    .order("created_at", { ascending: false })
+    .limit(10);
+  if (error) throw error;
+  studentApplicationsState.notifications = data || [];
+}
+
+async function markNotificationsRead() {
+  const unreadIds = studentApplicationsState.notifications
+    .filter((notification) => !notification.is_read)
+    .map((notification) => notification.id);
+  if (!unreadIds.length) return;
+
+  const { error } = await supabaseClient
+    .from("notifications")
+    .update({ is_read: true })
+    .in("id", unreadIds);
+  if (error) {
+    showApplicationsMessage(error.message, "error");
+    return;
+  }
+  studentApplicationsState.notifications.forEach((notification) => {
+    notification.is_read = true;
+  });
+  renderStudentNotifications();
 }
 
 function renderApplicationStats() {
@@ -140,6 +238,7 @@ async function loadStudentApplications() {
     error: userError,
   } = await supabaseClient.auth.getUser();
   if (userError || !user) throw userError || new Error("No signed-in student found.");
+  studentApplicationsState.profileId = user.id;
 
   const { data: student, error: studentError } = await supabaseClient
     .from("students")
@@ -150,7 +249,7 @@ async function loadStudentApplications() {
 
   const { data, error } = await supabaseClient
     .from("applications")
-    .select("id, listing_id, status, applied_at")
+    .select("id, listing_id, status, applied_at, cv_path, cv_filename")
     .eq("student_id", student.id)
     .order("applied_at", { ascending: false });
   if (error) throw error;
@@ -160,13 +259,17 @@ async function loadStudentApplications() {
 
 async function loadApplicationListings() {
   const listingIds = [
-    ...new Set(studentApplicationsState.applications.map((item) => item.listing_id)),
+    ...new Set(
+      studentApplicationsState.applications
+        .map((item) => item.listing_id)
+        .filter(isValidApplicationUuid)
+    ),
   ];
   if (listingIds.length === 0) return;
 
   const { data, error } = await supabaseClient
     .from("internship_listings")
-    .select("id, company_id, title, location, work_mode")
+    .select("id, company_id, title, location, work_mode, status")
     .in("id", listingIds);
   if (error) throw error;
 
@@ -180,7 +283,7 @@ async function loadApplicationCompanies() {
     ...new Set(
       [...studentApplicationsState.listings.values()].map(
         (listing) => listing.company_id
-      )
+      ).filter(isValidApplicationUuid)
     ),
   ];
   if (companyIds.length === 0) return;
@@ -207,9 +310,16 @@ async function setupApplicationsPage() {
     getApplicationsElement("studentAvatar").textContent =
       studentName.charAt(0).toUpperCase();
 
+    getApplicationsElement("markNotificationsReadButton").addEventListener(
+      "click",
+      markNotificationsRead
+    );
+
     await loadStudentApplications();
+    await loadStudentNotifications();
     await loadApplicationListings();
     await loadApplicationCompanies();
+    renderStudentNotifications();
     renderApplicationStats();
     renderApplications();
 

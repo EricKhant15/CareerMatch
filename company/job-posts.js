@@ -76,7 +76,7 @@ function getStatusClass(status) {
     return "accepted";
   }
 
-  if (["closed", "archived", "rejected"].includes(normalizedStatus)) {
+  if (["closed", "filled", "cancelled", "archived", "rejected"].includes(normalizedStatus)) {
     return "rejected";
   }
 
@@ -286,6 +286,11 @@ function createListingCard(listing) {
   detailsLink.href = `applicants.html?listing_id=${encodeURIComponent(listing.id)}`;
   detailsLink.textContent = "View Applicants";
 
+  const editLink = document.createElement("a");
+  editLink.className = "secondary-btn";
+  editLink.href = `post-role.html?listing_id=${encodeURIComponent(listing.id)}`;
+  editLink.textContent = "Edit Listing";
+
   const actions = document.createElement("div");
   actions.className = "job-post-actions";
 
@@ -300,7 +305,46 @@ function createListingCard(listing) {
       "Listings with applications cannot be deleted. Close the listing instead.";
   }
 
-  actions.append(detailsLink, deleteButton);
+  actions.append(detailsLink, editLink);
+
+  const normalizedStatus = String(listing.status || "").toLowerCase();
+
+  if (normalizedStatus === "open") {
+    const closeButton = document.createElement("button");
+    closeButton.className = "secondary-btn";
+    closeButton.type = "button";
+    closeButton.dataset.listingStatus = "Closed";
+    closeButton.dataset.listingId = listing.id;
+    closeButton.textContent = "Close Applications";
+
+    const fillButton = document.createElement("button");
+    fillButton.className = "secondary-btn";
+    fillButton.type = "button";
+    fillButton.dataset.listingStatus = "Filled";
+    fillButton.dataset.listingId = listing.id;
+    fillButton.textContent = "Mark as Filled";
+    actions.append(closeButton, fillButton);
+  } else {
+    const reopenButton = document.createElement("button");
+    reopenButton.className = "secondary-btn";
+    reopenButton.type = "button";
+    reopenButton.dataset.listingStatus = "Open";
+    reopenButton.dataset.listingId = listing.id;
+    reopenButton.textContent = "Reopen Listing";
+    actions.appendChild(reopenButton);
+
+    if (normalizedStatus !== "archived") {
+      const archiveButton = document.createElement("button");
+      archiveButton.className = "secondary-btn";
+      archiveButton.type = "button";
+      archiveButton.dataset.listingStatus = "Archived";
+      archiveButton.dataset.listingId = listing.id;
+      archiveButton.textContent = "Archive Listing";
+      actions.appendChild(archiveButton);
+    }
+  }
+
+  actions.appendChild(deleteButton);
   card.append(top, title, description, details, skills, actions);
   return card;
 }
@@ -579,8 +623,74 @@ async function deleteListing(listingId, button) {
   }
 }
 
+async function updateListingStatus(listingId, nextStatus, button) {
+  const listing = manageListingsState.listings.find((item) => item.id === listingId);
+  if (!listing) return;
+
+  const messages = {
+    Closed: "Applications are now closed for this internship.",
+    Filled: "All positions have been filled. This internship is no longer accepting applications.",
+    Archived: "This internship was archived and remains available in application history.",
+    Open: "This internship reopened and is accepting applications again.",
+  };
+  const confirmed = window.confirm(
+    `${nextStatus === "Open" ? "Reopen" : nextStatus} “${listing.title}”? Applied students will be notified.`
+  );
+  if (!confirmed) return;
+
+  button.disabled = true;
+  setManageMessage(`Updating listing status to ${nextStatus}...`);
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("internship_listings")
+      .update({ status: nextStatus, updated_at: new Date().toISOString() })
+      .eq("id", listingId)
+      .eq("company_id", manageListingsState.company.id)
+      .select("id, status")
+      .single();
+    if (error) throw error;
+
+    listing.status = data.status;
+    renderListings();
+
+    const applications = getApplicationsForListing(listingId);
+    if (applications.length) {
+      const { error: notificationError } = await supabaseClient.rpc(
+        "notify_listing_applicants",
+        { p_listing_id: listingId, p_summary: messages[nextStatus] }
+      );
+      if (notificationError) {
+        console.error(notificationError);
+        setManageMessage(
+          `${messages[nextStatus]} However, applied students could not be notified: ${notificationError.message}`,
+          "error"
+        );
+        return;
+      }
+    }
+
+    setManageMessage(messages[nextStatus], "success");
+  } catch (error) {
+    console.error(error);
+    button.disabled = false;
+    setManageMessage(error.message || "The listing status could not be updated.", "error");
+  }
+}
+
 function bindManageListingsEvents() {
   getManageElement("jobBoard").addEventListener("click", (event) => {
+    const statusButton = event.target.closest("[data-listing-status]");
+
+    if (statusButton) {
+      updateListingStatus(
+        statusButton.dataset.listingId,
+        statusButton.dataset.listingStatus,
+        statusButton
+      );
+      return;
+    }
+
     const deleteButton = event.target.closest("[data-delete-listing]");
 
     if (!deleteButton) {

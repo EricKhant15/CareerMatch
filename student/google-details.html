@@ -150,8 +150,23 @@
           <br />
 
           <section class="panel">
-            <h2>Job Description</h2>
+            <h2>Responsibilities and Internship Description</h2>
             <p id="detailDescription">Loading the company-provided internship description...</p>
+          </section>
+
+          <br />
+
+          <section class="panel internship-experience-panel">
+            <h2>What You Will Learn</h2>
+            <p id="detailLearningOutcomes">The company has not provided learning outcomes yet.</p>
+
+            <h2>Internship Benefits</h2>
+            <p id="detailInternshipBenefits">The company has not listed additional benefits.</p>
+
+            <h2>Documents Provided Upon Completion</h2>
+            <div class="tag-row" id="detailCompletionDocuments">
+              <span class="tag">No completion documents listed</span>
+            </div>
           </section>
         </div>
 
@@ -172,6 +187,31 @@
       <p id="detailPageMessage" class="auth-message" aria-live="polite"></p>
     </main>
   </div>
+
+  <dialog class="cv-dialog" id="cvApplicationDialog">
+    <form id="cvApplicationForm">
+      <div class="section-title-row">
+        <div>
+          <h2>Submit Your Application</h2>
+          <p>Attach the CV you want this company to review.</p>
+        </div>
+        <button class="dialog-close-button" id="closeCvDialogButton" type="button" aria-label="Close">×</button>
+      </div>
+
+      <label class="cv-upload-field">
+        CV document
+        <input id="applicationCvInput" type="file" accept="application/pdf,.pdf" required />
+        <small>PDF only, maximum file size 5 MB.</small>
+      </label>
+
+      <p id="cvDialogMessage" class="auth-message" aria-live="polite"></p>
+
+      <div class="decision-actions">
+        <button class="secondary-btn" id="cancelCvApplicationButton" type="button">Cancel</button>
+        <button class="primary-btn" id="submitCvApplicationButton" type="submit">Submit Application</button>
+      </div>
+    </form>
+  </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../supabase-config.js"></script>

@@ -40,7 +40,7 @@
     <main class="main company-main">
       <header class="page-header">
         <div>
-          <h1>Create Internship Listing</h1>
+          <h1 id="listingFormTitle">Create Internship Listing</h1>
           <p>
             Publish a structured internship opportunity for student matching.
           </p>
@@ -183,17 +183,61 @@
                 </div>
 
                 <div class="form-card full-field">
-                  <label for="listingDescription">Internship description</label>
+                  <label for="listingDescription">Responsibilities and internship description</label>
                   <textarea
                     id="listingDescription"
                     name="description"
                     rows="6"
                     minlength="40"
-                    placeholder="Describe the responsibilities, projects, learning opportunities, and expected outcomes."
+                    placeholder="Describe the work, responsibilities, and projects the intern will complete."
                     required
                   ></textarea>
                 </div>
               </div>
+            </section>
+
+            <section class="panel">
+              <h2>Student Experience</h2>
+              <p class="section-description">
+                Explain what students will learn and receive from the internship.
+                These details are informative and do not affect the match score.
+              </p>
+
+              <div class="form-grid">
+                <div class="form-card full-field">
+                  <label for="learningOutcomes">What the student will learn</label>
+                  <textarea
+                    id="learningOutcomes"
+                    name="learning_outcomes"
+                    rows="5"
+                    minlength="30"
+                    placeholder="Describe the knowledge, technical experience, and professional skills the student can gain."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-card full-field">
+                  <label for="internshipBenefits">Internship benefits</label>
+                  <textarea
+                    id="internshipBenefits"
+                    name="internship_benefits"
+                    rows="4"
+                    placeholder="For example: technical training, real projects, feedback, networking, or equipment."
+                  ></textarea>
+                </div>
+              </div>
+
+              <fieldset class="form-card full-field completion-documents-fieldset">
+                <legend>Documents provided upon completion</legend>
+                <div class="choice-buttons compact completion-document-options">
+                  <label><input type="checkbox" name="completion_documents" value="Internship certificate" /><span>Internship certificate</span></label>
+                  <label><input type="checkbox" name="completion_documents" value="Completion letter" /><span>Completion letter</span></label>
+                  <label><input type="checkbox" name="completion_documents" value="Attendance log" /><span>Attendance log</span></label>
+                  <label><input type="checkbox" name="completion_documents" value="Supervisor evaluation form" /><span>Supervisor evaluation form</span></label>
+                  <label><input type="checkbox" name="completion_documents" value="University internship documents" /><span>University internship documents</span></label>
+                  <label><input type="checkbox" name="completion_documents" value="Recommendation letter based on performance" /><span>Recommendation letter based on performance</span></label>
+                </div>
+              </fieldset>
             </section>
 
             <section class="panel">

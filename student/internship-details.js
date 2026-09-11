@@ -5,6 +5,7 @@ function getInternshipDetailElement(id) {
 const internshipDetailState = {
   listing: null,
   studentId: null,
+  userId: null,
   application: null,
 };
 
@@ -108,6 +109,21 @@ function renderInternshipDetails(recommendation, profile) {
     companyName.charAt(0).toUpperCase();
   getInternshipDetailElement("detailDescription").textContent =
     recommendation.description || "No internship description was provided.";
+  getInternshipDetailElement("detailLearningOutcomes").textContent =
+    recommendation.learning_outcomes || "The company has not provided learning outcomes yet.";
+  getInternshipDetailElement("detailInternshipBenefits").textContent =
+    recommendation.internship_benefits || "The company has not listed additional benefits.";
+
+  const completionDocuments = getInternshipDetailElement("detailCompletionDocuments");
+  completionDocuments.replaceChildren();
+  const documents = recommendation.completion_documents || [];
+  if (documents.length) {
+    documents.forEach((documentName) => {
+      completionDocuments.appendChild(createDetailTag(documentName, "tag good"));
+    });
+  } else {
+    completionDocuments.appendChild(createDetailTag("No completion documents listed"));
+  }
 
   const tags = getInternshipDetailElement("detailListingTags");
   tags.replaceChildren(
@@ -239,6 +255,18 @@ function renderApplicationAction() {
     return;
   }
 
+  if (internshipDetailState.listing.status !== "Open") {
+    applyButton.hidden = false;
+    applyButton.disabled = true;
+    applyButton.textContent = `Applications ${internshipDetailState.listing.status}`;
+    viewLink.hidden = true;
+    showApplicationActionMessage(
+      `This internship is ${internshipDetailState.listing.status.toLowerCase()} and is not accepting applications.`,
+      "info"
+    );
+    return;
+  }
+
   applyButton.hidden = false;
   applyButton.disabled = false;
   applyButton.textContent = "Apply Now";
@@ -266,12 +294,13 @@ async function loadStudentId() {
   }
 
   internshipDetailState.studentId = student.id;
+  internshipDetailState.userId = user.id;
 }
 
 async function loadExistingApplication() {
   const { data, error } = await supabaseClient
     .from("applications")
-    .select("id, status, applied_at")
+    .select("id, status, applied_at, cv_path, cv_filename")
     .eq("student_id", internshipDetailState.studentId)
     .eq("listing_id", internshipDetailState.listing.id)
     .maybeSingle();
@@ -284,28 +313,77 @@ async function loadExistingApplication() {
   renderApplicationAction();
 }
 
-async function submitApplication() {
+function showCvDialogMessage(message, type = "info") {
+  const element = getInternshipDetailElement("cvDialogMessage");
+  element.textContent = message;
+  element.style.color = { error: "#d92d3e", success: "#169c4b", info: "#7224e8" }[type];
+}
+
+function openCvApplicationDialog() {
+  showCvDialogMessage("");
+  getInternshipDetailElement("applicationCvInput").value = "";
+  getInternshipDetailElement("cvApplicationDialog").showModal();
+}
+
+function closeCvApplicationDialog() {
+  getInternshipDetailElement("cvApplicationDialog").close();
+}
+
+async function submitApplication(event) {
+  event.preventDefault();
   const applyButton = getInternshipDetailElement("applyNowButton");
+  const submitButton = getInternshipDetailElement("submitCvApplicationButton");
+  const file = getInternshipDetailElement("applicationCvInput").files[0];
+
+  const isPdf = file && (
+    file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf")
+  );
+
+  if (!isPdf) {
+    showCvDialogMessage("Choose a PDF file before submitting.", "error");
+    return;
+  }
+
+  if (file.size > 5 * 1024 * 1024) {
+    showCvDialogMessage("The CV must be 5 MB or smaller.", "error");
+    return;
+  }
+
   applyButton.disabled = true;
   applyButton.textContent = "Submitting...";
+  submitButton.disabled = true;
+  submitButton.textContent = "Uploading CV...";
   showApplicationActionMessage("Submitting your application...");
 
+  const safeFilename = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const cvPath = `${internshipDetailState.userId}/${internshipDetailState.listing.id}/${Date.now()}-${safeFilename}`;
+
   try {
+    const { error: uploadError } = await supabaseClient.storage
+      .from("application-cvs")
+      .upload(cvPath, file, { contentType: "application/pdf", upsert: false });
+
+    if (uploadError) throw uploadError;
+
     const { data, error } = await supabaseClient
       .from("applications")
       .insert({
         student_id: internshipDetailState.studentId,
         listing_id: internshipDetailState.listing.id,
         status: "Under Review",
+        cv_path: cvPath,
+        cv_filename: file.name,
       })
-      .select("id, status, applied_at")
+      .select("id, status, applied_at, cv_path, cv_filename")
       .single();
 
     if (error) {
+      await supabaseClient.storage.from("application-cvs").remove([cvPath]);
       throw error;
     }
 
     internshipDetailState.application = data;
+    closeCvApplicationDialog();
     renderApplicationAction();
     showApplicationActionMessage(
       "Application submitted successfully.",
@@ -316,11 +394,20 @@ async function submitApplication() {
 
     if (error.code === "23505") {
       await loadExistingApplication();
+      closeCvApplicationDialog();
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit Application";
       return;
     }
 
     applyButton.disabled = false;
     applyButton.textContent = "Apply Now";
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Application";
+    showCvDialogMessage(
+      error.message || "Your application could not be submitted.",
+      "error"
+    );
     showApplicationActionMessage(
       error.message || "Your application could not be submitted.",
       "error"
@@ -331,8 +418,11 @@ async function submitApplication() {
 function bindApplicationAction() {
   getInternshipDetailElement("applyNowButton").addEventListener(
     "click",
-    submitApplication
+    openCvApplicationDialog
   );
+  getInternshipDetailElement("cvApplicationForm").addEventListener("submit", submitApplication);
+  getInternshipDetailElement("closeCvDialogButton").addEventListener("click", closeCvApplicationDialog);
+  getInternshipDetailElement("cancelCvApplicationButton").addEventListener("click", closeCvApplicationDialog);
 }
 
 function formatListingDateForDetails(value) {
@@ -352,10 +442,9 @@ async function loadSelectedInternship(listingId) {
   const { data, error } = await supabaseClient
     .from("internship_listings")
     .select(
-      "id, company_id, title, department, description, location, work_mode, duration, allowance, target_field, minimum_availability, preferred_major, preferred_year, mentorship, required_skills, nice_to_have_skills, status, application_deadline, openings, created_at"
+      "id, company_id, title, department, description, learning_outcomes, internship_benefits, completion_documents, location, work_mode, duration, allowance, target_field, minimum_availability, preferred_major, preferred_year, mentorship, required_skills, nice_to_have_skills, status, application_deadline, openings, created_at, updated_at"
     )
     .eq("id", listingId)
-    .eq("status", "Open")
     .single();
 
   if (error) {

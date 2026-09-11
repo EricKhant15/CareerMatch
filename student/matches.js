@@ -127,12 +127,14 @@ function calculateSkillMatch(requirements, studentSkillMap, trackGaps = false) {
       ratio: 1,
       matchedSkills: [],
       missingSkills: [],
+      skillStatuses: [],
     };
   }
 
   let earnedRatio = 0;
   const matchedSkills = [];
   const missingSkills = [];
+  const skillStatuses = [];
 
   requirements.forEach((requirement) => {
     const key = normalizeMatchSkill(
@@ -140,10 +142,17 @@ function calculateSkillMatch(requirements, studentSkillMap, trackGaps = false) {
     );
     const studentSkill = studentSkillMap.get(key);
     const requiredLevel = Number(requirement.minimum_level) || 1;
+    const skillName = requirement.skill_name || studentSkill?.name || "Required skill";
 
     if (!studentSkill) {
+      skillStatuses.push({
+        name: skillName,
+        matched: false,
+        studentLevel: 0,
+        requiredLevel,
+      });
       if (trackGaps) {
-        missingSkills.push(requirement.skill_name || "Required skill");
+        missingSkills.push(skillName);
       }
       return;
     }
@@ -152,13 +161,32 @@ function calculateSkillMatch(requirements, studentSkillMap, trackGaps = false) {
     earnedRatio += levelRatio;
 
     if (studentSkill.level >= requiredLevel) {
+      skillStatuses.push({
+        name: skillName,
+        matched: true,
+        studentLevel: studentSkill.level,
+        requiredLevel,
+      });
       if (trackGaps) {
-        matchedSkills.push(requirement.skill_name || studentSkill.name);
+        matchedSkills.push(skillName);
       }
     } else if (trackGaps) {
+      skillStatuses.push({
+        name: skillName,
+        matched: false,
+        studentLevel: studentSkill.level,
+        requiredLevel,
+      });
       missingSkills.push(
-        `${requirement.skill_name || studentSkill.name} (higher level needed)`
+        `${skillName} (higher level needed)`
       );
+    } else {
+      skillStatuses.push({
+        name: skillName,
+        matched: false,
+        studentLevel: studentSkill.level,
+        requiredLevel,
+      });
     }
   });
 
@@ -166,6 +194,7 @@ function calculateSkillMatch(requirements, studentSkillMap, trackGaps = false) {
     ratio: earnedRatio / requirements.length,
     matchedSkills,
     missingSkills,
+    skillStatuses,
   };
 }
 
@@ -318,6 +347,7 @@ function calculateRecommendation(listing, profile) {
     breakdown,
     matchedSkills: requiredSkillResult.matchedSkills,
     missingSkills: requiredSkillResult.missingSkills,
+    requiredSkillStatuses: requiredSkillResult.skillStatuses,
   };
 }
 
@@ -364,12 +394,34 @@ function createRecommendationCard(recommendation) {
     createDetailItem("Location", recommendation.location),
     createDetailItem("Duration", recommendation.duration),
     createDetailItem("Allowance", recommendation.allowance),
-    createDetailItem("Mode", recommendation.work_mode),
-    createDetailItem(
-      "Required skills",
-      (recommendation.required_skills || []).join(", ") || "None listed"
-    )
+    createDetailItem("Mode", recommendation.work_mode)
   );
+
+  const requiredSkillsItem = document.createElement("li");
+  requiredSkillsItem.className = "required-skills-detail";
+  const requiredSkillsLabel = document.createElement("span");
+  requiredSkillsLabel.textContent = "Required skills";
+  const requiredSkillsText = document.createElement("strong");
+  requiredSkillsText.className = "required-skills-text";
+
+  if (recommendation.requiredSkillStatuses.length) {
+    recommendation.requiredSkillStatuses.forEach((skill, index) => {
+      const skillText = document.createElement("span");
+      skillText.className = `skill-fit-text ${skill.matched ? "matched" : "unmatched"}`;
+      skillText.textContent = `${index ? ", " : ""}${skill.name}`;
+      skillText.title = skill.matched
+        ? `${skill.name}: required level met`
+        : skill.studentLevel
+          ? `${skill.name}: your level ${skill.studentLevel}, required level ${skill.requiredLevel}`
+          : `${skill.name}: not listed in your profile`;
+      requiredSkillsText.appendChild(skillText);
+    });
+  } else {
+    requiredSkillsText.textContent = "None listed";
+  }
+
+  requiredSkillsItem.append(requiredSkillsLabel, requiredSkillsText);
+  details.appendChild(requiredSkillsItem);
 
   const skillSummary = document.createElement("div");
   skillSummary.className = "recommendation-skill-summary";

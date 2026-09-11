@@ -174,6 +174,11 @@ function renderSelectedApplicant() {
   getApplicantElement("selectedApplicantWorkStyle").textContent =
     applicant.student.work_style || "—";
 
+  const cvButton = getApplicantElement("viewApplicantCvButton");
+  getApplicantElement("selectedApplicantCvName").textContent =
+    applicant.application.cv_filename || "No CV was submitted with this application.";
+  cvButton.disabled = !applicant.application.cv_path;
+
   getApplicantElement("acceptApplicantButton").disabled = false;
   getApplicantElement("rejectApplicantButton").disabled = false;
   showApplicantMessage("applicantActionMessage", `Current status: ${applicant.application.status}`);
@@ -257,9 +262,81 @@ async function updateSelectedApplication(status) {
   }
 
   applicant.application.status = status;
+  let completionMessage = `Application marked ${status}.`;
+
+  if (status === "Accepted") {
+    const acceptedCount = applicantReviewState.applicants.filter(
+      (item) => item.application.status === "Accepted"
+    ).length;
+    const openings = Number(applicantReviewState.listing.openings) || 1;
+
+    if (
+      acceptedCount >= openings &&
+      applicantReviewState.listing.status === "Open" &&
+      window.confirm(
+        `All ${openings} available ${openings === 1 ? "position has" : "positions have"} been filled. Close this listing as Filled?`
+      )
+    ) {
+      const { error: listingError } = await supabaseClient
+        .from("internship_listings")
+        .update({ status: "Filled", updated_at: new Date().toISOString() })
+        .eq("id", applicantReviewState.listing.id)
+        .eq("company_id", applicantReviewState.company.id);
+
+      if (listingError) {
+        console.error(listingError);
+        completionMessage = `Application marked ${status}, but the listing could not be marked Filled: ${listingError.message}`;
+      } else {
+        applicantReviewState.listing.status = "Filled";
+        const { error: notificationError } = await supabaseClient.rpc("notify_listing_applicants", {
+          p_listing_id: applicantReviewState.listing.id,
+          p_summary: "All available positions have been filled. This internship is no longer accepting applications.",
+        });
+        completionMessage = notificationError
+          ? `Application marked ${status} and the listing was filled, but students could not be notified: ${notificationError.message}`
+          : `Application marked ${status}. The listing is now Filled and applied students were notified.`;
+        if (notificationError) console.error(notificationError);
+      }
+    }
+  }
+
   renderApplicantStats();
   renderSelectedApplicant();
-  showApplicantMessage("applicantActionMessage", `Application marked ${status}.`, "success");
+  showApplicantMessage(
+    "applicantActionMessage",
+    completionMessage,
+    completionMessage.includes("could not") ? "error" : "success"
+  );
+}
+
+async function viewSelectedApplicantCv() {
+  const applicant = getSelectedApplicant();
+  if (!applicant?.application.cv_path) return;
+
+  const button = getApplicantElement("viewApplicantCvButton");
+  const cvWindow = window.open("", "_blank");
+  button.disabled = true;
+  button.textContent = "Opening...";
+
+  const { data, error } = await supabaseClient.storage
+    .from("application-cvs")
+    .createSignedUrl(applicant.application.cv_path, 300);
+
+  button.disabled = false;
+  button.textContent = "View CV";
+
+  if (error) {
+    cvWindow?.close();
+    showApplicantMessage("applicantActionMessage", error.message, "error");
+    return;
+  }
+
+  if (cvWindow) {
+    cvWindow.opener = null;
+    cvWindow.location = data.signedUrl;
+  } else {
+    window.location.href = data.signedUrl;
+  }
 }
 
 async function loadApplicantReviewData(listingId) {
@@ -285,7 +362,7 @@ async function loadApplicantReviewData(listingId) {
 
   const { data: applications, error: applicationsError } = await supabaseClient
     .from("applications")
-    .select("id, student_id, status, applied_at")
+    .select("id, student_id, status, applied_at, cv_path, cv_filename")
     .eq("listing_id", listingId);
   if (applicationsError) throw applicationsError;
 
@@ -337,6 +414,7 @@ async function loadApplicantReviewData(listingId) {
 function bindApplicantReviewEvents() {
   getApplicantElement("acceptApplicantButton").addEventListener("click", () => updateSelectedApplication("Accepted"));
   getApplicantElement("rejectApplicantButton").addEventListener("click", () => updateSelectedApplication("Rejected"));
+  getApplicantElement("viewApplicantCvButton").addEventListener("click", viewSelectedApplicantCv);
   getApplicantElement("signOutLink").addEventListener("click", async (event) => {
     event.preventDefault();
     await supabaseClient.auth.signOut();

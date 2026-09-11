@@ -431,6 +431,21 @@ function renderSkillList(containerSelector, skills) {
 
 let skillCatalogCache = null;
 
+const ACADEMIC_SKILL_KEYS = new Set([
+  "c",
+  "java",
+  "python",
+  "javascript",
+  "html",
+  "css",
+  "sql",
+  "git",
+  "linux",
+  "excel",
+  "pandas",
+  "figma",
+]);
+
 async function loadSkillCatalog() {
   if (skillCatalogCache) {
     return skillCatalogCache;
@@ -447,7 +462,9 @@ async function loadSkillCatalog() {
     throw error;
   }
 
-  skillCatalogCache = data || [];
+  skillCatalogCache = (data || []).filter((skill) =>
+    ACADEMIC_SKILL_KEYS.has(normalizeSkillKey(skill.name))
+  );
   return skillCatalogCache;
 }
 

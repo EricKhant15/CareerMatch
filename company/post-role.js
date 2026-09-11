@@ -3,6 +3,9 @@ const listingState = {
     skillCatalog: [],
     requiredSkills: [],
     niceSkills: [],
+    editListingId: null,
+    originalListing: null,
+    originalSkillRows: [],
   };
   
   const SKILL_LEVELS = {
@@ -19,6 +22,21 @@ const listingState = {
       className: "advanced",
     },
   };
+
+  const ACADEMIC_SKILL_KEYS = new Set([
+    "c",
+    "java",
+    "python",
+    "javascript",
+    "html",
+    "css",
+    "sql",
+    "git",
+    "linux",
+    "excel",
+    "pandas",
+    "figma",
+  ]);
   
   function normalizeText(value) {
     return String(value || "")
@@ -417,7 +435,9 @@ const listingState = {
       throw error;
     }
   
-    listingState.skillCatalog = data || [];
+    listingState.skillCatalog = (data || []).filter((skill) =>
+      ACADEMIC_SKILL_KEYS.has(normalizeSkillKey(skill.name))
+    );
     populateBothSkillDatalists();
   }
   
@@ -433,6 +453,15 @@ const listingState = {
       allowance: getElement("listingAllowance").value,
       description:
         getElement("listingDescription").value.trim(),
+      learning_outcomes:
+        getElement("learningOutcomes").value.trim(),
+      internship_benefits:
+        getElement("internshipBenefits").value.trim(),
+      completion_documents: [
+        ...document.querySelectorAll(
+          'input[name="completion_documents"]:checked'
+        ),
+      ].map((input) => input.value),
   
       target_field: getElement("targetField").value,
       application_deadline:
@@ -453,8 +482,138 @@ const listingState = {
         (entry) => entry.skill.name
       ),
   
-      status: "Open",
+      status: listingState.originalListing?.status || "Open",
     };
+  }
+
+  function setFormValue(id, value) {
+    const element = getElement(id);
+    if (element) element.value = value || "";
+  }
+
+  function buildUpdateSummary(payload) {
+    const previous = listingState.originalListing || {};
+    const changes = [];
+    const fields = [
+      ["title", "position title"],
+      ["location", "location"],
+      ["work_mode", "work mode"],
+      ["duration", "duration"],
+      ["allowance", "allowance"],
+      ["application_deadline", "application deadline"],
+      ["openings", "available positions"],
+      ["target_field", "target field"],
+      ["preferred_major", "preferred major"],
+      ["preferred_year", "preferred year"],
+      ["minimum_availability", "minimum availability"],
+      ["mentorship", "mentorship"],
+      ["description", "responsibilities"],
+      ["learning_outcomes", "learning outcomes"],
+      ["internship_benefits", "internship benefits"],
+    ];
+
+    fields.forEach(([key, label]) => {
+      if (String(previous[key] || "") !== String(payload[key] || "")) {
+        changes.push(label);
+      }
+    });
+
+    const previousDocuments = [...(previous.completion_documents || [])].sort();
+    const nextDocuments = [...payload.completion_documents].sort();
+    if (JSON.stringify(previousDocuments) !== JSON.stringify(nextDocuments)) {
+      changes.push("completion documents");
+    }
+
+    const previousSkills = listingState.originalSkillRows
+      .map((row) => `${row.skill_id}:${row.requirement_type}:${row.minimum_level}`)
+      .sort();
+    const nextSkills = createListingSkillRows(listingState.editListingId)
+      .map((row) => `${row.skill_id}:${row.requirement_type}:${row.minimum_level}`)
+      .sort();
+    if (JSON.stringify(previousSkills) !== JSON.stringify(nextSkills)) {
+      changes.push("skill requirements");
+    }
+
+    if (!changes.length) return "No material listing details changed.";
+    return `Updated ${changes.join(", ")}.`;
+  }
+
+  async function loadListingForEdit(listingId) {
+    const { data: listing, error: listingError } = await supabaseClient
+      .from("internship_listings")
+      .select("*")
+      .eq("id", listingId)
+      .eq("company_id", listingState.company.id)
+      .single();
+
+    if (listingError) throw listingError;
+
+    const { data: requirements, error: requirementsError } = await supabaseClient
+      .from("listing_skills")
+      .select("listing_id, skill_id, requirement_type, minimum_level")
+      .eq("listing_id", listingId);
+
+    if (requirementsError) throw requirementsError;
+
+    const skillIds = [...new Set((requirements || []).map((row) => row.skill_id))];
+    if (skillIds.length) {
+      const { data: existingSkills, error: skillsError } = await supabaseClient
+        .from("skills")
+        .select("id, name, skill_key, fields")
+        .in("id", skillIds);
+
+      if (skillsError) throw skillsError;
+
+      (existingSkills || []).forEach((skill) => {
+        if (!listingState.skillCatalog.some((item) => item.id === skill.id)) {
+          listingState.skillCatalog.push(skill);
+        }
+      });
+    }
+
+    listingState.editListingId = listingId;
+    listingState.originalListing = listing;
+    listingState.originalSkillRows = requirements || [];
+    listingState.requiredSkills = [];
+    listingState.niceSkills = [];
+
+    (requirements || []).forEach((row) => {
+      const skill = listingState.skillCatalog.find((item) => item.id === row.skill_id);
+      if (!skill) return;
+      const entry = { skill, level: Number(row.minimum_level) || 1 };
+      if (row.requirement_type === "required") {
+        listingState.requiredSkills.push(entry);
+      } else {
+        listingState.niceSkills.push(entry);
+      }
+    });
+
+    setFormValue("listingTitle", listing.title);
+    setFormValue("listingDepartment", listing.department);
+    setFormValue("listingLocation", listing.location);
+    setFormValue("listingWorkMode", listing.work_mode);
+    setFormValue("listingDuration", listing.duration);
+    setFormValue("listingAllowance", listing.allowance);
+    setFormValue("targetField", listing.target_field);
+    setFormValue("listingOpenings", listing.openings);
+    setFormValue("applicationDeadline", listing.application_deadline);
+    setFormValue("listingMentorship", listing.mentorship);
+    setFormValue("listingDescription", listing.description);
+    setFormValue("learningOutcomes", listing.learning_outcomes);
+    setFormValue("internshipBenefits", listing.internship_benefits);
+    setFormValue("preferredMajor", listing.preferred_major);
+    setFormValue("preferredYear", listing.preferred_year);
+    setFormValue("minimumAvailability", listing.minimum_availability);
+
+    const selectedDocuments = new Set(listing.completion_documents || []);
+    document.querySelectorAll('input[name="completion_documents"]').forEach((input) => {
+      input.checked = selectedDocuments.has(input.value);
+    });
+
+    getElement("listingFormTitle").textContent = "Edit Internship Listing";
+    getElement("publishListingButton").textContent = "Save Changes";
+    document.title = `Edit ${listing.title} - CareerMatch`;
+    populateBothSkillDatalists();
   }
   
   function createListingSkillRows(listingId) {
@@ -500,26 +659,51 @@ const listingState = {
     }
   
     publishButton.disabled = true;
-    publishButton.textContent = "Publishing...";
-    showListingMessage("Publishing internship listing...");
+    const isEditing = Boolean(listingState.editListingId);
+    publishButton.textContent = isEditing ? "Saving..." : "Publishing...";
+    showListingMessage(isEditing ? "Saving listing changes..." : "Publishing internship listing...");
   
     let createdListingId = null;
   
     try {
       const payload = getListingPayload();
   
-      const { data: listing, error: listingError } =
-        await supabaseClient
+      let listing;
+      let listingError;
+
+      if (isEditing) {
+        const result = await supabaseClient
+          .from("internship_listings")
+          .update({ ...payload, updated_at: new Date().toISOString() })
+          .eq("id", listingState.editListingId)
+          .eq("company_id", listingState.company.id)
+          .select("id")
+          .single();
+        listing = result.data;
+        listingError = result.error;
+      } else {
+        const result = await supabaseClient
           .from("internship_listings")
           .insert(payload)
           .select("id")
           .single();
+        listing = result.data;
+        listingError = result.error;
+      }
   
       if (listingError) {
         throw listingError;
       }
   
       createdListingId = listing.id;
+
+      if (isEditing) {
+        const { error: deleteSkillsError } = await supabaseClient
+          .from("listing_skills")
+          .delete()
+          .eq("listing_id", createdListingId);
+        if (deleteSkillsError) throw deleteSkillsError;
+      }
   
       const skillRows =
         createListingSkillRows(createdListingId);
@@ -529,18 +713,40 @@ const listingState = {
         .insert(skillRows);
   
       if (skillsError) {
-        await supabaseClient
-          .from("internship_listings")
-          .delete()
-          .eq("id", createdListingId);
+        if (isEditing) {
+          await supabaseClient
+            .from("listing_skills")
+            .insert(listingState.originalSkillRows);
+        } else {
+          await supabaseClient
+            .from("internship_listings")
+            .delete()
+            .eq("id", createdListingId);
+        }
   
         throw skillsError;
       }
   
-      showListingMessage(
-        "Internship listing published successfully.",
-        "success"
-      );
+      if (isEditing) {
+        const summary = buildUpdateSummary(payload);
+        if (summary !== "No material listing details changed.") {
+          const { error: notificationError } = await supabaseClient.rpc(
+            "notify_listing_applicants",
+            { p_listing_id: createdListingId, p_summary: summary }
+          );
+          if (notificationError) {
+            console.error(notificationError);
+            showListingMessage(
+              `The listing was updated, but applied students could not be notified: ${notificationError.message}`,
+              "error"
+            );
+            return;
+          }
+        }
+        showListingMessage("Internship listing updated successfully.", "success");
+      } else {
+        showListingMessage("Internship listing published successfully.", "success");
+      }
   
       window.setTimeout(() => {
         window.location.href = "job-posts.html?created=1";
@@ -554,7 +760,7 @@ const listingState = {
       );
   
       publishButton.disabled = false;
-      publishButton.textContent = "Publish Listing";
+      publishButton.textContent = isEditing ? "Save Changes" : "Publish Listing";
     }
   }
   
@@ -643,10 +849,13 @@ const listingState = {
   
       bindPostRoleEvents();
   
-      await Promise.all([
-        loadCompanyProfile(),
-        loadSkillCatalog(),
-      ]);
+      await loadCompanyProfile();
+      await loadSkillCatalog();
+
+      const editListingId = new URLSearchParams(window.location.search).get("listing_id");
+      if (editListingId) {
+        await loadListingForEdit(editListingId);
+      }
   
       renderSkillLists();
       updateListingPreview();
