@@ -26,7 +26,7 @@
           <a class="active" href="dashboard.html">Dashboard</a>
           <a href="post-role.html">Create Listing</a>
           <a href="job-posts.html">Manage Listings</a>
-          <a href="approved.html">Approved</a>
+          <a href="approved.html">Shortlisted</a>
           <a href="interviews.html">Interviews</a>
         </nav>
 
@@ -86,14 +86,14 @@
             <ul class="detail-list">
               <li><span>New (last 7 days)</span><strong id="newApplicationsCount">—</strong></li>
               <li><span>Under review</span><strong id="underReviewCount">—</strong></li>
-              <li><span>Approved</span><strong id="dashboardApprovedCount">—</strong></li>
+              <li><span>Shortlisted</span><strong id="dashboardApprovedCount">—</strong></li>
               <li><span>Rejected</span><strong id="dashboardRejectedCount">—</strong></li>
               <li><span>Interviews scheduled</span><strong id="scheduledInterviewsCount">—</strong></li>
             </ul>
 
             <div class="stack-actions">
               <a class="primary-btn" href="job-posts.html">Review Applicants</a>
-              <a class="secondary-btn" href="approved.html">See Approved</a>
+              <a class="secondary-btn" href="approved.html">See Shortlisted</a>
             </div>
           </aside>
         </div>
@@ -115,6 +115,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../supabase-config.js"></script>
 <script src="../guard.js"></script>
-<script src="dashboard.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="../notifications.js"></script>
   </body>
 </html>

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sign in or create your CareerMatch student or company account." />
+    <title>Sign In | CareerMatch</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body class="login-page">
+    <a class="auth-home-link" href="index.html" aria-label="Back to CareerMatch home">← Back to home</a>
+
+    <div class="login-box">
+      <section class="login-brand">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+
+        <div class="auth-brand-copy">
+          <p class="login-kicker">Skills-first internship matching</p>
+          <h1>Move from potential to opportunity.</h1>
+          <p>One profile for recommendations, applications, interviews and internship offers.</p>
+        </div>
+      </section>
+
+      <section class="login-form">
+        <span class="auth-eyebrow">CareerMatch Access</span>
+        <h2 id="authTitle">Sign in</h2>
+        <p id="authSubtitle">Continue to your CareerMatch account.</p>
+
+        <div class="auth-switch" aria-label="Authentication mode">
+          <button class="auth-switch-btn active" type="button" data-auth-mode="login">Sign in</button>
+          <button class="auth-switch-btn" type="button" data-auth-mode="signup">Create account</button>
+        </div>
+
+        <form id="authForm" class="auth-form">
+          <input type="hidden" id="authMode" name="mode" value="login" />
+
+          <label>
+            Account type
+            <select id="accountType" name="role">
+              <option value="student">Student</option>
+              <option value="company">Company</option>
+            </select>
+          </label>
+
+          <label id="nameField" class="signup-only is-hidden">
+            <span id="nameLabel">Full name</span>
+            <input id="fullNameInput" name="fullName" placeholder="Enter your full name" />
+          </label>
+
+          <div id="companyFields" class="company-signup-fields is-hidden">
+            <div class="company-signup-heading">
+              <h3>Company verification</h3>
+              <p>This information will be reviewed by the CareerMatch admin.</p>
+            </div>
+
+            <div class="auth-field-grid">
+              <label>
+                Official website
+                <input type="url" name="website" placeholder="https://company.com" data-company-required />
+              </label>
+            </div>
+
+            <label>
+              Verification document (PDF)
+              <input type="file" name="verificationDocument" accept=".pdf,application/pdf" data-company-required />
+              <small>Upload one official company registration or verification document in PDF format.</small>
+            </label>
+          </div>
+
+          <label>
+            <span id="emailLabelText">Email</span>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+
+          <label>
+            Password
+            <input id="passwordInput" type="password" name="password" placeholder="Minimum 6 characters" minlength="6" required />
+          </label>
+
+          <label class="show-password-control">
+            <input id="showPassword" type="checkbox" />
+            <span>Show password</span>
+          </label>
+
+          <button id="authSubmit" class="primary-btn" type="submit">Sign in</button>
+          <p id="authHelper" class="auth-helper">New to CareerMatch? Choose Create account above.</p>
+          <p id="authMessage" class="auth-message" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="auth.js"></script>
+  </body>
+</html>

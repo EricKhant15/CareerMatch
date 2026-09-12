@@ -26,7 +26,7 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="post-role.html">Create Listing</a>
         <a class="active" href="job-posts.html">Manage Listings</a>
-        <a href="approved.html">Approved</a>
+          <a href="approved.html">Shortlisted</a>
         <a href="interviews.html">Interviews</a>
       </nav>
 
@@ -96,7 +96,7 @@
 
             <div class="decision-actions">
               <button class="danger-btn" id="rejectApplicantButton" type="button" disabled>Reject</button>
-              <button class="primary-btn" id="acceptApplicantButton" type="button" disabled>Accept</button>
+              <button class="primary-btn" id="acceptApplicantButton" type="button" disabled>Shortlist</button>
             </div>
           </div>
 
@@ -133,6 +133,8 @@
               <li><span>Available days</span><strong id="selectedApplicantAvailability">—</strong></li>
               <li><span>Preferred location</span><strong id="selectedApplicantLocation">—</strong></li>
               <li><span>Work style</span><strong id="selectedApplicantWorkStyle">—</strong></li>
+              <li><span>Offer response</span><strong id="selectedApplicantOfferStatus">Not sent</strong></li>
+              <li><span>Response reason</span><strong id="selectedApplicantOfferReason">—</strong></li>
             </ul>
           </section>
 
@@ -155,6 +157,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="../supabase-config.js"></script>
   <script src="../guard.js"></script>
-  <script src="applicants.js"></script>
+    <script src="applicants.js"></script>
+    <script src="../notifications.js"></script>
 </body>
 </html>

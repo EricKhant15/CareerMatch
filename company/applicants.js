@@ -173,15 +173,25 @@ function renderSelectedApplicant() {
     applicant.student.preferred_location || "—";
   getApplicantElement("selectedApplicantWorkStyle").textContent =
     applicant.student.work_style || "—";
+  getApplicantElement("selectedApplicantOfferStatus").textContent =
+    applicant.application.offer_status || "Not sent";
+  getApplicantElement("selectedApplicantOfferReason").textContent =
+    applicant.application.offer_decline_reason || "—";
 
   const cvButton = getApplicantElement("viewApplicantCvButton");
   getApplicantElement("selectedApplicantCvName").textContent =
     applicant.application.cv_filename || "No CV was submitted with this application.";
   cvButton.disabled = !applicant.application.cv_path;
 
-  getApplicantElement("acceptApplicantButton").disabled = false;
-  getApplicantElement("rejectApplicantButton").disabled = false;
-  showApplicantMessage("applicantActionMessage", `Current status: ${applicant.application.status}`);
+  getApplicantElement("acceptApplicantButton").disabled =
+    applicant.application.status === "Accepted" ||
+    applicant.application.status === "Interview Scheduled";
+  getApplicantElement("rejectApplicantButton").disabled =
+    applicant.application.status === "Rejected";
+  const offerText = applicant.application.offer_status
+    ? ` · Offer: ${applicant.application.offer_status}`
+    : "";
+  showApplicantMessage("applicantActionMessage", `Current status: ${applicant.application.status}${offerText}`);
 }
 
 function renderApplicantList() {
@@ -262,42 +272,32 @@ async function updateSelectedApplication(status) {
   }
 
   applicant.application.status = status;
-  let completionMessage = `Application marked ${status}.`;
+  let completionMessage = status === "Accepted"
+    ? "Applicant shortlisted for the interview stage."
+    : "Application rejected.";
 
-  if (status === "Accepted") {
-    const acceptedCount = applicantReviewState.applicants.filter(
-      (item) => item.application.status === "Accepted"
-    ).length;
-    const openings = Number(applicantReviewState.listing.openings) || 1;
-
-    if (
-      acceptedCount >= openings &&
-      applicantReviewState.listing.status === "Open" &&
-      window.confirm(
-        `All ${openings} available ${openings === 1 ? "position has" : "positions have"} been filled. Close this listing as Filled?`
-      )
-    ) {
-      const { error: listingError } = await supabaseClient
-        .from("internship_listings")
-        .update({ status: "Filled", updated_at: new Date().toISOString() })
-        .eq("id", applicantReviewState.listing.id)
-        .eq("company_id", applicantReviewState.company.id);
-
-      if (listingError) {
-        console.error(listingError);
-        completionMessage = `Application marked ${status}, but the listing could not be marked Filled: ${listingError.message}`;
-      } else {
-        applicantReviewState.listing.status = "Filled";
-        const { error: notificationError } = await supabaseClient.rpc("notify_listing_applicants", {
-          p_listing_id: applicantReviewState.listing.id,
-          p_summary: "All available positions have been filled. This internship is no longer accepting applications.",
-        });
-        completionMessage = notificationError
-          ? `Application marked ${status} and the listing was filled, but students could not be notified: ${notificationError.message}`
-          : `Application marked ${status}. The listing is now Filled and applied students were notified.`;
-        if (notificationError) console.error(notificationError);
+  const notification = status === "Accepted"
+    ? {
+        title: "Shortlisted for interview",
+        message: "Your application was shortlisted for the interview stage. Interview details will appear here when scheduled.",
       }
+    : {
+        title: "Application decision",
+        message: "The company has decided not to continue with your application.",
+      };
+
+  const { error: notificationError } = await supabaseClient.rpc(
+    "notify_application_student",
+    {
+      p_application_id: applicant.application.id,
+      p_title: notification.title,
+      p_message: notification.message,
     }
+  );
+
+  if (notificationError) {
+    console.error(notificationError);
+    completionMessage += ` The student notification could not be sent: ${notificationError.message}`;
   }
 
   renderApplicantStats();
@@ -362,7 +362,7 @@ async function loadApplicantReviewData(listingId) {
 
   const { data: applications, error: applicationsError } = await supabaseClient
     .from("applications")
-    .select("id, student_id, status, applied_at, cv_path, cv_filename")
+    .select("id, student_id, status, applied_at, cv_path, cv_filename, offer_status, offer_sent_at, offer_responded_at, offer_decline_reason")
     .eq("listing_id", listingId);
   if (applicationsError) throw applicationsError;
 
@@ -440,6 +440,16 @@ async function setupApplicantReviewPage() {
     getApplicantElement("selectedListingTitle").textContent = applicantReviewState.listing.title;
     renderApplicantStats();
     renderApplicantList();
+    const requestedApplicationId = new URLSearchParams(window.location.search).get("application_id");
+    if (
+      requestedApplicationId &&
+      applicantReviewState.applicants.some(
+        (item) => item.application.id === requestedApplicationId
+      )
+    ) {
+      applicantReviewState.selectedApplicationId = requestedApplicationId;
+      renderSelectedApplicant();
+    }
   } catch (error) {
     console.error(error);
     showApplicantMessage("applicantsPageMessage", error.message || "Applicants could not be loaded.", "error");

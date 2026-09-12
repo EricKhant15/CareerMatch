@@ -98,12 +98,15 @@ function renderInternshipDetails(recommendation, profile) {
     recommendation.company_id
   );
   const companyName = company?.company_name || "Company";
+  const internshipTitle = typeof cleanInternshipTitle === "function"
+    ? cleanInternshipTitle(recommendation.title)
+    : String(recommendation.title || "Internship").replace(/\s*[-\u2013\u2014]\s*$/, "").trim();
 
-  document.title = `${recommendation.title} - CareerMatch`;
+  document.title = `${internshipTitle} - CareerMatch`;
   getInternshipDetailElement("detailPageTitle").textContent =
-    recommendation.title;
+    internshipTitle;
   getInternshipDetailElement("detailListingTitle").textContent =
-    recommendation.title;
+    internshipTitle;
   getInternshipDetailElement("detailCompanyName").textContent = companyName;
   getInternshipDetailElement("detailCompanyAvatar").textContent =
     companyName.charAt(0).toUpperCase();

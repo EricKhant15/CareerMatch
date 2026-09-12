@@ -6,7 +6,7 @@
   <title>Saved Internships</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
-<body>
+<body data-dynamic-saved>
   <div class="app-shell">
     <aside class="sidebar">
       <div class="logo">
@@ -15,9 +15,9 @@
       </div>
 
       <div class="user-card">
-        <div class="avatar">E</div>
+        <div class="avatar" id="studentAvatar">S</div>
         <div>
-          <strong>Eric #12H4E</strong>
+          <strong id="studentName">Student</strong>
           <span>Student</span>
         </div>
       </div>
@@ -46,16 +46,18 @@
         <a class="primary-btn" href="matches.html">Browse Recommended</a>
       </header>
 
-      <section class="internship-grid" id="savedInternships"></section>
+      <p id="savedMessage" class="auth-message" aria-live="polite"></p>
+      <section class="internship-grid" id="savedInternships" aria-busy="true">
+        <article class="panel recommendation-state-card"><h2>Loading saved internships...</h2></article>
+      </section>
     </main>
   </div>
 
-  <script src="../app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../supabase-config.js"></script>
-<script src="../guard.js"></script>
-<script>
-  protectPage("student");
-</script>
+  <script src="../supabase-config.js"></script>
+  <script src="../guard.js"></script>
+    <script src="../app.js"></script>
+    <script src="../notifications.js"></script>
+  <script src="saved.js"></script>
 </body>
 </html>

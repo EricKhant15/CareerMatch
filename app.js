@@ -809,7 +809,7 @@ function buildProfileFromForm(
 function updateStudentSidebar(profile) {
   document
     .querySelectorAll(
-      ".user-card strong"
+      ".sidebar .user-card strong"
     )
     .forEach((element) => {
       element.textContent =
@@ -817,7 +817,7 @@ function updateStudentSidebar(profile) {
     });
 
   document
-    .querySelectorAll(".avatar")
+    .querySelectorAll(".sidebar .user-card .avatar")
     .forEach((element) => {
       element.textContent =
         profile.name
@@ -1295,9 +1295,11 @@ async function setupStudentProfileForm() {
 }
 
 async function fillStudentDisplayData() {
+  if (!window.location.pathname.includes("/student/")) return;
+
   const hasStudentDisplay =
     document.querySelector(
-      "[data-profile-text], [data-profile-list], [data-skill-level-list], .user-card"
+      "[data-profile-text], [data-profile-list], [data-skill-level-list], .sidebar .user-card"
     );
 
   if (!hasStudentDisplay) return;
@@ -1532,6 +1534,7 @@ function setupSignOut() {
           localStorage.removeItem(
             profileKey
           );
+          localStorage.removeItem("careermatchAccountIdentity");
 
           window.location.href =
             "../index.html";
@@ -1541,10 +1544,15 @@ function setupSignOut() {
 }
 
 async function startCareerMatch() {
+  if (window.location.pathname.includes("/student/")) {
+    updateStudentSidebar(getSavedProfile());
+  }
   setupSignOut();
   setupSaveButtons();
   refreshHeartButtons();
-  renderSavedInternships();
+  if (!document.body.hasAttribute("data-dynamic-saved")) {
+    renderSavedInternships();
+  }
 
   await setupOnboardingForm();
   await setupStudentProfileForm();

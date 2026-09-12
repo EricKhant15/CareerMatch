@@ -3,264 +3,195 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CareerMatch</title>
+    <meta name="description" content="CareerMatch connects university students with internships through transparent skill and preference matching." />
+    <title>CareerMatch | Internships matched to your potential</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
-  <body class="login-page">
-    <div class="login-box">
-      <section class="login-brand">
-        <div class="logo">
-          <span class="logo-mark">CM</span>
-          <span>Career<span class="brand-purple">Match</span></span>
-        </div>
+  <body class="landing-page">
+    <header class="landing-header" id="top">
+      <a class="landing-logo" href="#top" aria-label="CareerMatch home">
+        <span class="logo-mark">CM</span>
+        <span>Career<span>Match</span></span>
+      </a>
 
-        <div class="auth-brand-copy">
-            <h1>Match Your Potential</h1>
-            <p>Internship matching for students and companies.</p>
-          </div>
-      </section>
+      <button class="landing-menu-button" type="button" aria-expanded="false" aria-controls="landingNavigation">
+        <span></span><span></span><span></span>
+        <span class="sr-only">Open navigation</span>
+      </button>
 
-      <section class="login-form">
-        <span class="auth-eyebrow">CareerMatch Access</span>
-        <h2 id="authTitle">Sign in</h2>
-        <p id="authSubtitle">Continue to your CareerMatch account.</p>
+      <nav class="landing-navigation" id="landingNavigation" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#matching">Matching</a>
+        <a href="#for-students">For students</a>
+        <a href="#for-companies">For companies</a>
+      </nav>
 
-        <div class="auth-switch" aria-label="Authentication mode">
-          <button
-            class="auth-switch-btn active"
-            type="button"
-            data-auth-mode="login"
-          >
-            Sign in
-          </button>
+      <div class="landing-header-actions">
+        <a class="landing-text-link" href="login.html">Sign in</a>
+        <a class="landing-button landing-button-small" href="login.html?mode=signup&role=student">Get started</a>
+      </div>
+    </header>
 
-          <button
-            class="auth-switch-btn"
-            type="button"
-            data-auth-mode="signup"
-          >
-            Create account
-          </button>
-        </div>
-
-        <form id="authForm" class="auth-form">
-          <input type="hidden" id="authMode" name="mode" value="login" />
-
-          <label>
-            Account type
-            <select id="accountType" name="role">
-              <option value="student">Student</option>
-              <option value="company">Company</option>
-            </select>
-          </label>
-
-          <label id="nameField" class="signup-only is-hidden">
-            <span id="nameLabel">Full name</span>
-            <input
-              id="fullNameInput"
-              name="fullName"
-              placeholder="Enter your full name"
-            />
-          </label>
-
-          <div id="companyFields" class="company-signup-fields is-hidden">
-            <div class="company-signup-heading">
-              <h3>Company verification</h3>
-              <p>
-                This information will be reviewed by the CareerMatch admin.
-              </p>
-            </div>
-
-            <div class="auth-field-grid">
-              <label>
-                Industry
-                <select name="industry" data-company-required>
-                  <option value="">Select industry</option>
-                  <option>Technology</option>
-                  <option>Finance</option>
-                  <option>Healthcare</option>
-                  <option>Education</option>
-                  <option>E-commerce</option>
-                  <option>Telecommunications</option>
-                  <option>Consulting</option>
-                  <option>Manufacturing</option>
-                  <option>Media</option>
-                  <option>Other</option>
-                </select>
-              </label>
-
-              <label>
-                Company size
-                <select name="companySize" data-company-required>
-                  <option value="">Select company size</option>
-                  <option value="1-10">1-10 employees</option>
-                  <option value="11-50">11-50 employees</option>
-                  <option value="51-200">51-200 employees</option>
-                  <option value="201-500">201-500 employees</option>
-                  <option value="501-1000">501-1,000 employees</option>
-                  <option value="1000+">More than 1,000 employees</option>
-                </select>
-              </label>
-
-              <label>
-                Year established
-                <input
-                  type="number"
-                  name="yearEstablished"
-                  min="1800"
-                  max="2026"
-                  placeholder="Example: 2015"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Company location
-                <input
-                  name="companyLocation"
-                  placeholder="Example: Bangkok"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Official website
-                <input
-                  type="url"
-                  name="website"
-                  placeholder="https://company.com"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Phone number
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  placeholder="+66..."
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Contact person
-                <input
-                  name="contactName"
-                  placeholder="Contact person's full name"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Contact position
-                <input
-                  name="contactPosition"
-                  placeholder="Example: HR Manager"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                Registration number
-                <input
-                  name="registrationNumber"
-                  placeholder="Official registration number"
-                  data-company-required
-                />
-              </label>
-
-              <label>
-                LinkedIn or official social page
-                <input
-                  type="url"
-                  name="linkedinUrl"
-                  placeholder="https://linkedin.com/company/..."
-                />
-              </label>
-            </div>
-
-            <label>
-              Company description
-              <textarea
-                name="companyDescription"
-                rows="4"
-                maxlength="1000"
-                placeholder="Describe the company, its work, and internship environment."
-                data-company-required
-              ></textarea>
-            </label>
-
-            <label>
-              Verification document
-              <input
-                type="file"
-                name="verificationDocument"
-                accept=".pdf,.png,.jpg,.jpeg"
-                data-company-required
-              />
-              <small>
-                Upload a company registration document in PDF, PNG, or JPG
-                format.
-              </small>
-            </label>
-
-            <label class="auth-checkbox">
-              <input
-                type="checkbox"
-                name="informationConfirmed"
-                data-company-required
-              />
-              <span>
-                I confirm that this information is accurate and that I am
-                authorized to represent this company.
-              </span>
-            </label>
-          </div>
-
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-            />
-          </label>
-
-          <label>
-            Password
-            <input
-              id="passwordInput"
-              type="password"
-              name="password"
-              placeholder="Minimum 6 characters"
-              minlength="6"
-              required
-            />
-          </label>
-          
-          <label class="show-password-control">
-            <input id="showPassword" type="checkbox" />
-            <span>Show password</span>
-          </label>
-
-          <button id="authSubmit" class="primary-btn" type="submit">
-            Sign in
-          </button>
-
-          <p id="authHelper" class="auth-helper">
-            New to CareerMatch? Choose Create account above.
+    <main>
+      <section class="landing-hero">
+        <div class="landing-hero-copy">
+          <p class="landing-eyebrow"><span></span> Skills-first internship matching</p>
+          <h1>The right internship starts with a <em>better match.</em></h1>
+          <p class="landing-hero-intro">
+            CareerMatch connects university students with internships by comparing their technical skills, proficiency levels, academic background and working preferences.
           </p>
 
-          <p id="authMessage" class="auth-message"></p>
-        </form>
-      </section>
-    </div>
+          <div class="landing-hero-actions">
+            <a class="landing-button" href="login.html?mode=signup&role=student">Find your match <span aria-hidden="true">→</span></a>
+            <a class="landing-button landing-button-ghost" href="login.html?mode=signup&role=company">Hire emerging talent</a>
+          </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script src="auth.js"></script>
+          <ul class="landing-trust-list" aria-label="CareerMatch benefits">
+            <li><span>✓</span> Transparent scores</li>
+            <li><span>✓</span> Verified companies</li>
+            <li><span>✓</span> Complete hiring workflow</li>
+          </ul>
+        </div>
+
+        <div class="landing-product-visual" aria-label="CareerMatch recommendation dashboard preview">
+          <img src="assets/careermatch-laptop-hero.png" alt="Modern laptop displaying the CareerMatch platform" />
+          <div class="landing-screen-preview" aria-hidden="true">
+            <div class="preview-topbar">
+              <span class="preview-logo">CM</span>
+              <span>CareerMatch</span>
+              <span class="preview-user">BW</span>
+            </div>
+            <div class="preview-layout">
+              <aside><span class="preview-nav-active"></span><span></span><span></span><span></span></aside>
+              <div class="preview-content">
+                <p>RECOMMENDED FOR YOU</p>
+                <h2>Internships matched to your profile</h2>
+                <article class="preview-job-card">
+                  <div class="preview-company-mark">D</div>
+                  <div>
+                    <small>DataSphere Analytics</small>
+                    <h3>Data Analyst Intern</h3>
+                    <div class="preview-tags"><span>Python</span><span>SQL</span><span>Excel</span></div>
+                  </div>
+                  <strong>93<small>%</small></strong>
+                </article>
+                <div class="preview-bars">
+                  <span style="--preview-width: 93%"></span>
+                  <span style="--preview-width: 82%"></span>
+                  <span style="--preview-width: 74%"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="landing-score-float"><span>Match score</span><strong>93%</strong><small>Strong qualification</small></div>
+        </div>
+      </section>
+
+      <section class="landing-proof" aria-label="CareerMatch platform highlights">
+        <div><strong>Skills-first</strong><span>Match by ability and level</span></div>
+        <div><strong>Two-sided</strong><span>Useful for students and employers</span></div>
+        <div><strong>Transparent</strong><span>See why every match is recommended</span></div>
+        <div><strong>End-to-end</strong><span>Apply, interview and respond to offers</span></div>
+      </section>
+
+      <section class="landing-section landing-intro" id="how-it-works">
+        <div class="landing-section-heading">
+          <p class="landing-eyebrow">A clearer path to the right opportunity</p>
+          <h2>One connected internship journey</h2>
+          <p>CareerMatch gives both sides the information they need at every step, from discovery to the final offer.</p>
+        </div>
+
+        <div class="landing-steps">
+          <article><span class="landing-step-number">01</span><div class="landing-step-icon">◎</div><h3>Build a focused profile</h3><p>Students add their technical skills, proficiency levels, academic background, goals and working preferences.</p></article>
+          <article><span class="landing-step-number">02</span><div class="landing-step-icon">◇</div><h3>Understand every match</h3><p>Open internships are ranked with a clear breakdown of qualifications, compatibility and skill gaps.</p></article>
+          <article><span class="landing-step-number">03</span><div class="landing-step-icon">✓</div><h3>Move through hiring</h3><p>Companies review candidates, schedule interviews and send offers. Students track and respond in one place.</p></article>
+        </div>
+      </section>
+
+      <section class="landing-match-section" id="matching">
+        <div class="landing-match-copy">
+          <p class="landing-eyebrow landing-eyebrow-light">Transparent by design</p>
+          <h2>A score people can actually understand.</h2>
+          <p>CareerMatch separates professional qualification from practical compatibility, then explains each result instead of hiding it behind an unexplained number.</p>
+          <div class="landing-weight-summary">
+            <div><strong>70%</strong><span>Qualification</span><small>Skills, target field, major and year</small></div>
+            <div><strong>30%</strong><span>Compatibility</span><small>Availability, location and work preferences</small></div>
+          </div>
+        </div>
+
+        <div class="landing-score-card">
+          <div class="landing-score-header"><div><span>Overall match</span><strong>86%</strong></div><span class="landing-fit-pill">Strong match</span></div>
+          <div class="landing-score-row"><span>Required skills</span><strong>60%</strong><i><b style="width: 92%"></b></i></div>
+          <div class="landing-score-row"><span>Nice-to-have skills</span><strong>15%</strong><i><b style="width: 76%"></b></i></div>
+          <div class="landing-score-row"><span>Target field</span><strong>15%</strong><i><b style="width: 100%"></b></i></div>
+          <div class="landing-score-row"><span>Major and year</span><strong>10%</strong><i><b style="width: 80%"></b></i></div>
+          <p><span>✓</span> Python Level 3 meets the company requirement</p>
+        </div>
+      </section>
+
+      <section class="landing-audience-section" id="for-students">
+        <div class="landing-audience-visual student-visual">
+          <div class="audience-window">
+            <div class="audience-window-top"><span></span><span></span><span></span></div>
+            <p>YOUR APPLICATIONS</p>
+            <h3>Stay clear on every next step.</h3>
+            <div class="audience-timeline">
+              <div class="complete"><span>✓</span><strong>Application submitted</strong><small>CV and profile received</small></div>
+              <div class="complete"><span>✓</span><strong>Shortlisted</strong><small>Selected for interview</small></div>
+              <div class="active"><span>3</span><strong>Interview scheduled</strong><small>1 Oct · Online</small></div>
+              <div><span>4</span><strong>Final decision</strong><small>Awaiting company update</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="landing-audience-copy">
+          <p class="landing-eyebrow">For students</p>
+          <h2>Find opportunities built around who you are becoming.</h2>
+          <p>Discover relevant internships, understand missing skills, submit your CV and follow the entire application journey without losing context.</p>
+          <ul>
+            <li><span>✓</span><div><strong>Personalized recommendations</strong><small>Ranked using your actual profile and preferences.</small></div></li>
+            <li><span>✓</span><div><strong>Visible skill gaps</strong><small>Know exactly what matches and where you can grow.</small></div></li>
+            <li><span>✓</span><div><strong>Offer control</strong><small>Review, accept or decline internship offers clearly.</small></div></li>
+          </ul>
+          <a class="landing-inline-link" href="login.html?mode=signup&role=student">Create a student profile <span>→</span></a>
+        </div>
+      </section>
+
+      <section class="landing-audience-section landing-audience-reverse" id="for-companies">
+        <div class="landing-audience-copy">
+          <p class="landing-eyebrow">For companies</p>
+          <h2>Spend less time sorting and more time meeting the right candidates.</h2>
+          <p>Create detailed internship listings, see best-fit applicants first and manage interviews and offers through a structured hiring workflow.</p>
+          <ul>
+            <li><span>✓</span><div><strong>Qualification ranking</strong><small>Applicants are ordered by job-relevant criteria.</small></div></li>
+            <li><span>✓</span><div><strong>Complete candidate context</strong><small>Review match details, student information and CV together.</small></div></li>
+            <li><span>✓</span><div><strong>Real internship information</strong><small>Explain learning outcomes, benefits and completion documents.</small></div></li>
+          </ul>
+          <a class="landing-inline-link" href="login.html?mode=signup&role=company">Register your company <span>→</span></a>
+        </div>
+        <div class="landing-audience-visual company-visual">
+          <div class="candidate-preview-card">
+            <div class="candidate-preview-head"><span>BW</span><div><strong>Ben Wong</strong><small>Data Science · Third year</small></div><b>93%</b></div>
+            <div class="candidate-preview-labels"><span>Python · L2</span><span>SQL · L3</span><span>Excel · L2</span></div>
+            <div class="candidate-preview-grid"><div><small>Skill fit</small><strong>Excellent</strong></div><div><small>Availability</small><strong>4 days</strong></div></div>
+            <button type="button" tabindex="-1">Review candidate</button>
+          </div>
+          <div class="candidate-rank-card"><span>1</span><div><strong>Best-fit applicant</strong><small>Ranked by qualification</small></div></div>
+        </div>
+      </section>
+
+      <section class="landing-cta">
+        <div><p class="landing-eyebrow landing-eyebrow-light">Make the next step count</p><h2>Start with a match that makes sense.</h2><p>Whether you are looking for experience or emerging talent, CareerMatch brings the complete internship journey into one clear platform.</p></div>
+        <div class="landing-cta-actions"><a class="landing-button landing-button-light" href="login.html?mode=signup&role=student">Join as a student</a><a class="landing-button landing-button-outline-light" href="login.html?mode=signup&role=company">Join as a company</a></div>
+      </section>
+    </main>
+
+    <footer class="landing-footer">
+      <div><a class="landing-logo" href="#top"><span class="logo-mark">CM</span><span>Career<span>Match</span></span></a><p>Transparent internship matching for students and companies.</p></div>
+      <nav aria-label="Footer navigation"><a href="#how-it-works">How it works</a><a href="#matching">Matching</a><a href="login.html">Sign in</a></nav>
+      <p>© <span id="landingYear">2026</span> CareerMatch</p>
+    </footer>
+
+    <script src="landing.js"></script>
   </body>
 </html>

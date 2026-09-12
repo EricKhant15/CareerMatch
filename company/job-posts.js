@@ -187,7 +187,12 @@ function getApplicationsForListing(listingId) {
 
 function isApprovedApplication(application) {
   const status = String(application.status || "").toLowerCase();
-  return ["approved", "accepted", "hired"].includes(status);
+  return ["approved", "accepted", "hired"].includes(status) &&
+    !["Declined", "Withdrawn"].includes(application.offer_status);
+}
+
+function isFinallySelectedApplication(application) {
+  return application.offer_status === "Accepted";
 }
 
 function createDetailItem(label, value) {
@@ -204,6 +209,9 @@ function createDetailItem(label, value) {
 
 function createListingCard(listing) {
   const applications = getApplicationsForListing(listing.id);
+  const totalOpenings = Math.max(Number(listing.openings) || 1, 1);
+  const filledSlots = applications.filter(isFinallySelectedApplication).length;
+  const remainingSlots = Math.max(totalOpenings - filledSlots, 0);
   const highFitCount = applications.filter(
     (application) => getApplicationScore(application) >= 80
   ).length;
@@ -239,11 +247,21 @@ function createListingCard(listing) {
     <span>${applications.length === 1 ? "Applicant" : "Applicants"}</span>
   `;
 
-  listingBadges.append(applicantCount, status);
+  const slotCount = document.createElement("span");
+  slotCount.className = `listing-slot-count${remainingSlots === 0 ? " filled" : ""}`;
+  slotCount.textContent = `${filledSlots}/${totalOpenings} slots filled`;
+  slotCount.setAttribute(
+    "aria-label",
+    `${filledSlots} of ${totalOpenings} internship positions filled; ${remainingSlots} remaining`
+  );
+
+  listingBadges.append(applicantCount, slotCount, status);
   top.append(icon, listingBadges);
 
   const title = document.createElement("h2");
-  title.textContent = listing.title || "Untitled internship";
+  title.textContent = String(listing.title || "Untitled internship")
+    .replace(/\s*[-\u2013\u2014]\s*$/, "")
+    .trim();
 
   const description = document.createElement("p");
   description.textContent =
@@ -255,7 +273,10 @@ function createListingCard(listing) {
     createDetailItem("Location", listing.location),
     createDetailItem("Mode", listing.work_mode),
     createDetailItem("Duration", listing.duration),
-    createDetailItem("Openings", String(listing.openings || 1)),
+    createDetailItem(
+      "Positions",
+      `${remainingSlots} remaining of ${totalOpenings} · ${filledSlots} filled`
+    ),
     createDetailItem("Deadline", formatListingDate(listing.application_deadline)),
     createDetailItem("High-fit", String(highFitCount))
   );
@@ -325,13 +346,16 @@ function createListingCard(listing) {
     fillButton.textContent = "Mark as Filled";
     actions.append(closeButton, fillButton);
   } else {
-    const reopenButton = document.createElement("button");
-    reopenButton.className = "secondary-btn";
-    reopenButton.type = "button";
-    reopenButton.dataset.listingStatus = "Open";
-    reopenButton.dataset.listingId = listing.id;
-    reopenButton.textContent = "Reopen Listing";
-    actions.appendChild(reopenButton);
+    const canReopen = normalizedStatus !== "filled" || remainingSlots > 0;
+    if (canReopen) {
+      const reopenButton = document.createElement("button");
+      reopenButton.className = "secondary-btn";
+      reopenButton.type = "button";
+      reopenButton.dataset.listingStatus = "Open";
+      reopenButton.dataset.listingId = listing.id;
+      reopenButton.textContent = "Reopen Listing";
+      actions.appendChild(reopenButton);
+    }
 
     if (normalizedStatus !== "archived") {
       const archiveButton = document.createElement("button");

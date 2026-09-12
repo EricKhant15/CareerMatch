@@ -13,6 +13,7 @@ const companyFields = document.querySelector("#companyFields");
 const modeButtons = document.querySelectorAll("[data-auth-mode]");
 const passwordInput = document.querySelector("#passwordInput");
 const showPasswordInput = document.querySelector("#showPassword");
+const emailLabelText = document.querySelector("#emailLabelText");
 
 function isCompanySignup() {
   return (
@@ -36,6 +37,10 @@ function updateCompanyFields() {
   fullNameInput.placeholder = showCompanyFields
     ? "Enter the registered company name"
     : "Enter your full name";
+
+  emailLabelText.textContent = showCompanyFields
+    ? "Contact email"
+    : "Email";
 
   companyFields
     .querySelectorAll("[data-company-required]")
@@ -134,30 +139,23 @@ async function createCompanyVerification({
   formData,
   documentPath,
 }) {
-  const yearEstablished =
-    formData.get("yearEstablished");
-
   const { error } = await supabaseClient
     .from("companies")
     .insert({
       profile_id: userId,
       company_name: fullName,
-      industry: formData.get("industry"),
-      location: formData.get("companyLocation"),
+      industry: "Not provided",
+      location: "Not provided",
       website: formData.get("website"),
-      description: formData.get("companyDescription"),
-      contact_name: formData.get("contactName"),
+      description: "Company verification submitted through CareerMatch.",
+      contact_name: fullName,
       contact_email: email,
-      company_size: formData.get("companySize"),
-      year_established: yearEstablished
-        ? Number(yearEstablished)
-        : null,
-      phone_number: formData.get("phoneNumber"),
-      contact_position: formData.get("contactPosition"),
-      registration_number:
-        formData.get("registrationNumber"),
-      linkedin_url:
-        formData.get("linkedinUrl") || null,
+      company_size: "Not provided",
+      year_established: null,
+      phone_number: "Not provided",
+      contact_position: "Not provided",
+      registration_number: "Provided in verification document",
+      linkedin_url: null,
       verification_document_url: documentPath,
       approval_status: "Pending",
       submitted_at: new Date().toISOString(),
@@ -212,27 +210,12 @@ async function handleSignup(formData) {
       );
     }
 
-    const acceptedTypes = [
-      "application/pdf",
-      "image/png",
-      "image/jpeg",
-    ];
-
     if (
-      !acceptedTypes.includes(
-        verificationDocument.type
-      )
+      verificationDocument.type !== "application/pdf" &&
+      !verificationDocument.name.toLowerCase().endsWith(".pdf")
     ) {
       throw new Error(
-        "Upload a PDF, PNG, or JPG document."
-      );
-    }
-
-    if (
-      formData.get("informationConfirmed") !== "on"
-    ) {
-      throw new Error(
-        "Confirm that the company information is accurate."
+        "Upload one PDF verification document."
       );
     }
   }
@@ -317,7 +300,7 @@ async function handleLogin(formData) {
     error: profileError,
   } = await supabaseClient
     .from("profiles")
-    .select("role, account_status")
+    .select("role, account_status, full_name")
     .eq("id", data.user.id)
     .single();
 
@@ -356,12 +339,28 @@ async function handleLogin(formData) {
       );
     }
 
+    const { data: company } = await supabaseClient
+      .from("companies")
+      .select("company_name")
+      .eq("profile_id", data.user.id)
+      .maybeSingle();
+    localStorage.setItem("careermatchAccountIdentity", JSON.stringify({
+      userId: data.user.id,
+      role: "company",
+      name: company?.company_name || profile.full_name || "Company",
+    }));
+
     window.location.href =
       "company/dashboard.html";
     return;
   }
 
   if (profile.role === "student") {
+    localStorage.setItem("careermatchAccountIdentity", JSON.stringify({
+      userId: data.user.id,
+      role: "student",
+      name: profile.full_name || "Student",
+    }));
     const {
       data: studentProfile,
       error: studentProfileError,
@@ -437,4 +436,9 @@ authForm.addEventListener(
   }
 );
 
-setAuthMode("login");
+const authQuery = new URLSearchParams(window.location.search);
+const requestedRole = authQuery.get("role");
+if (["student", "company"].includes(requestedRole)) {
+  accountTypeInput.value = requestedRole;
+}
+setAuthMode(authQuery.get("mode") === "signup" ? "signup" : "login");

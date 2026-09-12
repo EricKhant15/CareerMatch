@@ -2,7 +2,6 @@ const studentApplicationsState = {
   applications: [],
   listings: new Map(),
   companies: new Map(),
-  notifications: [],
   profileId: null,
 };
 
@@ -28,8 +27,11 @@ function showApplicationsMessage(message, type = "info") {
   element.style.color = colors[type] || colors.info;
 }
 
-function getApplicationStatusClass(status) {
-  const normalizedStatus = String(status || "").toLowerCase();
+function getApplicationStatusClass(application) {
+  if (["Declined", "Withdrawn"].includes(application.offer_status)) return "rejected";
+  if (application.offer_status === "Accepted") return "accepted";
+  if (application.offer_status === "Pending") return "interview";
+  const normalizedStatus = String(application.status || "").toLowerCase();
   if (normalizedStatus === "accepted") return "accepted";
   if (normalizedStatus === "rejected") return "rejected";
   if (normalizedStatus === "interview scheduled") return "interview";
@@ -45,6 +47,39 @@ function formatApplicationDate(value) {
     month: "short",
     year: "numeric",
   }).format(date);
+}
+
+function formatApplicationInterviewDate(application) {
+  if (!application.interview_date) return "Not scheduled";
+  const date = new Date(`${application.interview_date}T00:00:00`);
+  const dateText = Number.isNaN(date.getTime())
+    ? application.interview_date
+    : new Intl.DateTimeFormat("en-GB", {
+        day: "numeric", month: "short", year: "numeric",
+      }).format(date);
+  return application.interview_time
+    ? `${dateText}, ${String(application.interview_time).slice(0, 5)}`
+    : dateText;
+}
+
+function getStudentInterviewStage(value) {
+  const legacyStages = {
+    "First Interview": "Initial Interview",
+    "Technical Interview": "Technical / Portfolio Interview",
+    "Portfolio Interview": "Technical / Portfolio Interview",
+    "Second Interview": "Final Interview",
+  };
+  return legacyStages[value] || value || "Interview Scheduled";
+}
+
+function getStudentApplicationLabel(application) {
+  if (application.offer_status === "Accepted") return "Internship Accepted";
+  if (application.offer_status === "Declined") return "Offer Declined";
+  if (application.offer_status === "Withdrawn") return "Offer Closed";
+  if (application.offer_status === "Pending") return "Offer Received";
+  if (application.status === "Accepted" && application.interview_status === "Completed") return "Offer Received";
+  if (application.status === "Accepted") return "Shortlisted for Interview";
+  return application.status || "Under Review";
 }
 
 function createApplicationDetail(label, value) {
@@ -77,8 +112,8 @@ function createApplicationCard(application) {
   identity.append(companyName, title);
 
   const status = document.createElement("span");
-  status.className = `status ${getApplicationStatusClass(application.status)}`;
-  status.textContent = application.status || "Under Review";
+  status.className = `status ${getApplicationStatusClass(application)}`;
+  status.textContent = getStudentApplicationLabel(application);
   top.append(identity, status);
 
   const details = document.createElement("ul");
@@ -90,15 +125,91 @@ function createApplicationCard(application) {
     createApplicationDetail("CV submitted", application.cv_filename || "No CV attached")
   );
 
+  let interviewPanel = null;
+  if (application.interview_status && application.interview_status !== "Draft") {
+    interviewPanel = document.createElement("section");
+    interviewPanel.className = "application-interview-summary";
+    const interviewTitle = document.createElement("h3");
+    interviewTitle.textContent = application.interview_status === "Cancelled"
+      ? "Interview Cancelled"
+      : application.interview_status === "Completed"
+        ? "Interview Completed"
+        : getStudentInterviewStage(application.interview_round);
+    const interviewDetails = document.createElement("ul");
+    interviewDetails.className = "detail-list";
+    interviewDetails.append(
+      createApplicationDetail("Date and time", formatApplicationInterviewDate(application)),
+      createApplicationDetail("Format", application.interview_type),
+      createApplicationDetail("Interviewer", application.interviewer),
+      createApplicationDetail("Location", application.interview_location)
+    );
+    interviewPanel.append(interviewTitle, interviewDetails);
+    if (application.meeting_link && application.interview_status === "Sent") {
+      const meetingLink = document.createElement("a");
+      meetingLink.className = "secondary-btn";
+      meetingLink.href = application.meeting_link;
+      meetingLink.target = "_blank";
+      meetingLink.rel = "noopener noreferrer";
+      meetingLink.textContent = "Open Meeting Link";
+      interviewPanel.appendChild(meetingLink);
+    }
+    if (application.interview_message) {
+      const message = document.createElement("p");
+      message.textContent = application.interview_message;
+      interviewPanel.appendChild(message);
+    }
+  }
+
+  let offerPanel = null;
+  if (application.offer_status) {
+    offerPanel = document.createElement("section");
+    offerPanel.className = `application-offer-panel ${application.offer_status.toLowerCase()}`;
+    const offerTitle = document.createElement("h3");
+    const offerMessage = document.createElement("p");
+    if (application.offer_status === "Pending") {
+      offerTitle.textContent = "Internship Offer";
+      offerMessage.textContent = "The company has selected you. Accepting this offer will automatically decline any other pending internship offers.";
+      const actions = document.createElement("div");
+      actions.className = "decision-actions left";
+      const acceptButton = document.createElement("button");
+      acceptButton.className = "primary-btn";
+      acceptButton.type = "button";
+      acceptButton.textContent = "Accept Offer";
+      acceptButton.addEventListener("click", () => respondToOffer(application, "Accepted", acceptButton, declineButton));
+      const declineButton = document.createElement("button");
+      declineButton.className = "danger-btn";
+      declineButton.type = "button";
+      declineButton.textContent = "Decline Offer";
+      declineButton.addEventListener("click", () => respondToOffer(application, "Declined", acceptButton, declineButton));
+      actions.append(acceptButton, declineButton);
+      offerPanel.append(offerTitle, offerMessage, actions);
+    } else {
+      offerTitle.textContent = application.offer_status === "Accepted"
+        ? "Offer Accepted"
+        : application.offer_status === "Declined" ? "Offer Declined" : "Offer Closed";
+      offerMessage.textContent = application.offer_status === "Accepted"
+        ? "You accepted this internship. The company has been notified."
+        : application.offer_decline_reason || "This offer is no longer active.";
+      offerPanel.append(offerTitle, offerMessage);
+    }
+  }
+
   if (listing?.status && listing.status !== "Open") {
     const listingMessage = document.createElement("p");
     listingMessage.className = "application-listing-notice";
     listingMessage.textContent = listing.status === "Filled"
-      ? "All positions for this internship have been filled. Your application remains in your history."
+      ? application.offer_status === "Accepted"
+        ? "You accepted this internship and one position is reserved for you."
+        : "All positions for this internship have been filled. Your application remains in your history."
       : `This internship is currently ${listing.status.toLowerCase()} and is not accepting new applications.`;
-    card.append(top, details, listingMessage);
+    card.append(top, details);
+    if (interviewPanel) card.appendChild(interviewPanel);
+    if (offerPanel) card.appendChild(offerPanel);
+    card.appendChild(listingMessage);
   } else {
     card.append(top, details);
+    if (interviewPanel) card.appendChild(interviewPanel);
+    if (offerPanel) card.appendChild(offerPanel);
   }
 
   const link = document.createElement("a");
@@ -112,96 +223,76 @@ function createApplicationCard(application) {
   return card;
 }
 
-function formatNotificationDate(value) {
-  if (!value) return "";
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? "" : new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  }).format(date);
-}
-
-function renderStudentNotifications() {
-  const panel = getApplicationsElement("studentNotificationsPanel");
-  const list = getApplicationsElement("studentNotificationList");
-  list.replaceChildren();
-
-  if (!studentApplicationsState.notifications.length) {
-    panel.hidden = true;
-    return;
-  }
-
-  panel.hidden = false;
-  studentApplicationsState.notifications.forEach((notification) => {
-    const item = document.createElement("article");
-    item.className = `notification-item${notification.is_read ? "" : " unread"}`;
-    const content = document.createElement("div");
-    const title = document.createElement("h3");
-    title.textContent = notification.title;
-    const message = document.createElement("p");
-    message.textContent = notification.message;
-    const date = document.createElement("small");
-    date.textContent = formatNotificationDate(notification.created_at);
-    content.append(title, message, date);
-    item.appendChild(content);
-
-    if (notification.listing_id) {
-      const link = document.createElement("a");
-      link.className = "secondary-btn";
-      link.href = `google-details.html?listing_id=${encodeURIComponent(notification.listing_id)}`;
-      link.textContent = "View Update";
-      item.appendChild(link);
-    }
-    list.appendChild(item);
-  });
-}
-
-async function loadStudentNotifications() {
-  const { data, error } = await supabaseClient
-    .from("notifications")
-    .select("id, listing_id, title, message, is_read, created_at")
-    .eq("recipient_profile_id", studentApplicationsState.profileId)
-    .order("created_at", { ascending: false })
-    .limit(10);
-  if (error) throw error;
-  studentApplicationsState.notifications = data || [];
-}
-
-async function markNotificationsRead() {
-  const unreadIds = studentApplicationsState.notifications
-    .filter((notification) => !notification.is_read)
-    .map((notification) => notification.id);
-  if (!unreadIds.length) return;
-
-  const { error } = await supabaseClient
-    .from("notifications")
-    .update({ is_read: true })
-    .in("id", unreadIds);
-  if (error) {
-    showApplicationsMessage(error.message, "error");
-    return;
-  }
-  studentApplicationsState.notifications.forEach((notification) => {
-    notification.is_read = true;
-  });
-  renderStudentNotifications();
-}
-
 function renderApplicationStats() {
   const applications = studentApplicationsState.applications;
   getApplicationsElement("totalApplicationsCount").textContent = applications.length;
   getApplicationsElement("underReviewCount").textContent = applications.filter(
     (application) => application.status === "Under Review"
   ).length;
+  getApplicationsElement("shortlistedCount").textContent = applications.filter(
+    (application) => application.status === "Accepted" && application.interview_status !== "Completed"
+  ).length;
   getApplicationsElement("interviewCount").textContent = applications.filter(
     (application) => application.status === "Interview Scheduled"
   ).length;
-  getApplicationsElement("acceptedCount").textContent = applications.filter(
-    (application) => application.status === "Accepted"
+  getApplicationsElement("offerCount").textContent = applications.filter(
+    (application) => application.offer_status === "Pending"
   ).length;
+  getApplicationsElement("selectedCount").textContent = applications.filter(
+    (application) => application.offer_status === "Accepted"
+  ).length;
+}
+
+async function respondToOffer(application, response, acceptButton, declineButton) {
+  let reason = null;
+  if (response === "Accepted") {
+    const confirmed = window.confirm(
+      "Accept this internship offer? Any other pending offers will be declined automatically."
+    );
+    if (!confirmed) return;
+  } else {
+    reason = window.prompt("Optional: tell the company why you are declining this offer.", "");
+    if (reason === null) return;
+  }
+
+  acceptButton.disabled = true;
+  declineButton.disabled = true;
+  showApplicationsMessage(`${response === "Accepted" ? "Accepting" : "Declining"} offer...`);
+  const { data, error } = await supabaseClient.rpc("respond_to_internship_offer", {
+    p_application_id: application.id,
+    p_response: response,
+    p_reason: reason || null,
+  });
+  if (error) {
+    acceptButton.disabled = false;
+    declineButton.disabled = false;
+    showApplicationsMessage(error.message, "error");
+    return;
+  }
+
+  application.offer_status = response;
+  application.offer_responded_at = new Date().toISOString();
+  application.offer_decline_reason = response === "Declined" ? reason : null;
+  if (response === "Accepted") {
+    studentApplicationsState.applications.forEach((otherApplication) => {
+      if (otherApplication.id !== application.id && otherApplication.offer_status === "Pending") {
+        otherApplication.offer_status = "Declined";
+        otherApplication.offer_decline_reason = "Accepted another internship offer";
+      }
+    });
+  }
+  if (data?.listing_status === "Filled") {
+    const listing = studentApplicationsState.listings.get(application.listing_id);
+    if (listing) listing.status = "Filled";
+  }
+  renderApplicationStats();
+  renderApplications();
+  showApplicationsMessage(
+    response === "Accepted"
+      ? "Internship offer accepted. The company has been notified."
+      : "Internship offer declined. The company has been notified.",
+    "success"
+  );
 }
 
 function renderApplications() {
@@ -247,11 +338,43 @@ async function loadStudentApplications() {
     .single();
   if (studentError) throw studentError;
 
-  const { data, error } = await supabaseClient
+  let { data, error } = await supabaseClient
     .from("applications")
-    .select("id, listing_id, status, applied_at, cv_path, cv_filename")
+    .select("id, listing_id, status, applied_at, cv_path, cv_filename, interview_round, interview_date, interview_time, interview_type, interviewer, meeting_link, interview_location, interview_message, interview_status, offer_status, offer_sent_at, offer_responded_at, offer_decline_reason")
     .eq("student_id", student.id)
     .order("applied_at", { ascending: false });
+
+  if (error && /offer_\w+.*does not exist/i.test(error.message || "")) {
+    const offerFallbackResult = await supabaseClient
+      .from("applications")
+      .select("id, listing_id, status, applied_at, cv_path, cv_filename, interview_round, interview_date, interview_time, interview_type, interviewer, meeting_link, interview_location, interview_message, interview_status")
+      .eq("student_id", student.id)
+      .order("applied_at", { ascending: false });
+    data = offerFallbackResult.data;
+    error = offerFallbackResult.error;
+    if (!error) {
+      showApplicationsMessage(
+        "Applications loaded. Run the offer workflow SQL to enable student offer responses.",
+        "info"
+      );
+    }
+  }
+
+  if (error && /interview_\w+.*does not exist/i.test(error.message || "")) {
+    const fallbackResult = await supabaseClient
+      .from("applications")
+      .select("id, listing_id, status, applied_at, cv_path, cv_filename")
+      .eq("student_id", student.id)
+      .order("applied_at", { ascending: false });
+    data = fallbackResult.data;
+    error = fallbackResult.error;
+    if (!error) {
+      showApplicationsMessage(
+        "Applications loaded. Run the interview workflow SQL to enable interview scheduling.",
+        "info"
+      );
+    }
+  }
   if (error) throw error;
 
   studentApplicationsState.applications = data || [];
@@ -310,16 +433,9 @@ async function setupApplicationsPage() {
     getApplicationsElement("studentAvatar").textContent =
       studentName.charAt(0).toUpperCase();
 
-    getApplicationsElement("markNotificationsReadButton").addEventListener(
-      "click",
-      markNotificationsRead
-    );
-
     await loadStudentApplications();
-    await loadStudentNotifications();
     await loadApplicationListings();
     await loadApplicationCompanies();
-    renderStudentNotifications();
     renderApplicationStats();
     renderApplications();
 

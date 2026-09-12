@@ -42,24 +42,13 @@
           <a class="primary-btn" href="matches.html">Find More Internships</a>
         </header>
 
-        <section class="panel notification-panel" id="studentNotificationsPanel" hidden>
-          <div class="section-title-row">
-            <div>
-              <h2>Listing Updates</h2>
-              <p>Important changes from companies you applied to.</p>
-            </div>
-            <button class="secondary-btn" id="markNotificationsReadButton" type="button">
-              Mark All as Read
-            </button>
-          </div>
-          <div class="notification-list" id="studentNotificationList"></div>
-        </section>
-
-        <section class="stats">
+        <section class="stats application-pipeline-stats">
           <div class="stat-card"><strong id="totalApplicationsCount">—</strong><span>Total applications</span></div>
           <div class="stat-card"><strong id="underReviewCount">—</strong><span>Under review</span></div>
+          <div class="stat-card"><strong id="shortlistedCount">—</strong><span>Shortlisted</span></div>
           <div class="stat-card"><strong id="interviewCount">—</strong><span>Interview scheduled</span></div>
-          <div class="stat-card"><strong id="acceptedCount">—</strong><span>Accepted offer</span></div>
+          <div class="stat-card"><strong id="offerCount">—</strong><span>Offers received</span></div>
+          <div class="stat-card"><strong id="selectedCount">—</strong><span>Internship accepted</span></div>
         </section>
 
         <p id="applicationsMessage" class="auth-message" aria-live="polite"></p>
@@ -76,6 +65,7 @@
     <script src="../supabase-config.js"></script>
     <script src="../guard.js"></script>
     <script src="../app.js"></script>
+    <script src="../notifications.js"></script>
     <script src="applications.js"></script>
   </body>
 </html>

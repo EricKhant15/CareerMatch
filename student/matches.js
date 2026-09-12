@@ -362,6 +362,12 @@ function createDetailItem(label, value) {
   return item;
 }
 
+function cleanInternshipTitle(value) {
+  return String(value || "Internship")
+    .replace(/\s*[-\u2013\u2014]\s*$/, "")
+    .trim();
+}
+
 function createRecommendationCard(recommendation) {
   const company = recommendationState.companies.get(
     recommendation.company_id
@@ -375,7 +381,9 @@ function createRecommendationCard(recommendation) {
   saveButton.className = "heart-btn";
   saveButton.type = "button";
   saveButton.dataset.saveInternship = recommendation.id;
-  saveButton.setAttribute("aria-label", `Save ${recommendation.title}`);
+  const internshipTitle = cleanInternshipTitle(recommendation.title);
+
+  saveButton.setAttribute("aria-label", `Save ${internshipTitle}`);
   saveButton.textContent = "♡";
 
   const companyImage = document.createElement("div");
@@ -386,7 +394,7 @@ function createRecommendationCard(recommendation) {
   body.className = "intern-body";
 
   const title = document.createElement("h3");
-  title.textContent = `${companyName} (${recommendation.title})`;
+  title.textContent = internshipTitle;
 
   const details = document.createElement("ul");
   details.className = "detail-list";
