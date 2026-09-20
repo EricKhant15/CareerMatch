@@ -278,6 +278,7 @@ async function handleSignup(formData) {
 }
 
 async function handleLogin(formData) {
+  const selectedRole = formData.get("role");
   const email = formData
     .get("email")
     .trim()
@@ -305,7 +306,21 @@ async function handleLogin(formData) {
     .single();
 
   if (profileError) {
+    await supabaseClient.auth.signOut();
     throw profileError;
+  }
+
+  if (
+    ["student", "company"].includes(profile.role) &&
+    profile.role !== selectedRole
+  ) {
+    await supabaseClient.auth.signOut();
+    localStorage.removeItem("careermatchAccountIdentity");
+    throw new Error(
+      profile.role === "company"
+        ? "This is a company account. Choose Company as the account type to sign in."
+        : "This is a student account. Choose Student as the account type to sign in."
+    );
   }
 
   if (profile.role === "admin") {
