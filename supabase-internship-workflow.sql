@@ -151,7 +151,12 @@ begin
     student.profile_id,
     listing_record.id,
     'listing_update',
-    listing_record.title || ' was updated',
+    case lower(coalesce(listing_record.status, ''))
+      when 'closed' then listing_record.title || ' applications closed'
+      when 'filled' then listing_record.title || ' positions filled'
+      when 'open' then listing_record.title || ' applications reopened'
+      else listing_record.title || ' was updated'
+    end,
     company_record.company_name || ' updated the ' || listing_record.title ||
       ' listing. ' || p_summary
   from public.applications application

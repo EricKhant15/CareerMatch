@@ -74,7 +74,9 @@ function fillInterviewForm(application) {
   setInterviewFormValue("meetingLink", application.meeting_link);
   setInterviewFormValue("interviewLocation", application.interview_location);
   setInterviewFormValue("interviewMessage", application.interview_message);
-  interviewElement("inviteStatus").textContent = application.interview_status || "New invitation";
+  interviewElement("inviteStatus").textContent = application.interview_status
+    ? getInterviewStatusPresentation(application).label
+    : "Not scheduled";
   const completed = application.interview_status === "Completed";
   interviewElement("sendInterviewButton").disabled = completed;
   interviewElement("saveInterviewDraftButton").disabled = completed;
@@ -108,6 +110,43 @@ function formatInterviewDate(application) {
   return application.interview_time
     ? `${dateText}, ${String(application.interview_time).slice(0, 5)}`
     : dateText;
+}
+
+function getInterviewStatusPresentation(application) {
+  if (application.interview_status === "Sent") {
+    return { label: "Scheduled", className: "interview" };
+  }
+  if (application.interview_status === "Completed") {
+    return { label: "Completed", className: "accepted" };
+  }
+  if (application.interview_status === "Cancelled") {
+    return { label: "Cancelled", className: "rejected" };
+  }
+  if (application.interview_status === "Draft") {
+    return { label: "Draft", className: "review" };
+  }
+  return { label: "Not scheduled", className: "review" };
+}
+
+function getCompletedWorkflowMessage(application) {
+  if (application.offer_status === "Accepted") {
+    return "The student accepted the internship offer.";
+  }
+  if (application.offer_status === "Declined") {
+    return application.offer_decline_reason
+      ? `The student declined the internship offer. Reason: ${application.offer_decline_reason}.`
+      : "The student declined the internship offer.";
+  }
+  if (application.offer_status === "Pending") {
+    return "An internship offer was sent and is awaiting the student's response.";
+  }
+  if (application.offer_status === "Withdrawn") {
+    return "The offer is no longer active because the available positions were filled.";
+  }
+  if (application.status === "Rejected") {
+    return "The company decided not to continue with this candidate after the interview.";
+  }
+  return "The interview is complete. No offer decision has been recorded.";
 }
 
 function renderInterviewStats() {
@@ -154,7 +193,7 @@ function renderInterviewTable() {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
     cell.colSpan = 6;
-    cell.textContent = "No interviews have been created yet.";
+    cell.textContent = "No interviews have been scheduled yet.";
     row.appendChild(cell);
     body.appendChild(row);
     return;
@@ -162,55 +201,93 @@ function renderInterviewTable() {
 
   interviews.forEach((application) => {
     const row = document.createElement("tr");
+    row.className = "interview-table-row";
+    row.tabIndex = 0;
+    row.setAttribute("role", "button");
+    row.setAttribute(
+      "aria-label",
+      `Open ${getCandidateName(application)} interview for ${getListingTitle(application)}`
+    );
+    if (application.id === interviewState.selectedApplicationId) {
+      row.classList.add("selected");
+    }
     const name = document.createElement("td");
     name.textContent = getCandidateName(application);
     const role = document.createElement("td");
     role.textContent = getListingTitle(application);
+    const round = document.createElement("td");
+    round.textContent = normalizeInterviewStage(application.interview_round);
     const date = document.createElement("td");
     date.textContent = formatInterviewDate(application);
     const type = document.createElement("td");
     type.textContent = application.interview_type || "Not set";
     const statusCell = document.createElement("td");
     const status = document.createElement("span");
-    status.className = application.interview_status === "Sent" ? "status interview" : "status review";
-    status.textContent = application.offer_status
-      ? `Offer ${application.offer_status}`
-      : application.interview_status;
+    const interviewStatus = getInterviewStatusPresentation(application);
+    status.className = `status ${interviewStatus.className}`;
+    status.textContent = interviewStatus.label;
     statusCell.appendChild(status);
-    const action = document.createElement("td");
-    const edit = document.createElement("button");
-    edit.className = "secondary-btn";
-    edit.type = "button";
-    edit.textContent = application.interview_status === "Completed" ? "View Decision" : "Edit";
-    edit.addEventListener("click", () => {
+
+    const selectInterview = () => {
       fillInterviewForm(application);
-      interviewElement("schedule-panel").scrollIntoView({ behavior: "smooth" });
+      renderInterviewTable();
+      const contextPanel = interviewElement("finalDecisionPanel");
+      (contextPanel.hidden ? interviewElement("schedule-panel") : contextPanel)
+        .scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    row.addEventListener("click", selectInterview);
+    row.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        selectInterview();
+      }
     });
-    action.appendChild(edit);
-    row.append(name, role, date, type, statusCell, action);
+    row.append(name, role, round, date, type, statusCell);
     body.appendChild(row);
   });
 }
 
 function renderFinalDecision(application) {
   const panel = interviewElement("finalDecisionPanel");
-  const eligible = application && ["Sent", "Completed"].includes(application.interview_status);
+  const eligible =
+    application && ["Sent", "Completed"].includes(application.interview_status);
   panel.hidden = !eligible;
   if (!eligible) return;
-  interviewElement("finalDecisionCandidate").textContent =
-    `${getCandidateName(application)} — ${getListingTitle(application)}. Current status: ${application.status}.`;
+
   const completed = application.interview_status === "Completed";
+  const title = interviewElement("nextHiringStepTitle");
+  const actions = interviewElement("nextHiringActions");
+  const workflowStatus = interviewElement("selectedWorkflowStatus");
+  panel.classList.toggle("completed", completed);
+  actions.hidden = completed;
+
+  if (completed) {
+    title.textContent = "Interview Completed";
+    interviewElement("finalDecisionCandidate").textContent =
+      `${getCandidateName(application)} — ${getListingTitle(application)}. ${getCompletedWorkflowMessage(application)}`;
+    workflowStatus.hidden = true;
+    return;
+  }
+
+  title.textContent = "Next Hiring Step";
+  interviewElement("finalDecisionCandidate").textContent =
+    `${getCandidateName(application)} — ${getListingTitle(application)}`;
+  workflowStatus.className = "status interview interview-workflow-status";
+  workflowStatus.textContent = "Interview Scheduled";
+  workflowStatus.hidden = false;
   const listing = interviewState.listings.get(application.listing_id);
   const listingFull = listing && getSelectedCountForListing(listing.id) >= (Number(listing.openings) || 1);
-  interviewElement("finalAcceptButton").disabled = completed || listingFull;
+  interviewElement("finalAcceptButton").disabled = listingFull;
   interviewElement("finalAcceptButton").title = listingFull
     ? "All internship positions have already been filled."
     : "";
-  interviewElement("finalRejectButton").disabled = completed;
+  interviewElement("finalRejectButton").disabled = false;
   const nextStage = getNextInterviewStage(application.interview_round);
   const nextStageButton = interviewElement("secondInterviewButton");
-  nextStageButton.disabled = completed || !nextStage;
-  nextStageButton.textContent = nextStage ? `Schedule ${nextStage}` : "Final Stage Reached";
+  nextStageButton.disabled = !nextStage;
+  nextStageButton.textContent = nextStage ? "Schedule Next Round" : "Final Round Reached";
+  nextStageButton.title = nextStage ? `Next round: ${nextStage}` : "This is already the final interview round.";
 }
 
 async function notifyInterviewStudent(applicationId, title, message) {
@@ -408,6 +485,10 @@ async function loadInterviewData() {
 function bindInterviewEvents() {
   interviewElement("interviewApplication").addEventListener("change", (event) => {
     fillInterviewForm(getInterviewApplication(event.target.value));
+    const contextPanel = interviewElement("finalDecisionPanel");
+    if (!contextPanel.hidden) {
+      contextPanel.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   });
   interviewElement("interviewForm").addEventListener("submit", (event) => {
     event.preventDefault();

@@ -4,6 +4,7 @@ const manageListingsState = {
   applications: [],
   qualificationScores: new Map(),
   requirementsByListing: new Map(),
+  filter: "active",
 };
 
 function normalizeQualificationText(value) {
@@ -337,17 +338,19 @@ function createListingCard(listing) {
     closeButton.dataset.listingStatus = "Closed";
     closeButton.dataset.listingId = listing.id;
     closeButton.textContent = "Close Applications";
-
-    const fillButton = document.createElement("button");
-    fillButton.className = "secondary-btn";
-    fillButton.type = "button";
-    fillButton.dataset.listingStatus = "Filled";
-    fillButton.dataset.listingId = listing.id;
-    fillButton.textContent = "Mark as Filled";
-    actions.append(closeButton, fillButton);
+    closeButton.title = "Stop new applications while keeping current applicants under review.";
+    actions.appendChild(closeButton);
+  } else if (normalizedStatus === "archived") {
+    const restoreButton = document.createElement("button");
+    restoreButton.className = "secondary-btn";
+    restoreButton.type = "button";
+    restoreButton.dataset.listingStatus = "Closed";
+    restoreButton.dataset.listingId = listing.id;
+    restoreButton.textContent = "Restore to Closed";
+    restoreButton.title = "Return this listing to the Closed / Filled view without accepting new applications.";
+    actions.appendChild(restoreButton);
   } else {
-    const canReopen = normalizedStatus !== "filled" || remainingSlots > 0;
-    if (canReopen) {
+    if (normalizedStatus === "closed" && remainingSlots > 0) {
       const reopenButton = document.createElement("button");
       reopenButton.className = "secondary-btn";
       reopenButton.type = "button";
@@ -357,15 +360,14 @@ function createListingCard(listing) {
       actions.appendChild(reopenButton);
     }
 
-    if (normalizedStatus !== "archived") {
-      const archiveButton = document.createElement("button");
-      archiveButton.className = "secondary-btn";
-      archiveButton.type = "button";
-      archiveButton.dataset.listingStatus = "Archived";
-      archiveButton.dataset.listingId = listing.id;
-      archiveButton.textContent = "Archive Listing";
-      actions.appendChild(archiveButton);
-    }
+    const archiveButton = document.createElement("button");
+    archiveButton.className = "secondary-btn";
+    archiveButton.type = "button";
+    archiveButton.dataset.listingStatus = "Archived";
+    archiveButton.dataset.listingId = listing.id;
+    archiveButton.textContent = "Archive Listing";
+    archiveButton.title = "Move this completed or closed listing to your archive.";
+    actions.appendChild(archiveButton);
   }
 
   actions.appendChild(deleteButton);
@@ -378,29 +380,60 @@ function renderListings() {
   jobBoard.replaceChildren();
   jobBoard.setAttribute("aria-busy", "false");
 
-  if (manageListingsState.listings.length === 0) {
+  const listingsByFilter = {
+    active: manageListingsState.listings.filter(
+      (listing) => String(listing.status || "").toLowerCase() === "open"
+    ),
+    closed: manageListingsState.listings.filter((listing) =>
+      ["closed", "filled", "cancelled"].includes(
+        String(listing.status || "").toLowerCase()
+      )
+    ),
+    archived: manageListingsState.listings.filter(
+      (listing) => String(listing.status || "").toLowerCase() === "archived"
+    ),
+  };
+  const visibleListings = listingsByFilter[manageListingsState.filter] || [];
+
+  getManageElement("activeListingCount").textContent = listingsByFilter.active.length;
+  getManageElement("closedListingCount").textContent = listingsByFilter.closed.length;
+  getManageElement("archivedListingCount").textContent = listingsByFilter.archived.length;
+
+  if (visibleListings.length === 0) {
     const emptyCard = document.createElement("article");
     emptyCard.className = "job-post-card listing-state-card";
 
     const title = document.createElement("h2");
-    title.textContent = "No internship listings yet";
+    const emptyTitles = {
+      active: "No active internship listings",
+      closed: "No closed or filled listings",
+      archived: "No archived listings",
+    };
+    title.textContent = emptyTitles[manageListingsState.filter];
 
     const message = document.createElement("p");
-    message.textContent =
-      "Create your first internship listing and it will appear here.";
+    const emptyMessages = {
+      active: "Create a listing or reopen a closed listing to accept applications.",
+      closed: "Listings you close, or listings filled automatically, will appear here.",
+      archived: "Archive a completed listing to keep it here for future reference.",
+    };
+    message.textContent = emptyMessages[manageListingsState.filter];
 
     const link = document.createElement("a");
     link.className = "primary-btn";
     link.href = "post-role.html";
     link.textContent = "Create Listing";
 
-    emptyCard.append(title, message, link);
+    emptyCard.append(title, message);
+    if (manageListingsState.filter === "active") {
+      emptyCard.appendChild(link);
+    }
     jobBoard.appendChild(emptyCard);
     return;
   }
 
   const fragment = document.createDocumentFragment();
-  manageListingsState.listings.forEach((listing) => {
+  visibleListings.forEach((listing) => {
     fragment.appendChild(createListingCard(listing));
   });
   jobBoard.appendChild(fragment);
@@ -650,15 +683,24 @@ async function deleteListing(listingId, button) {
 async function updateListingStatus(listingId, nextStatus, button) {
   const listing = manageListingsState.listings.find((item) => item.id === listingId);
   if (!listing) return;
+  const previousStatus = String(listing.status || "").toLowerCase();
+  const restoringArchivedListing = previousStatus === "archived" && nextStatus === "Closed";
 
   const messages = {
-    Closed: "Applications are now closed for this internship.",
+    Closed: "Applications are closed. Existing applications remain active and can still be reviewed.",
     Filled: "All positions have been filled. This internship is no longer accepting applications.",
-    Archived: "This internship was archived and remains available in application history.",
+    Archived: "Listing archived. You can find it in the Archived tab.",
     Open: "This internship reopened and is accepting applications again.",
   };
+  const confirmationMessages = {
+    Closed: "Close this listing to new applications? Current applicants will remain under review and will be notified.",
+    Archived: "Archive this listing? It will move to the Archived tab and remain in application history.",
+    Open: "Reopen this listing and accept new applications again? Applied students will be notified.",
+  };
   const confirmed = window.confirm(
-    `${nextStatus === "Open" ? "Reopen" : nextStatus} “${listing.title}”? Applied students will be notified.`
+    restoringArchivedListing
+      ? `Restore “${listing.title}” to the Closed / Filled view? It will not accept new applications.`
+      : `${confirmationMessages[nextStatus] || `Change “${listing.title}” to ${nextStatus}?`}`
   );
   if (!confirmed) return;
 
@@ -679,7 +721,10 @@ async function updateListingStatus(listingId, nextStatus, button) {
     renderListings();
 
     const applications = getApplicationsForListing(listingId);
-    if (applications.length) {
+    const shouldNotifyApplicants =
+      ["Closed", "Filled", "Open"].includes(nextStatus) &&
+      !restoringArchivedListing;
+    if (applications.length && shouldNotifyApplicants) {
       const { error: notificationError } = await supabaseClient.rpc(
         "notify_listing_applicants",
         { p_listing_id: listingId, p_summary: messages[nextStatus] }
@@ -694,7 +739,12 @@ async function updateListingStatus(listingId, nextStatus, button) {
       }
     }
 
-    setManageMessage(messages[nextStatus], "success");
+    setManageMessage(
+      restoringArchivedListing
+        ? "Listing restored to the Closed / Filled tab. Applications remain closed."
+        : messages[nextStatus],
+      "success"
+    );
   } catch (error) {
     console.error(error);
     button.disabled = false;
@@ -703,6 +753,18 @@ async function updateListingStatus(listingId, nextStatus, button) {
 }
 
 function bindManageListingsEvents() {
+  document.querySelectorAll("[data-listing-filter]").forEach((button) => {
+    button.addEventListener("click", () => {
+      manageListingsState.filter = button.dataset.listingFilter;
+      document.querySelectorAll("[data-listing-filter]").forEach((tab) => {
+        const selected = tab === button;
+        tab.classList.toggle("active", selected);
+        tab.setAttribute("aria-selected", String(selected));
+      });
+      renderListings();
+    });
+  });
+
   getManageElement("jobBoard").addEventListener("click", (event) => {
     const statusButton = event.target.closest("[data-listing-status]");
 

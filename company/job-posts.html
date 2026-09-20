@@ -26,12 +26,11 @@
           <a href="dashboard.html">Dashboard</a>
           <a href="post-role.html">Create Listing</a>
           <a class="active" href="job-posts.html">Manage Listings</a>
-          <a href="approved.html">Shortlisted</a>
+          <a href="approved.html">Candidates</a>
           <a href="interviews.html">Interviews</a>
         </nav>
 
         <div class="sidebar-bottom">
-          <a href="#">Settings</a>
           <a href="../index.html" id="signOutLink">Sign Out</a>
         </div>
       </aside>
@@ -65,6 +64,18 @@
         </section>
 
         <p id="listingPageMessage" class="auth-message" aria-live="polite"></p>
+
+        <div class="listing-filter-tabs" role="tablist" aria-label="Listing status">
+          <button class="listing-filter-button active" type="button" role="tab" aria-selected="true" data-listing-filter="active">
+            Active <span id="activeListingCount">0</span>
+          </button>
+          <button class="listing-filter-button" type="button" role="tab" aria-selected="false" data-listing-filter="closed">
+            Closed / Filled <span id="closedListingCount">0</span>
+          </button>
+          <button class="listing-filter-button" type="button" role="tab" aria-selected="false" data-listing-filter="archived">
+            Archived <span id="archivedListingCount">0</span>
+          </button>
+        </div>
 
         <section class="job-board" id="jobBoard" aria-busy="true">
           <article class="job-post-card listing-state-card">

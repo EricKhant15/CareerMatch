@@ -198,9 +198,7 @@ function createApplicationCard(application) {
     const listingMessage = document.createElement("p");
     listingMessage.className = "application-listing-notice";
     listingMessage.textContent = listing.status === "Filled"
-      ? application.offer_status === "Accepted"
-        ? "You accepted this internship and one position is reserved for you."
-        : "All positions for this internship have been filled. Your application remains in your history."
+      ? "Internship filled"
       : `This internship is currently ${listing.status.toLowerCase()} and is not accepting new applications.`;
     card.append(top, details);
     if (interviewPanel) card.appendChild(interviewPanel);
@@ -213,7 +211,7 @@ function createApplicationCard(application) {
   }
 
   const link = document.createElement("a");
-  link.className = "secondary-btn";
+  link.className = "secondary-btn application-view-link";
   link.href = listing
     ? `google-details.html?listing_id=${encodeURIComponent(listing.id)}`
     : "matches.html";

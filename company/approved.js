@@ -17,31 +17,45 @@ function setApprovedMessage(message, type = "info") {
   element.style.color = colors[type] || colors.info;
 }
 
-function interviewLabel(application) {
-  if (application.interview_status === "Completed") return "Completed";
-  if (application.interview_status === "Sent") return "Scheduled";
-  if (application.interview_status === "Draft") return "Draft";
-  if (application.interview_status === "Cancelled") return "Cancelled";
-  return "Not scheduled";
+function getCandidateStage(application) {
+  if (application.status === "Rejected") {
+    return { label: "Not selected", className: "rejected" };
+  }
+  if (application.offer_status) {
+    return { label: "Interview completed", className: "accepted" };
+  }
+  if (application.interview_status === "Completed") {
+    return { label: "Interview completed", className: "accepted" };
+  }
+  if (application.interview_status === "Sent") {
+    return { label: "Interview scheduled", className: "interview" };
+  }
+  if (application.interview_status === "Draft") {
+    return { label: "Interview draft", className: "review" };
+  }
+  if (application.interview_status === "Cancelled") {
+    return { label: "Interview cancelled", className: "rejected" };
+  }
+  return { label: "Shortlisted", className: "review" };
 }
 
-function applicationLabel(application) {
-  if (application.offer_status === "Accepted") return "Offer Accepted";
-  if (application.offer_status === "Declined") return "Offer Declined";
-  if (application.offer_status === "Withdrawn") return "Offer Closed";
-  if (application.offer_status === "Pending") return "Offer Sent";
-  if (application.status === "Interview Scheduled") return "Interview Scheduled";
-  return "Shortlisted";
-}
-
-function offerLabel(application) {
-  if (!application.offer_status) return "Not sent";
-  if (application.offer_status === "Pending") return "Waiting for student";
-  if (application.offer_status === "Accepted") return "Accepted by student";
-  if (application.offer_status === "Withdrawn") return "Closed because positions were filled";
-  return application.offer_decline_reason
-    ? `Declined — ${application.offer_decline_reason}`
-    : "Declined";
+function getCandidateOfferStatus(application) {
+  if (application.offer_status === "Pending") {
+    return { label: "Sent", className: "interview" };
+  }
+  if (application.offer_status === "Accepted") {
+    return { label: "Accepted", className: "accepted" };
+  }
+  if (application.offer_status === "Declined") {
+    return { label: "Declined", className: "rejected" };
+  }
+  if (application.offer_status === "Withdrawn") {
+    return { label: "Withdrawn", className: "rejected" };
+  }
+  if (application.status === "Rejected") {
+    return { label: "Not offered", className: "review" };
+  }
+  return { label: "Not sent", className: "review" };
 }
 
 function renderApprovedStats() {
@@ -64,8 +78,8 @@ function renderApprovedApplicants() {
   if (!approvedState.applications.length) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
-    cell.colSpan = 6;
-    cell.textContent = "No shortlisted candidates yet. Shortlist a student from Manage Listings first.";
+    cell.colSpan = 5;
+    cell.textContent = "No candidates are in the pipeline yet. Shortlist a student from Manage Listings first.";
     row.appendChild(cell);
     body.appendChild(row);
     return;
@@ -82,29 +96,39 @@ function renderApprovedApplicants() {
     roleCell.textContent = listing?.title || "Listing unavailable";
     const statusCell = document.createElement("td");
     const status = document.createElement("span");
-    status.className = application.status === "Interview Scheduled" ? "status interview" : "status accepted";
-    status.textContent = applicationLabel(application);
+    const candidateStage = getCandidateStage(application);
+    status.className = `status ${candidateStage.className}`;
+    status.textContent = candidateStage.label;
     statusCell.appendChild(status);
-    const interviewCell = document.createElement("td");
-    interviewCell.textContent = interviewLabel(application);
     const offerCell = document.createElement("td");
-    offerCell.textContent = offerLabel(application);
+    const offerStatus = getCandidateOfferStatus(application);
+    const offerBadge = document.createElement("span");
+    offerBadge.className = `status ${offerStatus.className}`;
+    offerBadge.textContent = offerStatus.label;
+    if (application.offer_decline_reason) {
+      offerBadge.title = `Reason: ${application.offer_decline_reason}`;
+    }
+    offerCell.appendChild(offerBadge);
     const actionsCell = document.createElement("td");
     actionsCell.className = "table-actions";
-    const schedule = document.createElement("a");
-    schedule.className = "secondary-btn";
-    schedule.href = `interviews.html?application_id=${encodeURIComponent(application.id)}`;
-    schedule.textContent = application.interview_status === "Completed"
-      ? "View Interview"
-      : application.interview_status === "Sent" ? "Edit Interview" : "Schedule";
+    const interviewIsScheduled = ["Sent", "Completed"].includes(
+      application.interview_status
+    );
+    if (!interviewIsScheduled) {
+      const schedule = document.createElement("a");
+      schedule.className = "secondary-btn";
+      schedule.href = `interviews.html?application_id=${encodeURIComponent(application.id)}`;
+      schedule.textContent = "Schedule";
+      actionsCell.appendChild(schedule);
+    }
     const review = document.createElement("a");
     review.className = "secondary-btn";
     review.href = listing
       ? `applicants.html?listing_id=${encodeURIComponent(listing.id)}&application_id=${encodeURIComponent(application.id)}`
       : "job-posts.html";
     review.textContent = "Review";
-    actionsCell.append(schedule, review);
-    row.append(nameCell, roleCell, statusCell, interviewCell, offerCell, actionsCell);
+    actionsCell.appendChild(review);
+    row.append(nameCell, roleCell, statusCell, offerCell, actionsCell);
     body.appendChild(row);
   });
 }
@@ -128,10 +152,13 @@ async function loadApprovedData() {
     .from("applications")
     .select("id, listing_id, student_id, status, interview_status, interview_date, interview_time, applied_at, offer_status, offer_sent_at, offer_responded_at, offer_decline_reason")
     .in("listing_id", listingIds)
-    .in("status", ["Accepted", "Interview Scheduled"])
+    .in("status", ["Accepted", "Interview Scheduled", "Rejected"])
     .order("applied_at", { ascending: false });
   if (applicationsError) throw applicationsError;
-  approvedState.applications = applications || [];
+  approvedState.applications = (applications || []).filter(
+    (application) =>
+      application.status !== "Rejected" || Boolean(application.interview_status)
+  );
 
   const studentIds = [...new Set(approvedState.applications.map((item) => item.student_id).filter(Boolean))];
   if (!studentIds.length) return;

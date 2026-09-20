@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shortlisted Candidates - CareerMatch</title>
+  <title>Candidate Pipeline - CareerMatch</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
@@ -18,40 +18,38 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="post-role.html">Create Listing</a>
         <a href="job-posts.html">Manage Listings</a>
-        <a class="active" href="approved.html">Shortlisted</a>
+        <a class="active" href="approved.html">Candidates</a>
         <a href="interviews.html">Interviews</a>
       </nav>
       <div class="sidebar-bottom">
-        <a href="#">Settings</a>
         <a href="../index.html" id="signOutLink">Sign Out</a>
       </div>
     </aside>
     <main class="main company-main">
       <header class="page-header">
         <div>
-          <h1>Shortlisted Candidates</h1>
-          <p>Students shortlisted for an interview and candidates with final decisions.</p>
+          <h1>Candidate Pipeline</h1>
+          <p>Track shortlisted students from interview scheduling through the final offer response.</p>
         </div>
-        <a class="primary-btn" href="interviews.html">Schedule Interview</a>
       </header>
       <section class="stats">
-        <div class="stat-card"><strong id="approvedCount">—</strong><span>Candidates in pipeline</span></div>
-        <div class="stat-card"><strong id="waitingCount">—</strong><span>Waiting for interview</span></div>
+        <div class="stat-card"><strong id="approvedCount">—</strong><span>Tracked candidates</span></div>
+        <div class="stat-card"><strong id="waitingCount">—</strong><span>Awaiting scheduling</span></div>
         <div class="stat-card"><strong id="scheduledCount">—</strong><span>Interview scheduled</span></div>
         <div class="stat-card"><strong id="selectedCount">—</strong><span>Offers accepted</span></div>
       </section>
       <p id="approvedMessage" class="auth-message" aria-live="polite"></p>
       <section class="panel table-panel">
         <div class="section-title-row">
-          <div><h2>Candidate Pipeline</h2><p>Open the original application or schedule the next step.</p></div>
+          <div><h2>Hiring Progress</h2><p>Review each candidate's current stage and offer outcome.</p></div>
         </div>
         <div class="responsive-table">
           <table>
             <thead>
-              <tr><th>Applicant</th><th>Internship</th><th>Application status</th><th>Interview</th><th>Offer response</th><th>Actions</th></tr>
+              <tr><th>Applicant</th><th>Internship</th><th>Current stage</th><th>Offer status</th><th>Actions</th></tr>
             </thead>
             <tbody id="approvedApplicantsBody">
-              <tr><td colspan="6">Loading shortlisted candidates...</td></tr>
+              <tr><td colspan="5">Loading candidates...</td></tr>
             </tbody>
           </table>
         </div>

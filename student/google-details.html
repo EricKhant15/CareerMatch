@@ -31,20 +31,19 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <a href="#">Settings</a>
         <a href="../index.html">Sign Out</a>
       </div>
     </aside>
 
     <main class="main">
-      <header class="page-header">
+      <header class="page-header internship-detail-header">
         <div>
-          <p><a href="matches.html">Back to Recommendations</a></p>
+          <a class="back-link" href="matches.html">← Back to Recommendations</a>
           <h1 id="detailPageTitle">Internship Recommendation Details</h1>
           <p>View detailed match analysis and internship information.</p>
         </div>
 
-        <div>
+        <div class="page-header-actions detail-header-actions">
           <button class="primary-btn" id="applyNowButton" type="button" disabled>Checking application...</button>
           <a class="primary-btn" id="viewApplicationLink" href="applications.html" hidden>View Application</a>
           <button class="secondary-btn" id="saveInternshipButton" type="button">Save Internship</button>
@@ -52,7 +51,7 @@
         </div>
       </header>
 
-      <section class="panel">
+      <section class="panel internship-summary-panel">
         <div class="user-card">
           <div class="avatar small" id="detailCompanyAvatar">C</div>
           <div>
@@ -68,15 +67,21 @@
 
       <br />
 
-      <section class="grid-2">
+      <section class="grid-2 internship-detail-grid">
         <div>
-          <section class="panel">
+          <section class="panel match-score-panel">
             <h2>Your Overall Match Score</h2>
 
-            <div class="grid-2">
-              <div>
+            <div class="match-score-layout">
+              <div class="match-score-hero">
+                <span class="score-eyebrow">Overall fit</span>
                 <div class="progress-ring" id="overallMatchRing"><span id="overallMatchScore">—</span></div>
-                <p><strong id="overallMatchLabel">Calculating...</strong></p>
+                <p class="match-score-label"><strong id="overallMatchLabel">Calculating...</strong></p>
+                <p class="score-context">Your score combines professional qualification with practical work preferences.</p>
+                <div class="score-weight-row" aria-label="Match score weighting">
+                  <span><strong>70%</strong> Qualification</span>
+                  <span><strong>30%</strong> Compatibility</span>
+                </div>
               </div>
 
               <div class="bar-list">

@@ -18,11 +18,10 @@
         <a href="dashboard.html">Dashboard</a>
         <a href="post-role.html">Create Listing</a>
         <a href="job-posts.html">Manage Listings</a>
-        <a href="approved.html">Shortlisted</a>
+        <a href="approved.html">Candidates</a>
         <a class="active" href="interviews.html">Interviews</a>
       </nav>
       <div class="sidebar-bottom">
-        <a href="#">Settings</a>
         <a href="../index.html" id="signOutLink">Sign Out</a>
       </div>
     </aside>
@@ -30,24 +29,24 @@
     <main class="main company-main">
       <header class="page-header">
         <div>
-          <h1>Interview Tracker</h1>
-          <p>Schedule interviews, send details to students, and record final decisions.</p>
+          <h1>Interview Management</h1>
+          <p>Schedule interview rounds, send appointment details, and record the next hiring decision.</p>
         </div>
-        <a class="secondary-btn" href="approved.html">View Shortlisted</a>
+        <a class="secondary-btn" href="approved.html">View Candidate Pipeline</a>
       </header>
 
       <section class="stats">
         <div class="stat-card"><strong id="scheduledInterviewCount">—</strong><span>Interviews scheduled</span></div>
         <div class="stat-card"><strong id="draftInterviewCount">—</strong><span>Draft invitations</span></div>
         <div class="stat-card"><strong id="upcomingInterviewCount">—</strong><span>Upcoming interviews</span></div>
-        <div class="stat-card"><strong id="completedInterviewCount">—</strong><span>Completed decisions</span></div>
+        <div class="stat-card"><strong id="completedInterviewCount">—</strong><span>Completed interviews</span></div>
       </section>
 
       <p id="interviewsMessage" class="auth-message" aria-live="polite"></p>
 
       <section class="panel schedule-panel" id="schedule-panel">
         <div class="section-title-row">
-          <div><h2>Schedule Interview</h2><p>Select a shortlisted candidate and enter the interview details.</p></div>
+          <div><h2>Interview Details</h2><p>Choose a candidate to schedule a round, or select an interview below to review its details.</p></div>
           <span class="status review" id="inviteStatus">New invitation</span>
         </div>
         <form id="interviewForm">
@@ -86,29 +85,31 @@
         </form>
       </section>
 
+      <section class="panel interview-final-panel" id="finalDecisionPanel" hidden>
+        <div>
+          <h2 id="nextHiringStepTitle">Next Hiring Step</h2>
+          <p id="finalDecisionCandidate">Select a scheduled interview to continue.</p>
+          <span class="status interview interview-workflow-status" id="selectedWorkflowStatus">Interview Scheduled</span>
+        </div>
+        <div class="decision-actions" id="nextHiringActions">
+          <button class="primary-btn" id="finalAcceptButton" type="button">Send Offer</button>
+          <button class="secondary-btn" id="secondInterviewButton" type="button">Schedule Next Round</button>
+          <button class="danger-btn" id="finalRejectButton" type="button">Reject Candidate</button>
+        </div>
+      </section>
+
       <section class="panel table-panel">
         <div class="section-title-row">
-          <div><h2>Interview Invitations</h2><p>Select an interview to edit it or record the final decision.</p></div>
+          <div><h2>Interview Schedule</h2><p>Select a row to review the appointment or record the next decision.</p></div>
         </div>
         <div class="responsive-table">
           <table>
-            <thead><tr><th>Candidate</th><th>Role</th><th>Date &amp; time</th><th>Format</th><th>Status</th><th>Actions</th></tr></thead>
+            <thead><tr><th>Candidate</th><th>Internship</th><th>Interview round</th><th>Date &amp; time</th><th>Format</th><th>Interview status</th></tr></thead>
             <tbody id="interviewTableBody"><tr><td colspan="6">Loading interviews...</td></tr></tbody>
           </table>
         </div>
       </section>
 
-      <section class="panel interview-final-panel" id="finalDecisionPanel" hidden>
-        <div>
-          <h2>Final Decision</h2>
-          <p id="finalDecisionCandidate">Select a scheduled interview.</p>
-        </div>
-        <div class="decision-actions">
-          <button class="primary-btn" id="finalAcceptButton" type="button">Send Internship Offer</button>
-          <button class="secondary-btn" id="secondInterviewButton" type="button">Schedule Next Stage</button>
-          <button class="danger-btn" id="finalRejectButton" type="button">Reject</button>
-        </div>
-      </section>
     </main>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

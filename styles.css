@@ -85,14 +85,16 @@ textarea {
 }
 
 .logo-mark {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: var(--purple);
-  color: white;
-  font-weight: 900;
+  background: transparent url("assets/careermatch-logo-mark.png") center / contain no-repeat;
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
 }
 
 .logo span:last-child,
@@ -1502,12 +1504,15 @@ button.applicant-item {
 }
 
 .application-listing-notice {
-  border-left: 4px solid var(--purple);
-  padding: 10px 12px;
-  background: var(--purple-soft);
-  border-radius: 8px;
-  color: var(--text);
-  font-weight: 700;
+  width: fit-content;
+  margin: 0;
+  border: 1px solid #ded3ee;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: #f5f1fa;
+  color: #5b2aa5;
+  font-size: 13px;
+  font-weight: 750;
 }
 
 .application-interview-summary {
@@ -1540,6 +1545,23 @@ button.applicant-item {
   min-width: 760px;
 }
 
+.interview-table-row {
+  cursor: pointer;
+  transition: background 160ms ease, box-shadow 160ms ease;
+}
+
+.interview-table-row:hover,
+.interview-table-row:focus-visible {
+  outline: none;
+  background: #faf7ff;
+  box-shadow: inset 3px 0 0 var(--purple);
+}
+
+.interview-table-row.selected {
+  background: #f5efff;
+  box-shadow: inset 3px 0 0 var(--purple);
+}
+
 .table-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1566,6 +1588,28 @@ button.applicant-item {
 .interview-final-panel h2,
 .interview-final-panel p {
   margin: 0;
+}
+
+.interview-final-panel .decision-actions[hidden] {
+  display: none;
+}
+
+.interview-workflow-status {
+  display: inline-flex;
+  margin-top: 10px;
+}
+
+.interview-workflow-status[hidden] {
+  display: none;
+}
+
+.interview-final-panel.completed {
+  border-color: #cce9d7;
+  background: #f7fcf9;
+}
+
+.interview-final-panel.completed h2 {
+  color: #14733f;
 }
 
 @media (max-width: 760px) {
@@ -1639,9 +1683,7 @@ html {
 .landing-logo .logo-mark {
   width: 38px;
   height: 38px;
-  background: linear-gradient(135deg, #7a42d3, #54249f);
   box-shadow: 0 7px 18px rgba(95, 42, 175, 0.22);
-  font-size: 14px;
 }
 
 .landing-navigation {
@@ -4642,12 +4684,160 @@ textarea:focus {
 }
 
 /* Internship detail */
+.internship-detail-header {
+  align-items: flex-start;
+}
+
+.internship-detail-header .back-link {
+  margin-bottom: 7px;
+  color: #655c70;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.internship-detail-header .back-link:hover {
+  color: var(--purple);
+}
+
 .page-header > div:last-child:not(:first-child) {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
   gap: 9px;
+}
+
+.internship-detail-header .page-header-actions {
+  min-height: 44px;
+}
+
+.internship-detail-header .detail-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.internship-detail-header .detail-header-actions .auth-message {
+  flex-basis: 100%;
+  margin: 0;
+  text-align: right;
+}
+
+.internship-summary-panel {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 24px;
+}
+
+.internship-summary-panel .user-card {
+  margin: 0;
+}
+
+.internship-summary-panel #detailListingTags {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+}
+
+.internship-summary-panel #detailListingTags .tag {
+  margin: 0;
+}
+
+.internship-detail-grid {
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 20px;
+}
+
+.match-score-panel {
+  padding: 26px 28px 28px;
+}
+
+.match-score-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.72fr) minmax(370px, 1.28fr);
+  align-items: center;
+  gap: 42px;
+}
+
+.match-score-hero {
+  display: flex;
+  min-height: 440px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #e7def2;
+  border-radius: 18px;
+  padding: 26px 22px;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(137, 75, 224, 0.11), transparent 44%),
+    linear-gradient(160deg, #fdfcff, #f8f4fd);
+  text-align: center;
+}
+
+.score-eyebrow {
+  margin-bottom: 14px;
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.match-score-hero .progress-ring {
+  width: 184px;
+  height: 184px;
+  margin: 0 auto 16px;
+  box-shadow: 0 14px 34px rgba(99, 41, 183, 0.15);
+}
+
+.match-score-hero .progress-ring span {
+  width: 136px;
+  height: 136px;
+  font-size: 42px;
+}
+
+.match-score-label {
+  margin: 0;
+  font-size: 20px;
+}
+
+.score-context {
+  max-width: 270px;
+  margin: 8px auto 20px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.score-weight-row {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.score-weight-row span {
+  display: grid;
+  gap: 2px;
+  border: 1px solid #e5d9f3;
+  border-radius: 11px;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.score-weight-row strong {
+  color: var(--purple);
+  font-size: 17px;
 }
 
 .page-header > div:last-child:not(:first-child) .auth-message {
@@ -4692,11 +4882,19 @@ textarea:focus {
 /* Student applications and offers */
 .application-board {
   gap: 20px;
+  align-items: start;
 }
 
 .application-card {
   gap: 15px;
   padding: 22px;
+}
+
+.application-card .application-view-link {
+  width: fit-content;
+  min-width: 150px;
+  justify-self: end;
+  padding-inline: 18px;
 }
 
 .application-interview-summary,
@@ -4754,6 +4952,55 @@ textarea:focus {
 }
 
 /* Company listing management */
+.listing-filter-tabs {
+  display: inline-flex;
+  gap: 6px;
+  width: fit-content;
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid #e5dfeb;
+  border-radius: 12px;
+  background: #f7f4fa;
+}
+
+.listing-filter-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  border: 0;
+  border-radius: 9px;
+  padding: 0 14px;
+  background: transparent;
+  color: #625b69;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.listing-filter-button span {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ebe5f1;
+  color: #6c6375;
+  font-size: 12px;
+}
+
+.listing-filter-button.active {
+  background: white;
+  color: var(--purple);
+  box-shadow: 0 3px 10px rgba(52, 28, 78, 0.1);
+}
+
+.listing-filter-button.active span {
+  background: var(--purple-soft);
+  color: var(--purple);
+}
+
 .job-board {
   gap: 20px;
 }
@@ -4842,6 +5089,12 @@ textarea:focus {
   }
 }
 
+@media (max-width: 1400px) {
+  .internship-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 760px) {
   .main {
     padding: 24px 18px;
@@ -4855,6 +5108,23 @@ textarea:focus {
 
   .job-post-card .detail-list {
     grid-template-columns: 1fr;
+  }
+
+  .internship-summary-panel,
+  .match-score-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .internship-summary-panel #detailListingTags {
+    justify-content: flex-start;
+  }
+
+  .match-score-panel {
+    padding: 22px 18px;
+  }
+
+  .match-score-hero {
+    min-height: auto;
   }
 
   .application-offer-panel .decision-actions,
