@@ -348,6 +348,7 @@ function calculateRecommendation(listing, profile) {
     matchedSkills: requiredSkillResult.matchedSkills,
     missingSkills: requiredSkillResult.missingSkills,
     requiredSkillStatuses: requiredSkillResult.skillStatuses,
+    niceSkillStatuses: niceSkillResult.skillStatuses,
   };
 }
 

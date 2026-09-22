@@ -4684,6 +4684,115 @@ textarea:focus {
 }
 
 /* Internship detail */
+.skill-requirements-panel {
+  display: grid;
+  gap: 20px;
+}
+
+.skill-requirements-panel h2,
+.skill-requirements-panel h3,
+.skill-requirements-panel p {
+  margin: 0;
+}
+
+.skill-requirements-intro,
+.skill-requirement-heading p,
+.skill-requirement-identity span,
+.skill-requirement-result > span:first-child,
+.skill-requirement-empty {
+  color: var(--muted);
+}
+
+.skill-requirement-group {
+  overflow: hidden;
+  border: 1px solid #e7e0f0;
+  border-radius: 14px;
+}
+
+.skill-requirement-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  background: #faf7fe;
+}
+
+.skill-requirement-heading h3 {
+  font-size: 18px;
+}
+
+.skill-requirement-heading p {
+  margin-top: 3px;
+  font-size: 13px;
+}
+
+.skill-group-count {
+  flex: none;
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.skill-requirement-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-top: 1px solid #eee9f4;
+}
+
+.skill-requirement-identity,
+.skill-requirement-result {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skill-requirement-identity strong {
+  font-size: 15px;
+}
+
+.skill-requirement-identity span,
+.skill-requirement-result > span:first-child {
+  font-size: 13px;
+}
+
+.skill-requirement-result {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.skill-match-badge {
+  display: inline-flex;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.skill-match-badge.matched {
+  background: #e6f7ed;
+  color: #177344;
+}
+
+.skill-match-badge.required-gap {
+  background: #ffeaee;
+  color: #b73547;
+}
+
+.skill-match-badge.optional-gap {
+  background: #fff3dc;
+  color: #95610f;
+}
+
+.skill-requirement-empty {
+  padding: 17px 18px;
+  border-top: 1px solid #eee9f4;
+  font-size: 14px;
+}
+
 .internship-detail-header {
   align-items: flex-start;
 }
@@ -5053,6 +5162,41 @@ textarea:focus {
   text-align: right;
 }
 
+.listing-skills {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 2px 0 4px;
+}
+
+.listing-skill-group {
+  min-width: 0;
+}
+
+.listing-skill-group + .listing-skill-group {
+  border-left: 1px solid #e9e2f1;
+  padding-left: 18px;
+}
+
+.listing-skill-group:first-child {
+  padding-right: 18px;
+}
+
+.listing-skill-group h3 {
+  margin: 0 0 8px;
+  color: #61566f;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.listing-skill-group .tag {
+  margin: 0;
+}
+
+.listing-skill-empty {
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .job-post-actions {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -5110,6 +5254,21 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 
+  .listing-skills {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .listing-skill-group + .listing-skill-group {
+    border-left: 0;
+    border-top: 1px solid #e9e2f1;
+    padding: 14px 0 0;
+  }
+
+  .listing-skill-group:first-child {
+    padding-right: 0;
+  }
+
   .internship-summary-panel,
   .match-score-layout {
     grid-template-columns: 1fr;
@@ -5125,6 +5284,17 @@ textarea:focus {
 
   .match-score-hero {
     min-height: auto;
+  }
+
+  .skill-requirement-heading,
+  .skill-requirement-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .skill-requirement-result {
+    align-items: flex-start;
+    text-align: left;
   }
 
   .application-offer-panel .decision-actions,

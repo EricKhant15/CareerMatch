@@ -208,6 +208,34 @@ function createDetailItem(label, value) {
   return item;
 }
 
+function createListingSkillGroup(label, skillNames, emptyMessage) {
+  const group = document.createElement("div");
+  group.className = "listing-skill-group";
+
+  const heading = document.createElement("h3");
+  heading.textContent = label;
+
+  const tags = document.createElement("div");
+  tags.className = "skill-row";
+
+  if (skillNames.length === 0) {
+    const empty = document.createElement("span");
+    empty.className = "listing-skill-empty";
+    empty.textContent = emptyMessage;
+    tags.appendChild(empty);
+  } else {
+    skillNames.forEach((skillName) => {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = skillName;
+      tags.appendChild(tag);
+    });
+  }
+
+  group.append(heading, tags);
+  return group;
+}
+
 function createListingCard(listing) {
   const applications = getApplicationsForListing(listing.id);
   const totalOpenings = Math.max(Number(listing.openings) || 1, 1);
@@ -283,25 +311,19 @@ function createListingCard(listing) {
   );
 
   const skills = document.createElement("div");
-  skills.className = "skill-row";
+  skills.className = "listing-skills";
 
   const requiredSkills = Array.isArray(listing.required_skills)
     ? listing.required_skills
     : [];
+  const niceToHaveSkills = Array.isArray(listing.nice_to_have_skills)
+    ? listing.nice_to_have_skills
+    : [];
 
-  if (requiredSkills.length === 0) {
-    const noSkills = document.createElement("span");
-    noSkills.className = "tag";
-    noSkills.textContent = "No required skills";
-    skills.appendChild(noSkills);
-  } else {
-    requiredSkills.forEach((skillName) => {
-      const tag = document.createElement("span");
-      tag.className = "tag";
-      tag.textContent = skillName;
-      skills.appendChild(tag);
-    });
-  }
+  skills.append(
+    createListingSkillGroup("Must-have skills", requiredSkills, "None listed"),
+    createListingSkillGroup("Nice-to-have skills", niceToHaveSkills, "None added")
+  );
 
   const detailsLink = document.createElement("a");
   detailsLink.className = "primary-btn";

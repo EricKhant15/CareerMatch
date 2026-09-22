@@ -49,17 +49,55 @@ function createDetailTag(text, className = "tag") {
   return tag;
 }
 
-function renderSkillGapList(elementId, skills, emptyMessage, className) {
-  const container = getInternshipDetailElement(elementId);
-  container.replaceChildren();
+function formatSkillLevel(level) {
+  const number = Number(level) || 0;
+  const names = { 1: "Beginner", 2: "Intermediate", 3: "Advanced" };
+  return `${names[number] || "Level"} · Level ${number}`;
+}
 
-  if (skills.length === 0) {
-    container.appendChild(createDetailTag(emptyMessage, "tag"));
+function renderSkillRequirements(elementId, summaryId, skills, optional = false) {
+  const container = getInternshipDetailElement(elementId);
+  const summary = getInternshipDetailElement(summaryId);
+  const matchedCount = skills.filter((skill) => skill.matched).length;
+  container.replaceChildren();
+  summary.textContent = skills.length ? `${matchedCount} of ${skills.length} matched` : "None listed";
+
+  if (!skills.length) {
+    const empty = document.createElement("p");
+    empty.className = "skill-requirement-empty";
+    empty.textContent = optional
+      ? "The company has not listed any nice-to-have skills."
+      : "The company has not listed any must-have skills.";
+    container.appendChild(empty);
     return;
   }
 
   skills.forEach((skill) => {
-    container.appendChild(createDetailTag(skill, className));
+    const row = document.createElement("div");
+    const identity = document.createElement("div");
+    const name = document.createElement("strong");
+    const expected = document.createElement("span");
+    const result = document.createElement("div");
+    const studentLevel = document.createElement("span");
+    const badge = document.createElement("span");
+
+    row.className = "skill-requirement-row";
+    identity.className = "skill-requirement-identity";
+    result.className = "skill-requirement-result";
+    name.textContent = skill.name;
+    expected.textContent = `${optional ? "Preferred" : "Required"} level: ${formatSkillLevel(skill.requiredLevel)}`;
+    studentLevel.textContent = skill.studentLevel
+      ? `Your level: ${formatSkillLevel(skill.studentLevel)}`
+      : "Not in your profile";
+    badge.className = `skill-match-badge ${skill.matched ? "matched" : optional ? "optional-gap" : "required-gap"}`;
+    badge.textContent = skill.matched
+      ? "Meets level"
+      : skill.studentLevel ? "Below level" : "Not matched";
+
+    identity.append(name, expected);
+    result.append(studentLevel, badge);
+    row.append(identity, result);
+    container.appendChild(row);
   });
 }
 
@@ -162,17 +200,16 @@ function renderInternshipDetails(recommendation, profile) {
   setMatchBar("allowance", recommendation.breakdown.allowance);
   setMatchBar("mentorship", recommendation.breakdown.mentorship);
 
-  renderSkillGapList(
-    "matchedSkills",
-    recommendation.matchedSkills,
-    "No required skills matched yet",
-    "tag good"
+  renderSkillRequirements(
+    "requiredSkillDetails",
+    "requiredSkillSummary",
+    recommendation.requiredSkillStatuses
   );
-  renderSkillGapList(
-    "missingSkills",
-    recommendation.missingSkills,
-    "No required skill gaps",
-    "tag missing"
+  renderSkillRequirements(
+    "niceSkillDetails",
+    "niceSkillSummary",
+    recommendation.niceSkillStatuses,
+    true
   );
 
   const reasons = getInternshipDetailElement("recommendationReasons");
