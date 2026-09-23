@@ -112,6 +112,10 @@ function createOverviewItem(label, value) {
   return item;
 }
 
+function formatMinimumAvailability(value) {
+  return String(value || "").replace(/\s+per week$/i, "");
+}
+
 function addRecommendationReason(container, isMatch, message) {
   const item = document.createElement("li");
   const icon = document.createElement("span");
@@ -256,7 +260,10 @@ function renderInternshipDetails(recommendation, profile) {
     createOverviewItem("Target field", recommendation.target_field),
     createOverviewItem("Department", recommendation.department),
     createOverviewItem("Openings", String(recommendation.openings || 1)),
-    createOverviewItem("Minimum availability", recommendation.minimum_availability),
+    createOverviewItem(
+      "Minimum availability",
+      formatMinimumAvailability(recommendation.minimum_availability)
+    ),
     createOverviewItem("Preferred major", recommendation.preferred_major),
     createOverviewItem("Preferred year", recommendation.preferred_year),
     createOverviewItem("Application deadline", formatListingDateForDetails(recommendation.application_deadline))
