@@ -42,12 +42,14 @@ Compatibility uses availability (30%), location (20%), work mode (20%), allowanc
 
 ## Supabase setup
 
-Run these files in the Supabase SQL Editor in this order:
+The database migration scripts are kept in `supabase/migrations/` for reproducibility. Run them once in the Supabase SQL Editor in this order when setting up a new project:
 
-1. `supabase-internship-workflow.sql`
-2. `supabase-narrow-skill-catalog.sql`
-3. `supabase-interview-workflow.sql`
-4. `supabase-offer-workflow.sql`
+1. `supabase/migrations/001_internship_workflow.sql`
+2. `supabase/migrations/002_narrow_skill_catalog.sql`
+3. `supabase/migrations/003_interview_workflow.sql`
+4. `supabase/migrations/004_offer_workflow.sql`
+
+These scripts are project setup history; the website does not load them at runtime. Vercel excludes the `supabase/` folder from deployment.
 
 The first migration adds listing updates, notifications, experience fields, and private CV storage. The second limits the active skill catalog to the selected university-focused skills. The third adds interview fields and application-specific notifications. The fourth separates company offers from student acceptance and manages filled internship slots.
 

@@ -4264,25 +4264,11 @@ body.login-page .auth-brand-copy {
     margin-top: 4px;
   }
 
-  .company-review-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .company-review-details {
     margin-top: 22px;
   }
 
-  .company-review-grid > section {
-    min-width: 0;
-    padding-right: 28px;
-  }
-
-  .company-review-grid > section + section {
-    padding-right: 0;
-    padding-left: 28px;
-    border-left: 1px solid var(--line);
-  }
-
-  .company-review-grid h3,
-  .company-description-review h3 {
+  .company-review-details h3 {
     margin: 0 0 14px;
     font-size: 18px;
   }
@@ -4326,18 +4312,6 @@ body.login-page .auth-brand-copy {
     text-decoration: underline;
   }
 
-  .company-description-review {
-    margin-top: 22px;
-    padding-top: 20px;
-    border-top: 1px solid var(--line);
-  }
-
-  .company-description-review p {
-    margin: 0;
-    color: #504a59;
-    line-height: 1.6;
-  }
-
   .company-review-actions {
     display: flex;
     align-items: center;
@@ -4371,21 +4345,6 @@ body.login-page .auth-brand-copy {
 
     .submitted-date {
       text-align: left;
-    }
-
-    .company-review-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .company-review-grid > section {
-      padding: 0;
-    }
-
-    .company-review-grid > section + section {
-      margin-top: 22px;
-      padding: 22px 0 0;
-      border-top: 1px solid var(--line);
-      border-left: 0;
     }
 
     .company-review-actions {

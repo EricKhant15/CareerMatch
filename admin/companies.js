@@ -53,24 +53,10 @@ function getCompanyDetails(profile, companyRecord) {
       companyRecord?.company_name ||
       profile.full_name ||
       "Unnamed company",
-
-    industry: companyRecord?.industry,
-    location: companyRecord?.location,
     website: companyRecord?.website,
-    description: companyRecord?.description,
-    contactName: companyRecord?.contact_name,
     contactEmail:
       companyRecord?.contact_email ||
       profile.email,
-    companySize: companyRecord?.company_size,
-    yearEstablished:
-      companyRecord?.year_established,
-    phoneNumber: companyRecord?.phone_number,
-    contactPosition:
-      companyRecord?.contact_position,
-    registrationNumber:
-      companyRecord?.registration_number,
-    linkedinUrl: companyRecord?.linkedin_url,
     documentPath:
       companyRecord?.verification_document_url,
     submittedAt:
@@ -114,18 +100,8 @@ async function fetchCompanyApplications() {
       id,
       profile_id,
       company_name,
-      industry,
-      location,
       website,
-      description,
-      contact_name,
       contact_email,
-      company_size,
-      year_established,
-      phone_number,
-      contact_position,
-      registration_number,
-      linkedin_url,
       verification_document_url,
       submitted_at,
       approval_status
@@ -162,10 +138,6 @@ function renderCompanyCard(company) {
     company.website
   );
 
-  const linkedin = getSafeWebsite(
-    company.linkedinUrl
-  );
-
   return `
     <article class="company-review-card">
       <header class="company-review-header">
@@ -182,12 +154,6 @@ function renderCompanyCard(company) {
             <h2>
               ${escapeHTML(company.companyName)}
             </h2>
-
-            <p>
-              ${displayValue(company.industry)}
-              ·
-              ${displayValue(company.location)}
-            </p>
           </div>
         </div>
 
@@ -201,122 +167,36 @@ function renderCompanyCard(company) {
         </div>
       </header>
 
-      <div class="company-review-grid">
-        <section>
-          <h3>Company background</h3>
+      <section class="company-review-details">
+        <h3>Submitted company details</h3>
 
-          <dl class="verification-details">
-            <div>
-              <dt>Company size</dt>
-              <dd>
-                ${displayValue(company.companySize)}
-              </dd>
-            </div>
+        <dl class="verification-details">
+          <div>
+            <dt>Official website</dt>
+            <dd>
+              ${
+                website
+                  ? `
+                    <a
+                      href="${escapeHTML(website)}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Visit website
+                    </a>
+                  `
+                  : "Not provided"
+              }
+            </dd>
+          </div>
 
-            <div>
-              <dt>Year established</dt>
-              <dd>
-                ${displayValue(
-                  company.yearEstablished
-                )}
-              </dd>
-            </div>
-
-            <div>
-              <dt>Registration number</dt>
-              <dd>
-                ${displayValue(
-                  company.registrationNumber
-                )}
-              </dd>
-            </div>
-
-            <div>
-              <dt>Website</dt>
-              <dd>
-                ${
-                  website
-                    ? `
-                      <a
-                        href="${escapeHTML(website)}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Visit website
-                      </a>
-                    `
-                    : "Not provided"
-                }
-              </dd>
-            </div>
-
-            <div>
-              <dt>LinkedIn / social page</dt>
-              <dd>
-                ${
-                  linkedin
-                    ? `
-                      <a
-                        href="${escapeHTML(linkedin)}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Open page
-                      </a>
-                    `
-                    : "Not provided"
-                }
-              </dd>
-            </div>
-          </dl>
-        </section>
-
-        <section>
-          <h3>Company representative</h3>
-
-          <dl class="verification-details">
-            <div>
-              <dt>Contact name</dt>
-              <dd>
-                ${displayValue(company.contactName)}
-              </dd>
-            </div>
-
-            <div>
-              <dt>Position</dt>
-              <dd>
-                ${displayValue(
-                  company.contactPosition
-                )}
-              </dd>
-            </div>
-
-            <div>
-              <dt>Email</dt>
-              <dd>
-                ${displayValue(
-                  company.contactEmail
-                )}
-              </dd>
-            </div>
-
-            <div>
-              <dt>Phone</dt>
-              <dd>
-                ${displayValue(
-                  company.phoneNumber
-                )}
-              </dd>
-            </div>
-          </dl>
-        </section>
-      </div>
-
-      <section class="company-description-review">
-        <h3>About the company</h3>
-        <p>
-          ${displayValue(company.description)}
-        </p>
+          <div>
+            <dt>Contact email</dt>
+            <dd>
+              ${displayValue(company.contactEmail)}
+            </dd>
+          </div>
+        </dl>
       </section>
 
       <footer class="company-review-actions">
