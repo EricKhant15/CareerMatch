@@ -379,6 +379,18 @@ async function saveStudentProfileToSupabase(profile) {
     }
   }
 
+  try {
+    const { error: embeddingError } = await supabaseClient.functions.invoke(
+      "generate-embedding",
+      { body: { type: "student", id: studentData.id } }
+    );
+    if (embeddingError) {
+      console.warn("Student semantic profile will be generated when recommendations load.", embeddingError);
+    }
+  } catch (embeddingError) {
+    console.warn("Student semantic profile could not be refreshed yet.", embeddingError);
+  }
+
   const savedProfile =
     await loadStudentProfileFromSupabase();
 

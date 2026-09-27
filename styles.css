@@ -19,6 +19,10 @@
   --shadow-card: 0 8px 24px rgba(38, 25, 52, 0.055);
 }
 
+[hidden] {
+  display: none !important;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -223,6 +227,27 @@ textarea {
   color: var(--purple);
   font-weight: 800;
   text-align: center;
+}
+
+.auth-secondary-link {
+  width: fit-content;
+  color: var(--purple);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.auth-secondary-link:hover {
+  text-decoration: underline;
+}
+
+.auth-secondary-link.is-hidden {
+  display: none;
+}
+
+.password-requirements {
+  margin-top: -8px !important;
+  font-size: 13px;
 }
 
 .choice-grid {

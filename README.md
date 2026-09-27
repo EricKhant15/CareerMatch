@@ -5,6 +5,7 @@ CareerMatch is a Supabase-backed internship matching system for CS-related stude
 ## Working features
 
 - Student and company account registration and sign-in
+- Signed-in password changes and email-based forgotten-password recovery
 - Company verification and admin approval
 - Student onboarding, profile editing, availability, preferences, and skill levels
 - Company internship creation and editing
@@ -40,6 +41,25 @@ Student recommendation score:
 
 Compatibility uses availability (30%), location (20%), work mode (20%), allowance (15%), and mentorship (15%). Skill levels receive partial credit with `min(student level / required level, 1)`.
 
+## Hybrid recommender
+
+The next recommender version is implemented with three stages:
+
+1. Rule-based filtering removes listings that are closed, expired, or already full.
+2. Structured scoring calculates qualification and practical compatibility.
+3. Semantic matching compares non-sensitive student interests with internship content using normalized `gte-small` embeddings.
+
+When a semantic score is available, the final score uses 60% qualification, 25% compatibility, and 15% semantic alignment. If embeddings or Edge Functions are unavailable, the recommendations page automatically uses the original 70% qualification and 30% compatibility calculation.
+
+Apply `supabase/migrations/005_hybrid_recommender.sql`, then deploy both Edge Functions:
+
+```bash
+supabase functions deploy generate-embedding
+supabase functions deploy recommend-internships
+```
+
+The hosted functions use Supabase's built-in `gte-small` model, the signed-in user's JWT, and the standard server-side Supabase environment variables. Never expose the service-role key in browser code.
+
 ## Supabase setup
 
 The database migration scripts are kept in `supabase/migrations/` for reproducibility. Run them once in the Supabase SQL Editor in this order when setting up a new project:
@@ -48,10 +68,24 @@ The database migration scripts are kept in `supabase/migrations/` for reproducib
 2. `supabase/migrations/002_narrow_skill_catalog.sql`
 3. `supabase/migrations/003_interview_workflow.sql`
 4. `supabase/migrations/004_offer_workflow.sql`
+5. `supabase/migrations/005_hybrid_recommender.sql`
 
 These scripts are project setup history; the website does not load them at runtime. Vercel excludes the `supabase/` folder from deployment.
 
-The first migration adds listing updates, notifications, experience fields, and private CV storage. The second limits the active skill catalog to the selected university-focused skills. The third adds interview fields and application-specific notifications. The fourth separates company offers from student acceptance and manages filled internship slots.
+The first migration adds listing updates, notifications, experience fields, and private CV storage. The second limits the active skill catalog to the selected university-focused skills. The third adds interview fields and application-specific notifications. The fourth separates company offers from student acceptance and manages filled internship slots. The fifth adds semantic text and vector storage for the hybrid recommender.
+
+## Password recovery setup
+
+Password changes and reset links use Supabase Auth; application tables never store passwords.
+
+In Supabase Dashboard, open **Authentication → URL Configuration** and add the exact reset-page URLs used by CareerMatch. For example:
+
+```text
+http://127.0.0.1:5500/reset-password.html
+https://your-careermatch-domain.vercel.app/reset-password.html
+```
+
+The local URL must match the host and port shown by VS Code Live Server. For production, configure custom SMTP in Supabase so recovery emails are delivered reliably and are not limited by the default testing mail service.
 
 ## Local testing flow
 
@@ -67,7 +101,6 @@ The first migration adds listing updates, notifications, experience fields, and 
 
 ## Optional polish after the core demonstration
 
-- Dedicated student and company settings pages
 - Email delivery in addition to in-app notifications
 - Interview confirmation by the student
 - Automated browser tests and production deployment

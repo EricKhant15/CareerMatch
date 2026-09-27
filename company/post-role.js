@@ -726,7 +726,19 @@ const listingState = {
   
         throw skillsError;
       }
-  
+
+      try {
+        const { error: embeddingError } = await supabaseClient.functions.invoke(
+          "generate-embedding",
+          { body: { type: "internship", id: createdListingId } }
+        );
+        if (embeddingError) {
+          console.warn("The semantic representation will be generated when recommendations load.", embeddingError);
+        }
+      } catch (embeddingError) {
+        console.warn("The internship semantic representation could not be refreshed yet.", embeddingError);
+      }
+
       if (isEditing) {
         const summary = buildUpdateSummary(payload);
         if (summary !== "No material listing details changed.") {

@@ -14,6 +14,7 @@ const modeButtons = document.querySelectorAll("[data-auth-mode]");
 const passwordInput = document.querySelector("#passwordInput");
 const showPasswordInput = document.querySelector("#showPassword");
 const emailLabelText = document.querySelector("#emailLabelText");
+const forgotPasswordLink = document.querySelector("#forgotPasswordLink");
 
 function isCompanySignup() {
   return (
@@ -66,12 +67,18 @@ function setAuthMode(mode) {
     ? "Create account"
     : "Sign in";
 
+  passwordInput.minLength = 6;
+  passwordInput.placeholder = isSignup
+    ? "Minimum 6 characters"
+    : "Enter your password";
+
   authHelper.textContent = isSignup
     ? "Already have an account? Choose Sign in above."
     : "New to CareerMatch? Choose Create account above.";
 
   nameField.classList.toggle("is-hidden", !isSignup);
   fullNameInput.required = isSignup;
+  forgotPasswordLink.classList.toggle("is-hidden", isSignup);
 
   modeButtons.forEach((button) => {
     button.classList.toggle(
@@ -179,6 +186,12 @@ async function handleSignup(formData) {
     .toLowerCase();
 
   const password = formData.get("password");
+
+  if (password.length < 6) {
+    throw new Error(
+      "Create a password with at least 6 characters."
+    );
+  }
 
   if (!fullName) {
     throw new Error(
@@ -457,3 +470,7 @@ if (["student", "company"].includes(requestedRole)) {
   accountTypeInput.value = requestedRole;
 }
 setAuthMode(authQuery.get("mode") === "signup" ? "signup" : "login");
+
+if (authQuery.get("password") === "changed") {
+  authMessage.textContent = "Password changed successfully. Sign in with your new password.";
+}

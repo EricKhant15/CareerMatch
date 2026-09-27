@@ -31,6 +31,7 @@
       </nav>
 
       <div class="sidebar-bottom">
+        <a href="../account-security.html">Change Password</a>
         <a href="../index.html">Sign Out</a>
       </div>
     </aside>
@@ -77,10 +78,11 @@
                 <span class="score-eyebrow">Overall fit</span>
                 <div class="progress-ring" id="overallMatchRing"><span id="overallMatchScore">—</span></div>
                 <p class="match-score-label"><strong id="overallMatchLabel">Calculating...</strong></p>
-                <p class="score-context">Your score combines professional qualification with practical work preferences.</p>
+                <p class="score-context" id="scoreContext">Your score combines professional qualification with practical work preferences.</p>
                 <div class="score-weight-row" aria-label="Match score weighting">
-                  <span><strong>70%</strong> Qualification</span>
-                  <span><strong>30%</strong> Compatibility</span>
+                  <span><strong id="qualificationWeight">70%</strong> Qualification</span>
+                  <span><strong id="compatibilityWeight">30%</strong> Compatibility</span>
+                  <span id="semanticWeightItem" hidden><strong>15%</strong> Semantic alignment</span>
                 </div>
               </div>
 

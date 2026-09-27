@@ -373,7 +373,7 @@ function createRecommendationCard(recommendation) {
   const company = recommendationState.companies.get(
     recommendation.company_id
   );
-  const companyName = company?.company_name || "Company";
+  const companyName = recommendation.company_name || company?.company_name || "Company";
 
   const card = document.createElement("article");
   card.className = "intern-card";
@@ -452,6 +452,10 @@ function createRecommendationCard(recommendation) {
     recommendation.compatibilityScore === null
       ? "Compatibility not assessed"
       : `${recommendation.compatibilityScore}% compatibility`
+  }${
+    recommendation.semanticScore === null || recommendation.semanticScore === undefined
+      ? ""
+      : ` · ${recommendation.semanticScore}% semantic alignment`
   }`;
 
   const actions = document.createElement("div");
@@ -612,6 +616,23 @@ async function loadListingRequirements() {
   });
 }
 
+async function loadHybridRecommendations() {
+  const { data, error } = await supabaseClient.functions.invoke(
+    "recommend-internships",
+    { body: {} }
+  );
+
+  if (error) {
+    throw error;
+  }
+
+  if (!data || !Array.isArray(data.recommendations)) {
+    throw new Error("The hybrid recommender returned an invalid response.");
+  }
+
+  return data.recommendations;
+}
+
 async function setupRecommendationsPage() {
   if (!getRecommendationElement("recommendationsGrid")) {
     return;
@@ -630,6 +651,24 @@ async function setupRecommendationsPage() {
     getRecommendationElement("studentName").textContent = studentName;
     getRecommendationElement("studentAvatar").textContent =
       studentName.charAt(0).toUpperCase();
+
+    try {
+      const hybridRecommendations = await loadHybridRecommendations();
+      renderRecommendations(hybridRecommendations);
+      showRecommendationsMessage(
+        hybridRecommendations.length
+          ? `${hybridRecommendations.length} eligible internship${
+              hybridRecommendations.length === 1 ? "" : "s"
+            } ranked using qualification, compatibility, and semantic alignment.`
+          : ""
+      );
+      return;
+    } catch (hybridError) {
+      console.warn(
+        "Hybrid recommendations are unavailable; using the weighted fallback.",
+        hybridError
+      );
+    }
 
     await loadOpenListings();
     await Promise.all([loadListingCompanies(), loadListingRequirements()]);

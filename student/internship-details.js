@@ -139,7 +139,7 @@ function renderInternshipDetails(recommendation, profile) {
   const company = recommendationState.companies.get(
     recommendation.company_id
   );
-  const companyName = company?.company_name || "Company";
+  const companyName = recommendation.company_name || company?.company_name || "Company";
   const internshipTitle = typeof cleanInternshipTitle === "function"
     ? cleanInternshipTitle(recommendation.title)
     : String(recommendation.title || "Internship").replace(/\s*[-\u2013\u2014]\s*$/, "").trim();
@@ -192,6 +192,18 @@ function renderInternshipDetails(recommendation, profile) {
     recommendation.compatibilityScore === null
       ? "Not assessed"
       : `${recommendation.compatibilityScore}%`;
+
+  const hasSemanticScore =
+    recommendation.semanticScore !== null &&
+    recommendation.semanticScore !== undefined;
+  getInternshipDetailElement("qualificationWeight").textContent =
+    hasSemanticScore ? "60%" : "70%";
+  getInternshipDetailElement("compatibilityWeight").textContent =
+    hasSemanticScore ? "25%" : "30%";
+  getInternshipDetailElement("semanticWeightItem").hidden = !hasSemanticScore;
+  getInternshipDetailElement("scoreContext").textContent = hasSemanticScore
+    ? `Your score combines qualification, practical compatibility, and ${recommendation.semanticScore}% semantic alignment.`
+    : "Your score combines professional qualification with practical work preferences.";
 
   setMatchBar("requiredSkills", recommendation.breakdown.requiredSkills);
   setMatchBar("niceSkills", recommendation.breakdown.niceSkills);
@@ -254,6 +266,15 @@ function renderInternshipDetails(recommendation, profile) {
       ? "The work mode matches your preference."
       : "The work mode differs from your preference."
   );
+  if (hasSemanticScore) {
+    addRecommendationReason(
+      reasons,
+      recommendation.semanticScore >= 60,
+      recommendation.semanticScore >= 60
+        ? "Your academic interests, skills, and career direction align with the internship content."
+        : "The internship content has limited alignment with your current academic interests and career direction."
+    );
+  }
 
   const overview = getInternshipDetailElement("detailOverview");
   overview.replaceChildren(
@@ -527,7 +548,17 @@ async function setupInternshipDetailsPage() {
 
     await Promise.all([loadListingCompanies(), loadListingRequirements()]);
 
-    const recommendation = calculateRecommendation(listing, profile);
+    let recommendation;
+    try {
+      const hybridRecommendations = await loadHybridRecommendations();
+      recommendation = hybridRecommendations.find((item) => item.id === listing.id);
+    } catch (hybridError) {
+      console.warn(
+        "Hybrid recommendation details are unavailable; using the weighted fallback.",
+        hybridError
+      );
+    }
+    recommendation ||= calculateRecommendation(listing, profile);
     renderInternshipDetails(recommendation, profile);
     await loadStudentId();
     await loadExistingApplication();
