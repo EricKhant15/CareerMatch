@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Analytics - CareerMatch</title>
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <span class="logo-mark">CM</span>
+          <span>Career<span class="brand-purple">Match</span></span>
+        </div>
+        <div class="user-card">
+          <div class="avatar">A</div>
+          <div><strong>Admin</strong><span>CareerMatch</span></div>
+        </div>
+        <nav class="nav">
+          <a href="companies.html">Company Approvals</a>
+          <a class="active" href="analytics.html">Analytics</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <a href="../account-security.html">Change Password</a>
+          <a href="../index.html" id="analyticsSignOut">Sign Out</a>
+        </div>
+      </aside>
+
+      <main class="main analytics-main">
+        <header class="page-header analytics-header">
+          <div>
+            <h1>CareerMatch Analytics</h1>
+            <p>Monitor internship demand, hiring outcomes, skill gaps, and recommender health.</p>
+          </div>
+          <div class="analytics-filters" aria-label="Analytics filters">
+            <label>Data
+              <select id="analyticsDataMode">
+                <option value="demo" selected>Demo only</option>
+                <option value="real">Real only</option>
+                <option value="all">All data</option>
+              </select>
+            </label>
+            <label>Period
+              <select id="analyticsWindow">
+                <option value="all">All time</option>
+                <option value="90">Last 90 days</option>
+                <option value="30">Last 30 days</option>
+              </select>
+            </label>
+            <label>Major
+              <select id="analyticsMajor"><option value="all">All majors</option></select>
+            </label>
+            <label>Field
+              <select id="analyticsField"><option value="all">All fields</option></select>
+            </label>
+          </div>
+        </header>
+
+        <div id="demoDataBanner" class="analytics-demo-banner">
+          <strong>Synthetic demonstration data</strong>
+          <span>These figures are for system testing and exhibition use, not real employment statistics.</span>
+        </div>
+        <p id="analyticsMessage" class="auth-message" aria-live="polite">Loading analytics...</p>
+
+        <section class="analytics-stats" aria-label="System totals">
+          <article class="stat-card"><strong id="metricStudents">—</strong><span>Students</span></article>
+          <article class="stat-card"><strong id="metricCompanies">—</strong><span>Companies</span></article>
+          <article class="stat-card"><strong id="metricListings">—</strong><span>Active listings</span></article>
+          <article class="stat-card"><strong id="metricApplications">—</strong><span>Applications</span></article>
+          <article class="stat-card"><strong id="metricInterviews">—</strong><span>Interviews</span></article>
+          <article class="stat-card"><strong id="metricOffers">—</strong><span>Offers</span></article>
+          <article class="stat-card"><strong id="metricPlacements">—</strong><span>Placements</span></article>
+        </section>
+
+        <div class="analytics-grid">
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Application Funnel</h2><p>Movement from application to accepted placement.</p></div></div>
+            <div id="applicationFunnel" class="analytics-bars"></div>
+          </section>
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Recommender Health</h2><p>Live Edge Function results using labelled synthetic scenarios.</p></div></div>
+            <div id="recommenderHealth" class="recommender-health"></div>
+          </section>
+        </div>
+
+        <section class="panel analytics-panel">
+          <div class="section-title-row"><div><h2>Most Popular Internships</h2><p>Views, saves, applications, and accepted placements.</p></div></div>
+          <div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Internship</th><th>Company</th><th>Views</th><th>Saves</th><th>Applications</th><th>Accepted</th><th>Conversion</th></tr></thead><tbody id="popularListingsBody"></tbody></table></div>
+        </section>
+
+        <div class="analytics-grid">
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Placement Outcomes by Major</h2><p>Accepted offers divided by unique students who applied.</p></div></div>
+            <div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Major</th><th>Applicants</th><th>Interviewed</th><th>Offers</th><th>Accepted</th><th>Rate</th></tr></thead><tbody id="majorOutcomesBody"></tbody></table></div>
+          </section>
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Skills Supply vs Demand</h2><p>Listing requirements compared with student skill profiles.</p></div></div>
+            <div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Skill</th><th>Demand</th><th>Students</th><th>Gap</th></tr></thead><tbody id="skillGapBody"></tbody></table></div>
+          </section>
+        </div>
+
+        <div class="analytics-grid">
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Demand by Internship Field</h2><p>Listings, applications, and accepted placements.</p></div></div>
+            <div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Field</th><th>Listings</th><th>Applications</th><th>Accepted</th></tr></thead><tbody id="fieldDemandBody"></tbody></table></div>
+          </section>
+          <section class="panel analytics-panel">
+            <div class="section-title-row"><div><h2>Company Activity</h2><p>Hiring activity across participating employers.</p></div></div>
+            <div class="analytics-table-wrap"><table class="analytics-table"><thead><tr><th>Company</th><th>Listings</th><th>Applicants</th><th>Interviews</th><th>Placements</th></tr></thead><tbody id="companyActivityBody"></tbody></table></div>
+          </section>
+        </div>
+
+        <section class="panel analytics-panel">
+          <div class="section-title-row"><div><h2>Needs Attention</h2><p>Operational issues the administrator may need to review.</p></div></div>
+          <div id="analyticsAlerts" class="analytics-alerts"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../supabase-config.js"></script>
+    <script src="../guard.js"></script>
+    <script src="analytics.js"></script>
+  </body>
+</html>

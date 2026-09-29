@@ -381,6 +381,16 @@ async function loadExistingApplication() {
   renderApplicationAction();
 }
 
+async function recordInternshipDetailView() {
+  if (!internshipDetailState.studentId || !internshipDetailState.listing?.id) return;
+  const { error } = await supabaseClient.from("listing_events").insert({
+    student_id: internshipDetailState.studentId,
+    listing_id: internshipDetailState.listing.id,
+    event_type: "detail_view",
+  });
+  if (error) throw error;
+}
+
 function showCvDialogMessage(message, type = "info") {
   const element = getInternshipDetailElement("cvDialogMessage");
   element.textContent = message;
@@ -561,6 +571,11 @@ async function setupInternshipDetailsPage() {
     recommendation ||= calculateRecommendation(listing, profile);
     renderInternshipDetails(recommendation, profile);
     await loadStudentId();
+    try {
+      await recordInternshipDetailView();
+    } catch (trackingError) {
+      console.warn("Internship view could not be recorded.", trackingError);
+    }
     await loadExistingApplication();
     bindApplicationAction();
     showInternshipDetailMessage("");

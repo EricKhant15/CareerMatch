@@ -1,2 +1,7 @@
 # Database setup scripts are retained in Git but are not needed by the static site.
 supabase/
+
+# Development utilities and synthetic source artifacts are not part of the static site.
+scripts/
+tests/
+output/

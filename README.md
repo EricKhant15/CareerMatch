@@ -87,6 +87,19 @@ https://your-careermatch-domain.vercel.app/reset-password.html
 
 The local URL must match the host and port shown by VS Code Live Server. For production, configure custom SMTP in Supabase so recovery emails are delivered reliably and are not limited by the default testing mail service.
 
+## Admin analytics and synthetic demo data
+
+Apply `supabase/migrations/006_admin_analytics.sql` to add the demo-data marker, database-backed saves, listing engagement events, and recommender evaluation results. The admin Analytics page separates real and synthetic data and reports the hiring funnel, popular internships, major placement outcomes, skill gaps, company activity, operational alerts, and recommender health.
+
+The repeatable seed script creates fictional, email-confirmed Supabase Auth users and realistic related records. It requires an elevated key through standard input and a password supplied only at runtime; no secret or demo password is committed to Git.
+
+```bash
+supabase projects api-keys --project-ref YOUR_PROJECT_REF --output json \
+  | CAREERMATCH_DEMO_PASSWORD='choose-a-demo-password' node scripts/seed-demo-accounts.mjs
+```
+
+Run `scripts/verify-demo-data.mjs` through the same API-key pipe to verify record counts and the latest live hybrid evaluation. Synthetic outcomes demonstrate the software and must not be presented as real employment statistics.
+
 ## Local testing flow
 
 1. Start the project with VS Code Live Server.

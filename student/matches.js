@@ -633,6 +633,26 @@ async function loadHybridRecommendations() {
   return data.recommendations;
 }
 
+async function recordRecommendationViews(recommendations) {
+  if (!recommendations.length) return;
+  const { data: userData } = await supabaseClient.auth.getUser();
+  if (!userData.user) return;
+  const { data: student, error: studentError } = await supabaseClient
+    .from("students")
+    .select("id")
+    .eq("profile_id", userData.user.id)
+    .maybeSingle();
+  if (studentError || !student) return;
+  const { error } = await supabaseClient.from("listing_events").insert(
+    recommendations.map((recommendation) => ({
+      student_id: student.id,
+      listing_id: recommendation.id,
+      event_type: "recommendation_view",
+    }))
+  );
+  if (error) throw error;
+}
+
 async function setupRecommendationsPage() {
   if (!getRecommendationElement("recommendationsGrid")) {
     return;
@@ -655,6 +675,9 @@ async function setupRecommendationsPage() {
     try {
       const hybridRecommendations = await loadHybridRecommendations();
       renderRecommendations(hybridRecommendations);
+      recordRecommendationViews(hybridRecommendations).catch((trackingError) =>
+        console.warn("Recommendation impressions could not be recorded.", trackingError)
+      );
       showRecommendationsMessage(
         hybridRecommendations.length
           ? `${hybridRecommendations.length} eligible internship${
@@ -680,6 +703,9 @@ async function setupRecommendationsPage() {
       .sort((first, second) => second.score - first.score);
 
     renderRecommendations(recommendations);
+    recordRecommendationViews(recommendations).catch((trackingError) =>
+      console.warn("Recommendation impressions could not be recorded.", trackingError)
+    );
     showRecommendationsMessage(
       recommendations.length
         ? `${recommendations.length} open internship${

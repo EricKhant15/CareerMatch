@@ -24,9 +24,14 @@ function createSavedDetail(label, value) {
   return item;
 }
 
-function removeSavedListing(listingId) {
+async function removeSavedListing(listingId) {
   const nextIds = getSavedInternships().filter((id) => id !== listingId);
   setSavedInternships(nextIds);
+  try {
+    await syncSavedInternshipToSupabase(listingId, false);
+  } catch (error) {
+    console.warn("Saved internship removal could not be synchronized yet.", error);
+  }
   savedPageState.listings = savedPageState.listings.filter((item) => item.id !== listingId);
   renderSavedListings();
   setSavedMessage("Internship removed from Saved.", "success");

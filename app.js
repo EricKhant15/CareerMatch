@@ -98,6 +98,67 @@ function setSavedInternships(savedInternships) {
   );
 }
 
+let savedInternshipStudentId = null;
+
+async function getSavedInternshipStudentId() {
+  if (savedInternshipStudentId) return savedInternshipStudentId;
+  if (!hasSupabase()) return null;
+  const user = await getCurrentUser();
+  if (!user) return null;
+  const { data, error } = await supabaseClient
+    .from("students")
+    .select("id")
+    .eq("profile_id", user.id)
+    .maybeSingle();
+  if (error) throw error;
+  savedInternshipStudentId = data?.id || null;
+  return savedInternshipStudentId;
+}
+
+async function syncSavedInternshipToSupabase(listingId, shouldSave) {
+  if (!hasSupabase() || !listingId) return;
+  const studentId = await getSavedInternshipStudentId();
+  if (!studentId) return;
+  if (shouldSave) {
+    const { error } = await supabaseClient
+      .from("saved_internships")
+      .upsert({ student_id: studentId, listing_id: listingId }, { onConflict: "student_id,listing_id" });
+    if (error) throw error;
+    return;
+  }
+  const { error } = await supabaseClient
+    .from("saved_internships")
+    .delete()
+    .eq("student_id", studentId)
+    .eq("listing_id", listingId);
+  if (error) throw error;
+}
+
+async function hydrateSavedInternshipsFromSupabase() {
+  if (!hasSupabase() || !window.location.pathname.includes("/student/")) return;
+  try {
+    const studentId = await getSavedInternshipStudentId();
+    if (!studentId) return;
+    const localIds = getSavedInternships().filter((id) =>
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)
+    );
+    if (localIds.length) {
+      const { error: importError } = await supabaseClient
+        .from("saved_internships")
+        .upsert(localIds.map((listingId) => ({ student_id: studentId, listing_id: listingId })), { onConflict: "student_id,listing_id" });
+      if (importError) throw importError;
+    }
+    const { data, error } = await supabaseClient
+      .from("saved_internships")
+      .select("listing_id")
+      .eq("student_id", studentId);
+    if (error) throw error;
+    setSavedInternships((data || []).map((row) => row.listing_id));
+  } catch (error) {
+    console.warn("Database-backed saved internships are unavailable; using local storage.", error);
+  }
+}
+
 function collectCheckedValues(form, name) {
   return [
     ...form.querySelectorAll(
@@ -1375,7 +1436,7 @@ function setupSaveButtons() {
 
       button.addEventListener(
         "click",
-        () => {
+        async () => {
           const internshipId =
             button.dataset.saveInternship;
 
@@ -1398,6 +1459,15 @@ function setupSaveButtons() {
           setSavedInternships(
             nextSaved
           );
+
+          try {
+            await syncSavedInternshipToSupabase(
+              internshipId,
+              nextSaved.includes(internshipId)
+            );
+          } catch (error) {
+            console.warn("Saved internship could not be synchronized yet.", error);
+          }
 
           refreshHeartButtons();
           renderSavedInternships();
@@ -1559,6 +1629,7 @@ async function startCareerMatch() {
   if (window.location.pathname.includes("/student/")) {
     updateStudentSidebar(getSavedProfile());
   }
+  await hydrateSavedInternshipsFromSupabase();
   setupSignOut();
   setupSaveButtons();
   refreshHeartButtons();

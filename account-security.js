@@ -35,7 +35,9 @@ async function initializeAccountSecurity() {
 
   securityBackLink.href = profile?.role === "company"
     ? "company/dashboard.html"
-    : "student/profile.html";
+    : profile?.role === "admin"
+      ? "admin/analytics.html"
+      : "student/profile.html";
 }
 
 changePasswordForm.addEventListener("submit", async (event) => {
