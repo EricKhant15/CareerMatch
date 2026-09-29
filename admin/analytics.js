@@ -217,7 +217,26 @@ function renderAlerts(rows) {
   rows.listings.filter((row) => row.status === "Open" && row.application_deadline && row.application_deadline < today).forEach((row) => alerts.push(["Expired listing still open", row.title]));
   rows.listings.filter((row) => row.status === "Open" && !applicationCounts.get(row.id)).forEach((row) => alerts.push(["No applications", row.title]));
   rows.companies.filter((row) => row.approval_status === "Pending").forEach((row) => alerts.push(["Company awaiting approval", row.company_name]));
-  rows.applications.filter((row) => row.status === "Under Review" && new Date(row.applied_at) < new Date(Date.now() - 21 * 86400000)).slice(0, 8).forEach((row) => alerts.push(["Application waiting over 21 days", rows.listingsById.get(row.listing_id)?.title || "Internship"]));
+  const overdueByListing = new Map();
+  rows.applications
+    .filter((row) => row.status === "Under Review" && new Date(row.applied_at) < new Date(Date.now() - 21 * 86400000))
+    .forEach((row) => {
+      const group = overdueByListing.get(row.listing_id) || { count: 0, oldestAppliedAt: row.applied_at };
+      group.count += 1;
+      if (new Date(row.applied_at) < new Date(group.oldestAppliedAt)) group.oldestAppliedAt = row.applied_at;
+      overdueByListing.set(row.listing_id, group);
+    });
+  [...overdueByListing.entries()]
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 8)
+    .forEach(([listingId, group]) => {
+      const waitingDays = Math.floor((Date.now() - new Date(group.oldestAppliedAt).getTime()) / 86400000);
+      const label = group.count === 1
+        ? "1 application waiting over 21 days"
+        : `${group.count} applications waiting over 21 days`;
+      const listingTitle = rows.listingsById.get(listingId)?.title || "Internship";
+      alerts.push([label, `${listingTitle} · oldest ${waitingDays} days`]);
+    });
   const container = analyticsElement("analyticsAlerts");
   if (!alerts.length) {
     container.innerHTML = '<div class="analytics-alert ok"><strong>No urgent issues</strong><span>The selected dataset has no operational alerts.</span></div>';
